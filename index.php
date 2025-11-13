@@ -12,8 +12,8 @@
     </header>
     <div class="container-Authentication">
         <div class="Authentication">
-            <a href="php/register.php">新規登録</a>
-            <a href="php/login.php">ログイン</a>
+            <a href="src/php/register.php">新規登録</a>
+            <a href="src/php/login.php">ログイン</a>
         </div>
     </div>
 </body>
