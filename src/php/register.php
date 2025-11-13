@@ -6,8 +6,14 @@
 
     require_once __DIR__ . '/../../vendor/autoload.php';
 
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../..");
-    $dotenv->load();
+    //本番環境と開発環境の分岐
+    $host = $_SERVER['HTTP_HOST'];
+    if(strpos($host, 'localhost') !== false) {
+
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../..");
+        $dotenv->load();
+    }
+
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $newUserEmail = $_POST['email'] ?? null;
