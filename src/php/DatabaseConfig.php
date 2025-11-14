@@ -24,7 +24,7 @@
                 $host = getenv('PGHOST');
                 $database = getenv('PGDATABASE');
                 
-                $dsn = "pgsql:host={$host};port=21962;dbname={$database}";
+                $dsn = "pgsql:host={$host};port=5432;dbname={$database}";
                 $user = getenv('PGUSER');
                 $password = getenv('PGPASSWORD');
             }
