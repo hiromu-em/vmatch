@@ -23,7 +23,7 @@
         $isValidEmail = $validation -> ValidationCheck($newUserEmail);
         
         $userRegistrationService = new UserRegistrationService();
-        $userRegistrationService ->isEmailRegistered($newUserEmail);
+        $userRegistrationService -> isEmailRegistered($newUserEmail);
         
         if($isValidEmail){
             $userRegistrationService -> registerTemporaryUser($newUserEmail);
