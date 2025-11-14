@@ -9,7 +9,7 @@
          * 新規登録用のトークン生成
          * @return string URLに付随するトークン
          */
-        public function tokenGenerate(){
+        public function tokenGenerate(): string{
 
             $plainToken = bin2hex(random_bytes(32));
             $hash = hash("sha256", $plainToken);
