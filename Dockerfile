@@ -11,5 +11,5 @@ RUN apt-get update && apt-get install -y \
 # 作業ディレクトリ
 WORKDIR /app
 
-COPY composer.json composer.lock /app/
+COPY Vmatch/composer.json Vmatch/composer.lock /app/
 RUN composer install --optimize-autoloader --no-scripts --no-interaction
