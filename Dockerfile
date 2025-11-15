@@ -15,5 +15,8 @@ COPY . /app
 # Composer install
 RUN composer install --optimize-autoloader --no-scripts --no-interaction
 
-# アプリが待ち受けるポートを指定（Railway はこのポートを外部にマッピング）
+# アプリが待ち受けるポートを指定
 EXPOSE 8080
+
+# コンテナ起動時のコマンド（index.php がアプリの入り口の場合）
+CMD ["frankenphp", "serve", "--host=0.0.0.0", "--port=8080", "/app/index.php"]
