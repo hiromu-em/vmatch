@@ -19,4 +19,4 @@ RUN composer install --optimize-autoloader --no-scripts --no-interaction
 EXPOSE 8080
 
 # コンテナ起動時のコマンド（index.php がアプリの入り口の場合）
-CMD ["frankenphp", "serve", "--host=0.0.0.0", "--port=8080", "/app/index.php"]
+CMD ["frankenphp", "/app/index.php", "--host=0.0.0.0", "--port=8080"]
