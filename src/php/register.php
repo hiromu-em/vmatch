@@ -12,9 +12,6 @@
 
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../..");
         $dotenv->load();
-    }else{
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. "/../../..");
-        $dotenv->load();
     }
 
 
