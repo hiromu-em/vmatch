@@ -16,6 +16,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --optimize-autoloader --no-scripts --no-interaction
 
 RUN sed -i 's/80/8080/' /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/app|g' /etc/apache2/sites-available/000-default.conf
+RUN chown -R www-data:www-data /app
 
 EXPOSE 8080
 
