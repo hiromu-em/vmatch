@@ -1,5 +1,5 @@
 # Railway / Railpack が使用しているベースイメージ
-FROM php:8.4-fpm
+FROM php:8.4-apache
 
 # 必要なパッケージをインストールして psql ドライバを有効化
 RUN apt-get update && \
