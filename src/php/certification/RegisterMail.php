@@ -72,8 +72,10 @@
 
                 $mail -> send();
             }catch(Exception $e){
-                echo $e->getMessage();
-
+                $prev = $e -> getPrevious();
+                if($prev){
+                    print $prev -> getMessage();
+                }
             }
         }
     }
