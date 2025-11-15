@@ -25,8 +25,8 @@
             $mail -> SMTPDebug = SMTP::DEBUG_CONNECTION;
             $mail -> Debugoutput = 'error_log';
             $mail -> Host = "smtp.gmail.com";
-            $mail -> Port = 465;
-            $mail -> SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail -> Port = 587;
+            $mail -> SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail -> SMTPAuth = true;
             $mail -> AuthType = "XOAUTH2";
 
