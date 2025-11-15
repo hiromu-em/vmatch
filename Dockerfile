@@ -1,5 +1,5 @@
 # Railway / Railpack が使用しているベースイメージ
-FROM dunglas/frankenphp:php8.4.14-bookworm
+FROM php:8.4-fpm
 
 # 必要なパッケージをインストールして psql ドライバを有効化
 RUN apt-get update && \
@@ -14,9 +14,3 @@ COPY . /app
 
 # Composer install
 RUN composer install --optimize-autoloader --no-scripts --no-interaction
-
-# アプリが待ち受けるポートを指定
-EXPOSE 8080
-
-# コンテナ起動時のコマンド（index.php がアプリの入り口の場合）
-CMD ["frankenphp", "/app/index.php", "--host=0.0.0.0", "--port=8080"]
