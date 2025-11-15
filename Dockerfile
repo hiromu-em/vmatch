@@ -3,7 +3,7 @@ FROM dunglas/frankenphp:php8.4.14-bookworm
 
 # 必要なパッケージをインストールして psql ドライバを有効化
 RUN apt-get update && \
-    apt-get install -y libpq-dev && \
+    apt-get install -y git zip unzip libpq-dev && \
     docker-php-ext-install pdo_pgsql pgsql
 
 # Composer を使用するためにコピー（Railway のビルドログ参考）
