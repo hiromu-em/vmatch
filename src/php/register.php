@@ -14,7 +14,6 @@
         $dotenv->load();
     }
 
-
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $newUserEmail = $_POST['email'] ?? null;
 
