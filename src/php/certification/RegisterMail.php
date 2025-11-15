@@ -24,9 +24,9 @@
             // $mail -> SMTPDebug = SMTP::DEBUG_OFF;
             $mail -> SMTPDebug = SMTP::DEBUG_CONNECTION;
             $mail -> Debugoutput = 'error_log';
-            $mail -> Host = "smtp.gmail.com";
-            $mail -> Port = 587;
-            $mail -> SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail -> Host = gethostbyname("smtp.gmail.com");
+            $mail -> Port = 465;
+            $mail -> SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail -> SMTPAuth = true;
             $mail -> AuthType = "XOAUTH2";
 
@@ -60,7 +60,7 @@
             $token = $generateRegistrationToken -> tokenGenerate();
  
             $url = "https://vmatch.up.railway.app/src/php/certification/verify_email.php?token={$token}";
-            $verificationEmailTemplate = file_get_contents(__DIR__ ."/registration_verification_email.html");
+            $verificationEmailTemplate = file_get_contents(__DIR__ ."/../../registration_verification_email.html");
             $verificationEmailTemplate =str_replace("{url}", $url, $verificationEmailTemplate);
  
             $mail -> isHTML(true);
