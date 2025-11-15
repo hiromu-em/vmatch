@@ -14,3 +14,5 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Composer install
 RUN composer install --optimize-autoloader --no-scripts --no-interaction
+
+EXPOSE 8080
