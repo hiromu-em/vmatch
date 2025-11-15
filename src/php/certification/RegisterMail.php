@@ -60,7 +60,7 @@
             $token = $generateRegistrationToken -> tokenGenerate();
  
             $url = "https://vmatch.up.railway.app/src/php/certification/verify_email.php?token={$token}";
-            $verificationEmailTemplate = file_get_contents(__DIR__ ."/../../registration_verification_email.html");
+            $verificationEmailTemplate = file_get_contents(__DIR__ ."/registration_verification_email.html");
             $verificationEmailTemplate =str_replace("{url}", $url, $verificationEmailTemplate);
  
             $mail -> isHTML(true);
