@@ -21,8 +21,8 @@
 
             $mail = new PHPMailer();
             $mail -> isSMTP();
-            //$mail -> SMTPDebug = off;（本番環境用）
-            $mail -> SMTPDebug = SMTP::DEBUG_SERVER;
+            // $mail -> SMTPDebug = SMTP::DEBUG_OFF;本番環境用
+            $mail -> SMTPDebug = SMTP::DEBUG_CONNECTION;
             $mail -> Host = "smtp.gmail.com";
             $mail -> Port = 465;
             $mail -> SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
