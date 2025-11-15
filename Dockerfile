@@ -6,11 +6,11 @@ RUN apt-get update && \
     apt-get install -y git zip unzip libpq-dev && \
     docker-php-ext-install pdo_pgsql pgsql
 
-# Composer を使用するためにコピー
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+WORKDIR /app
 
-# アプリを /app にコピー
 COPY . /app
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Composer install
 RUN composer install --optimize-autoloader --no-scripts --no-interaction
