@@ -29,10 +29,10 @@
             $mail -> SMTPAuth = true;
             $mail -> AuthType = "XOAUTH2";
 
-            $email = $_ENV['EMAIL'];
-            $clientId = $_ENV['CLIENTID'];
-            $clientSecret = $_ENV['CLIENTSECRET'];
-            $refreshToken = $_ENV['REFRESHTOKEN'];
+            $email = getenv('EMAIL');
+            $clientId = getenv('CLIENTID');
+            $clientSecret = getenv('CLIENTSECRET');
+            $refreshToken = getenv('REFRESHTOKEN');
             
             $provider = new Google(
                 [
