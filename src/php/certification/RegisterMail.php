@@ -2,6 +2,7 @@
     namespace Vmatch\certification;
 
     use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\OAuth;
     use League\OAuth2\Client\Provider\Google;
@@ -66,11 +67,13 @@
             $mail -> isHTML(true);
             $mail -> Body = $verificationEmailTemplate;
             $mail -> AltBody = "アカウントを有効化するには、次のURLにアクセスしてください。\n" . $url;
- 
-            if(!$mail -> send()){
-                echo $mail -> ErrorInfo;
-            }else{
-                echo "成功";
+            
+            try{
+
+                $mail -> send();
+            }catch(Exception $e){
+                echo $e->getMessage();
+
             }
         }
     }
