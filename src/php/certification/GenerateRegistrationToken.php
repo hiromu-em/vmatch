@@ -1,25 +1,27 @@
 <?php
-    namespace Vmatch\certification;
+namespace Vmatch\certification;
 
-    use Vmatch\DatabaseConfig;
-    
-    class GenerateRegistrationToken{
+use Vmatch\DatabaseConfig;
 
-        /**
-         * 新規登録用のトークン生成
-         * @return string URLに付随するトークン
-         */
-        public function tokenGenerate(): string{
+class GenerateRegistrationToken
+{
 
-            $plainToken = bin2hex(random_bytes(32));
-            $hash = hash("sha256", $plainToken);
-            $expireDateTime = new \DateTime() -> add(new \DateInterval("PT30M")) -> format("Y-m-d H:i:s");
-            
-            $databaseConfig = new DatabaseConfig();
-            $statement = $databaseConfig -> connection() -> prepare("INSERT INTO email_verifications(token_hash, expires_at) VALUES(?, ?)");
-            $statement -> execute([$hash, $expireDateTime]);
+    /**
+     * 新規登録用のトークン生成
+     * @return string URLに付随するトークン
+     */
+    public function tokenGenerate(): string
+    {
 
-            return $plainToken;
+        $plainToken = bin2hex(random_bytes(32));
+        $hash = hash("sha256", $plainToken);
+        $expireDateTime = new \DateTime()->add(new \DateInterval("PT30M"))->format("Y-m-d H:i:s");
 
-        }
+        $databaseConfig = new DatabaseConfig();
+        $statement = $databaseConfig->connection()->prepare("INSERT INTO email_verifications(token_hash, expires_at) VALUES(?, ?)");
+        $statement->execute([$hash, $expireDateTime]);
+
+        return $plainToken;
+
     }
+}
