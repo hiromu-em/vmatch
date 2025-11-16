@@ -4,4 +4,3 @@ composer.lock
 gmail_client_secret.json
 vendor
 .vscode
-get_oauth_token.php
