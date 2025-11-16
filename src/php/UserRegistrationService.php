@@ -17,11 +17,9 @@ class UserRegistrationService
     /**
      * ユーザーのメールアドレスを仮登録する
      * @param string $newUserEmail 新規ユーザーメールアドレス
-     * @return void
      */
     public function registerTemporaryUser(string $newUserEmail): void
     {
-
         $statement = $this->pdo->prepare("INSERT INTO users (email) VALUES (?)");
         $statement->execute([$newUserEmail]);
     }
@@ -29,10 +27,13 @@ class UserRegistrationService
     /**
      * ユーザーのメールアドレスを確認する
      * @param string $newUserEmail 新規ユーザーメールアドレス
-     * @return void
+     * @return bool `true`:登録済み  `false`:未登録
      */
-    public function isEmailRegistered(string $newUserEmail)
+    public function emailExists(string $newUserEmail): bool
     {
-
+        $query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = ?)";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute([$newUserEmail]);
+        return (bool)$statement->fetchColumn();
     }
 }
