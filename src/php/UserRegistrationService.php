@@ -5,14 +5,11 @@
 
     class UserRegistrationService{
 
-        /**
-         * pdoインスタンス
-         */
         private $pdo;
-
+        
         public function __construct(){
             $databaseConfig = new DatabaseConfig();
-            $this->pdo = $databaseConfig -> connection();
+            $this -> pdo = $databaseConfig -> connection();
         }
         
         /**

@@ -7,7 +7,6 @@
 
         /**
          * データーベース接続
-         * @return \PDO PDOインスタンス
          */
         public function connection(): \PDO{
         
@@ -36,7 +35,6 @@
 
                 //エラーページ表示（後日実装）
                 echo $e->getMessage();
-                var_dump($host, $database, $dsn, $user, $password);
             }
             
             return $pdo;

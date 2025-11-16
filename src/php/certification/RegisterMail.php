@@ -14,7 +14,7 @@
 
         /**
          * 新規登録認証メール送信
-         * @param string $email
+         * @param string $newUserEmail 新規ユーザーメールアドレス
          */
         public function send(string $newUserEmail){
 
@@ -26,8 +26,8 @@
             $mail -> SMTPDebug = SMTP::DEBUG_CONNECTION;
             $mail -> Debugoutput = 'error_log';
             $mail -> Host = gethostbyname("smtp.gmail.com");
-            $mail -> Port = 587;
-            $mail -> SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail -> Port = 465;
+            $mail -> SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail -> SMTPAuth = true;
             $mail -> AuthType = "XOAUTH2";
 
@@ -69,13 +69,15 @@
             $mail -> AltBody = "アカウントを有効化するには、次のURLにアクセスしてください。\n" . $url;
             
             try{
-
-                $mail -> send();
-            }catch(Exception $e){
-                $prev = $e -> getPrevious();
-                if($prev){
-                    print $prev -> getMessage();
+                
+                if(!$mail -> send()){
+                    echo $mail -> ErrorInfo;
+                }else{
+                    echo "成功";
                 }
+            }catch(Exception $e){
+
+                
             }
         }
     }

@@ -5,12 +5,12 @@
 
         /**
          * メールアドレス検証
-         * @param string $email
-         * @return bool
+         * @param string $newUserEmail 新規ユーザーメールアドレス
+         * @return bool `true`:メール形式成功 `false`:メール形式失敗
          */
-        public function ValidationCheck(string $email): bool{
+        public function ValidationCheck(string $newUserEmail): bool{
             
-            $email = trim($email);
+            $email = trim($newUserEmail);
             
             //空文字チェック
             if(empty($email)) return false;
