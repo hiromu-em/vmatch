@@ -58,18 +58,21 @@ class UserRegistrationService
         ];
 
         $email = trim($newUserEmail);
+
         // 空文字チェック、メールアドレスの形式チェック
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $validationResult['error_code'] = 2;
             $validationResult['validation_check'] = false;
             return $validationResult;
         }
+
         //ドメイン存在チェック
         $domain = substr(strrchr($email, "@"), 1);
         if (!checkdnsrr($domain, "MX")) {
             $validationResult['error_code'] = 2;
             $validationResult['validation_check'] = false;
         }
+
         return $validationResult;
     }
 
@@ -82,10 +85,10 @@ class UserRegistrationService
         $errorMessage = '';
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
-                case 1: // 登録済み
+                case 1:
                     $errorMessage = "登録済みユーザーです。\nログインしてください";
                     break;
-                case 2: // メールアドレス形式不正
+                case 2:
                     $errorMessage = "メールアドレスの形式が正しくありません。";
                     break;
             }

@@ -27,7 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userRegistrationService->registerTemporaryUser($email);
 
     } else {
-        $errorCodeArray = ['register_user' => $newUser['error_code'], 'email_validation' => $isValidEmail['error_code']];
+        $errorCodeArray = [
+            'register_user' => $newUser['error_code'],
+            'email_validation' => $isValidEmail['error_code'],
+        ];
+
         $errorMessage = $userRegistrationService->registrationError($errorCodeArray);
     }
 }
