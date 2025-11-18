@@ -1,6 +1,5 @@
 <?php
 
-use Vmatch\Validation;
 use Vmatch\UserRegistrationService;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -13,21 +12,23 @@ if (strpos($host, 'localhost') !== false) {
     $dotenv->load();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? null;
 
-    $validation = new Validation();
-    $isValidEmail = $validation->ValidationCheck($email);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $email = $_POST['email'] ?? null;
+    $errorMessage = '';
 
     $userRegistrationService = new UserRegistrationService();
     $newUser = $userRegistrationService->emailExists($email);
+    $isValidEmail = $userRegistrationService->validateEmail($email);
 
-    //メールアドレス形式 && 未登録ユーザーは仮登録する
-    if ($isValidEmail && !$newUser) {
+    //メールアドレス形式OK && 未登録ユーザーは新規登録する
+    if ($isValidEmail['validation_check'] && !$newUser['exists']) {
         $userRegistrationService->registerTemporaryUser($email);
 
     } else {
-        $emailErrorMessage = "正しい形式で入力してください。";
+        $errorCodeArray = ['register_user' => $newUser['error_code'], 'email_validation' => $isValidEmail['error_code']];
+        $errorMessage = $userRegistrationService->registrationError($errorCodeArray);
     }
 }
 ?>
@@ -42,11 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>新規登録</h1>
-    <?php if (!empty($emailErrorMessage)): ?>
+    <?php if (!empty($errorMessage)): ?>
         <div class="container-error-message">
-            <p><?php echo $emailErrorMessage; ?></p>
+            <p><?php echo htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
-    <?php endif ?>
+    <?php endif; ?>
     <form method="post">
         <label for="email">メールアドレス</label>
         <input type="email" id="email" name="email" placeholder="sample@example.com" required autocomplete="off">
