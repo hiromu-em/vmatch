@@ -83,10 +83,10 @@ class UserRegistrationService
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
                 case 1: // 登録済み
-                    $errorMessage = '登録済みユーザーです。ログインしてください';
+                    $errorMessage = "登録済みユーザーです。\nログインしてください";
                     break;
                 case 2: // メールアドレス形式不正
-                    $errorMessage = 'メールアドレスの形式が正しくありません。';
+                    $errorMessage = "メールアドレスの形式が正しくありません。";
                     break;
             }
         }
