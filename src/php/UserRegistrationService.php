@@ -17,10 +17,10 @@ class UserRegistrationService
     }
 
     /**
-     * ユーザーのメールアドレスを仮登録する
+     * ユーザーのメールアドレスをDBに登録する
      * @param string $newUserEmail 新規ユーザーメールアドレス
      */
-    public function registerTemporaryUser(string $newUserEmail): void
+    public function registerEmail(string $newUserEmail): void
     {
         $statement = $this->pdo->prepare("INSERT INTO users (email) VALUES (?)");
         $statement->execute([$newUserEmail]);
@@ -59,7 +59,7 @@ class UserRegistrationService
         if (empty($newUserEmail)) {
             return ['validation_check' => false, 'error_code' => 3];
         }
-        
+
         $email = trim($newUserEmail);
 
         // 空文字チェック、メールアドレスの形式チェック

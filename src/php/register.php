@@ -16,7 +16,6 @@ if (strpos($host, 'localhost') !== false) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_POST['email'] ?? null;
-    $errorMessage = '';
 
     $userRegistrationService = new UserRegistrationService();
     $newUser = $userRegistrationService->emailExists($email);
@@ -24,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //メールアドレス形式OK && 未登録ユーザーは新規登録する
     if ($isValidEmail['validation_check'] && !$newUser['status']) {
-        $userRegistrationService->registerTemporaryUser($email);
+        $userRegistrationService->registerEmail($email);
 
     } else {
         $errorCodeArray = [
