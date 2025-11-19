@@ -5,10 +5,7 @@ use Vmatch\DatabaseConfig;
 
 class UserRegistrationService
 {
-
     private $pdo;
-
-    private $errorMessageCode;
 
     public function __construct()
     {
