@@ -5,13 +5,11 @@ use PDOException;
 
 class DatabaseConfig
 {
-
     /**
      * データーベース接続
      */
     public function connection(): \PDO
     {
-
         //本番環境と開発環境の分岐
         $host = $_SERVER['HTTP_HOST'] ?? '';
         if (strpos($host, 'localhost') !== false) {
