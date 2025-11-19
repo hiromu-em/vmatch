@@ -21,9 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newUser = $userRegistrationService->emailExists($email);
     $isValidEmail = $userRegistrationService->validateEmail($email);
 
-    //メールアドレス形式OK && 未登録ユーザーは新規登録する
+    //メールアドレス形式OK && 未登録ユーザーは新規登録へ移動する
     if ($isValidEmail['validation_check'] && !$newUser['status']) {
         $userRegistrationService->registerEmail($email);
+
+        header('Location: passwordSetting.php');
+        exit;
 
     } else {
         $errorCodeArray = [

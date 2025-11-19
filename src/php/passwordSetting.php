@@ -12,7 +12,7 @@ if (strpos($host, 'localhost') !== false) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $password = $_POST['password']?? '';
+    $password = $_POST['password']?? null;
 }
 ?>
 
