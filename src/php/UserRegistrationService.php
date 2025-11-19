@@ -29,17 +29,21 @@ class UserRegistrationService
     /**
      * ユーザーのメールアドレスを確認する
      * @param string $newUserEmail 新規ユーザーメールアドレス
-     * @return array `exists` `true`:登録済み `false`:未登録 \
-     * `error_code`:エラーコードが1ならエラーメッセージ表示
+     * @return array 新規メールアドレスの存在結果情報
      */
-    public function emailExists(string $newUserEmail): array
+    public function emailExists(?string $newUserEmail): array
     {
-        $query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as exists";
+        //NULLチェック
+        if (empty($newUserEmail)) {
+            return ['status' => true, 'error_code' => 3];
+        }
+
+        $query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as status";
         $statement = $this->pdo->prepare($query);
         $statement->execute([$newUserEmail]);
         $result = $statement->fetch();
 
-        $result['error_code'] = $result['exists'] ? 1 : 0;
+        $result['error_code'] = $result['status'] ? 1 : 0;
         return $result;
     }
 
@@ -47,33 +51,29 @@ class UserRegistrationService
     /**
      * メールアドレス検証
      * @param string $newUserEmail 新規ユーザーメールアドレス
-     * @return array `validationResult` `true`:メール形式成功 `false`:メール形式失敗 \
-     * `error_code`:エラーコードが2ならエラーメッセージ表示
+     * @return array メールアドレス形式の結果情報
      */
-    public function validateEmail(string $newUserEmail): array
+    public function validateEmail(?string $newUserEmail): array
     {
-        $validationResult = [
-            'error_code' => 0,
-            'validation_check' => true
-        ];
-
+        //NULLチェック
+        if (empty($newUserEmail)) {
+            return ['validation_check' => false, 'error_code' => 3];
+        }
+        
         $email = trim($newUserEmail);
 
         // 空文字チェック、メールアドレスの形式チェック
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $validationResult['error_code'] = 2;
-            $validationResult['validation_check'] = false;
-            return $validationResult;
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return ['validation_check' => false, 'error_code' => 2];
         }
 
         //ドメイン存在チェック
         $domain = substr(strrchr($email, "@"), 1);
         if (!checkdnsrr($domain, "MX")) {
-            $validationResult['error_code'] = 2;
-            $validationResult['validation_check'] = false;
+            return ['validation_check' => false, 'error_code' => 2];
         }
 
-        return $validationResult;
+        return ['validation_check' => true, 'error_code' => 0];
     }
 
     /**
@@ -90,6 +90,9 @@ class UserRegistrationService
                     break;
                 case 2:
                     $errorMessage = "メールアドレスの形式が正しくありません。";
+                    break;
+                case 3:
+                    $errorMessage = "メールアドレスを入力してください。";
                     break;
             }
         }
