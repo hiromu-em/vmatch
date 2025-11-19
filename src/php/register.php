@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $isValidEmail = $userRegistrationService->validateEmail($email);
 
     //メールアドレス形式OK && 未登録ユーザーは新規登録する
-    if ($isValidEmail['validation_check'] && !$newUser['exists']) {
+    if ($isValidEmail['validation_check'] && !$newUser['status']) {
         $userRegistrationService->registerTemporaryUser($email);
 
     } else {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>新規登録</h1>
     <?php if (!empty($errorMessage)): ?>
         <div class="container-error-message">
-            <p><?php echo htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p><?php echo nl2br(htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8')); ?></p>
         </div>
     <?php endif; ?>
     <form method="post">
