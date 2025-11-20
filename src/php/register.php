@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newUser = $userRegistrationService->emailExists($email);
     $isValidEmail = $userRegistrationService->validateEmail($email);
 
-    //メールアドレス形式OK && 未登録ユーザーはパスワード設定画面へ移動する
+    //メールアドレス形式OK && メールアドレス未登録ユーザーはパスワード設定画面へ移動する
     if ($isValidEmail['validation_check'] && !$newUser['status']) {
         $userRegistrationService->registerEmail($email);
 
