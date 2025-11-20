@@ -12,7 +12,9 @@ if (strpos($host, 'localhost') !== false) {
     $dotenv->load();
 }
 
-session_start();
+session_start([
+    'use_strict_mode' => 1
+]);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
