@@ -12,7 +12,9 @@ if (strpos($host, 'localhost') !== false) {
     $dotenv->load();
 }
 
-session_start();
+session_start([
+    'read_and_close' => true
+]);
 
 if ($_SESSION['email'] === null) {
     header('Location: /');
