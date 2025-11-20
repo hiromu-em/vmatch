@@ -12,6 +12,8 @@ if (strpos($host, 'localhost') !== false) {
     $dotenv->load();
 }
 
+session_start();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -21,10 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newUser = $userRegistrationService->emailExists($email);
     $isValidEmail = $userRegistrationService->validateEmail($email);
 
-    //メールアドレス形式OK && 未登録ユーザーは新規登録へ移動する
+    //メールアドレス形式OK && 未登録ユーザーはパスワード設定画面へ移動する
     if ($isValidEmail['validation_check'] && !$newUser['status']) {
         $userRegistrationService->registerEmail($email);
 
+        $_SESSION['email'] = $email;
         header('Location: passwordSetting.php');
         exit;
 
