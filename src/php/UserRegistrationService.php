@@ -76,6 +76,17 @@ class UserRegistrationService
 
         return $errorCode;
     }
+    /**
+     * 新規ユーザーのパスワードをDBに登録する
+     * @param string $newPassword 新規パスワード
+     * @param string $newEmail 新規メールアドレス
+     */
+    public function registerPassword(string $newPassword, string $newEmail): void
+    {
+        $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+        $statement = $this->pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
+        $statement->execute([$passwordHash, $newEmail]);
+    }
 
     /**
      * 新規登録時のエラーを表示

@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //パスワード形式OKならプロフィール設定へ移動する
     if (empty($passwordErrorCodes)) {
 
-        $userRegistrationService->registerPassword($password);
+        $userRegistrationService->registerPassword($password, $_SESSION['email']);
 
     } else {
         $errorMessages = $userRegistrationService->registrationError($passwordErrorCodes);
