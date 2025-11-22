@@ -8,7 +8,7 @@ use Vmatch\NewUserRegistration\UserRegistrationService;
 $host = $_SERVER['HTTP_HOST'];
 if (strpos($host, 'localhost') !== false) {
 
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../..");
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
     $dotenv->load();
 }
 
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($passwordErrorCodes)) {
 
         $userRegistrationService->registerPassword($password, $_SESSION['email']);
-        header('Location: ');
+        header('Location: profileSetting.php');
         exit;
 
     } else {
