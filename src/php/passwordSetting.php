@@ -13,7 +13,8 @@ if (strpos($host, 'localhost') !== false) {
 }
 
 session_start([
-    'read_and_close' => true
+    'read_and_close' => true,
+    'use_strict_mode' => 1
 ]);
 
 if ($_SESSION['email'] === null) {
@@ -26,6 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? null;
 
     $userRegistrationService = new UserRegistrationService();
+    $passwordErrorCodes = $userRegistrationService->validatePassword($password);
+
+    //パスワード形式OKならプロフィール設定へ移動する
+    if (empty($passwordErrorCodes)) {
+
+        $userRegistrationService->registerPassword($password);
+
+    } else {
+        $errorMessages = $userRegistrationService->registrationError($passwordErrorCodes);
+    }
 
 }
 ?>
@@ -41,16 +52,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="password-setting-container">
         <h4>メールアドレス：<?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?></h4>
-        <h1>パスワード設定</h1>
-        <?php if (!empty($errorMessage)): ?>
-            <div class="container-error-message">
-                <p><?php echo htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8'); ?></p>
+        <h3>パスワード設定</h3>
+        <?php if (!empty($errorMessages)): ?>
+            <div class="error-messages-container">
+                <?php foreach ($errorMessages as $message): ?>
+                    <div class="error-item">
+                        <p><?php echo nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')); ?></p>
+                    </div>
+                <?php endforeach; ?>
             </div>
         <?php endif; ?>
         <form method="post">
-            <p>英数字記号(@#$%^&*)含めて8文字以上で設定してください。</p>
             <label for="password">パスワード</label>
-            <input type="password" id="password" name="password" required autocomplete="off">
+            <input type="password" id="password" name="password" placeholder="英数字記号(@#$%&*_!)含めて8文字以上" required
+                autocomplete="off" size="33">
             <button type="submit">送信</button>
         </form>
     </div>
