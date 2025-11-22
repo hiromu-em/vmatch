@@ -89,11 +89,48 @@ class UserRegistrationService
     }
 
     /**
-     * 新規登録時のエラーを表示
+     * パスワードの形式を検証
+     * @param string $newPassword 新規パスワード
+     * @return array エラーコード情報
+     */
+    public function validatePassword(string $newPassword): array
+    {
+        $errorCodes = [];
+
+        $newPassword = trim($newPassword);
+
+        //NULLチェック
+        if (empty($newPassword)) {
+            return $errorCodes[] = [4];
+        }
+
+        if (mb_strlen($newPassword) < 8) {
+            $errorCodes[] = [5];
+        }
+
+        if (!preg_match('/[A-Za-z]/', $newPassword)) {
+            $errorCodes[] = [6];
+        }
+
+        if (!preg_match('/\d/', $newPassword)) {
+            $errorCodes[] = [7];
+        }
+
+        if (!preg_match('/[@#\$%\^&\*]/', $newPassword)) {
+            $errorCodes[] = [8];
+        }
+
+        return $errorCodes;
+    }
+
+    /**
+     * 新規登録時のエラー情報
      * @return array エラーメッセージ情報
      */
     public function registrationError(array $errorCodes): array
     {
+
+        $errorCodes = array_merge(...$errorCodes);
         $errorMessages = [];
 
         foreach ($errorCodes as $errorCode) {
@@ -108,6 +145,21 @@ class UserRegistrationService
                     break;
                 case 3:
                     $errorMessages[] = "メールアドレスを入力してください。";
+                    break;
+                case 4:
+                    $errorMessages[] = "パスワードを入力してください。";
+                    break;
+                case 5:
+                    $errorMessages[] = "8文字以上入力してください。";
+                    break;
+                case 6:
+                    $errorMessages[] = "英字を1文字含めてください。";
+                    break;
+                case 7:
+                    $errorMessages[] = "数字を1文字含めてください";
+                    break;
+                case 8:
+                    $errorMessages[] = "記号(@ # $ % ^ & *) を1文字含めてください。";
                     break;
             }
         }

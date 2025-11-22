@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $errorMessages = $userRegistrationService->registrationError($passwordErrorCodes);
     }
-
 }
 ?>
 <!DOCTYPE html>
@@ -62,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <form method="post">
+            <form method="post">
             <label for="password">パスワード</label>
             <input type="password" id="password" name="password" placeholder="英数字記号(@#$%&*_!)含めて8文字以上" required
                 autocomplete="off" size="33">
