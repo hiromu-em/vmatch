@@ -25,8 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newUser = $userRegistrationService->emailExists($email);
     $isValidEmail = $userRegistrationService->validateEmail($email);
 
+    $errorCodes = [$newUser, $isValidEmail];
+    $uniqueErrorCodes = array_unique($errorCodes);
+
     //メールアドレス形式OK && メールアドレス未登録ユーザーはパスワード設定画面へ移動する
-    if ($isValidEmail['validation_check'] && !$newUser['status']) {
+    if (max($uniqueErrorCodes) === 0) {
         $userRegistrationService->registerEmail($email);
 
         $_SESSION['email'] = $email;
@@ -34,12 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
 
     } else {
-        $errorCodeArray = [
-            'register_user' => $newUser['error_code'],
-            'email_validation' => $isValidEmail['error_code'],
-        ];
 
-        $errorMessage = $userRegistrationService->registrationError($errorCodeArray);
+        $errorMessages = $userRegistrationService->registrationError($uniqueErrorCodes);
     }
 }
 ?>
@@ -54,9 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <h1>新規登録</h1>
-    <?php if (!empty($errorMessage)): ?>
-        <div class="container-error-message">
-            <p><?php echo nl2br(htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8')); ?></p>
+    <?php if (!empty($errorMessages)): ?>
+        <div class="error-messages-container">
+            <?php foreach ($errorMessages as $message): ?>
+                <div class="error-item">
+                    <p><?php echo nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')); ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
     <?php endif; ?>
     <form method="post">
