@@ -1,5 +1,5 @@
 <?php
-namespace Vmatch;
+namespace Vmatch\NewUserRegistration;
 
 use Vmatch\DatabaseConfig;
 

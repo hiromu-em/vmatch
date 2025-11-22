@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
-use Vmatch\UserRegistrationService;
+use Vmatch\NewUserRegistration\UserRegistrationService;
 
 //本番環境と開発環境の分岐
 $host = $_SERVER['HTTP_HOST'];
@@ -33,6 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($passwordErrorCodes)) {
 
         $userRegistrationService->registerPassword($password, $_SESSION['email']);
+        header('Location: ');
+        exit;
 
     } else {
         $errorMessages = $userRegistrationService->registrationError($passwordErrorCodes);
