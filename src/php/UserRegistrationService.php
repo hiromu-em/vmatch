@@ -105,19 +105,19 @@ class UserRegistrationService
         }
 
         if (mb_strlen($newPassword) < 8) {
-            $errorCodes[] = [5];
+            $errorCodes[] = 5;
         }
 
         if (!preg_match('/[A-Za-z]/', $newPassword)) {
-            $errorCodes[] = [6];
+            $errorCodes[] = 6;
         }
 
         if (!preg_match('/\d/', $newPassword)) {
-            $errorCodes[] = [7];
+            $errorCodes[] = 7;
         }
 
         if (!preg_match('/[@#\$%\^&\*]/', $newPassword)) {
-            $errorCodes[] = [8];
+            $errorCodes[] = 8;
         }
 
         return $errorCodes;
@@ -129,8 +129,6 @@ class UserRegistrationService
      */
     public function registrationError(array $errorCodes): array
     {
-
-        $errorCodes = array_merge(...$errorCodes);
         $errorMessages = [];
 
         foreach ($errorCodes as $errorCode) {
