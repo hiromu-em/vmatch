@@ -9,10 +9,19 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-file_put_contents('/tmp/google_oauth.json', getenv('GOOGLE_OAUTH_JSON'));
+//本番環境と開発環境の分岐
+$host = $_SERVER['HTTP_HOST'];
+if (strpos($host, 'localhost') !== false) {
+
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
+    $dotenv->load();
+}
 
 $client = new Client();
-$client->setAuthConfig('/tmp/google_oauth.json');
+$client->setAuthConfig([
+    'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
+    'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET')
+]);
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
