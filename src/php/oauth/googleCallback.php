@@ -9,7 +9,7 @@ session_start([
 ]);
 
 $client = new Client();
-$client->setAuthConfig(__DIR__ . '/gmail_client_secret.json');
+$client->setAuthConfig('/tmp/google_oauth.json');
 $client->setRedirectUri('https://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleCallback.php');
 $client->addScope('https://www.googleapis.com/auth/userinfo.email');
 

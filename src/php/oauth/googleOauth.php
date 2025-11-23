@@ -9,8 +9,10 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
+file_put_contents('/tmp/google_oauth.json', getenv('GOOGLE_OAUTH_JSON'));
+
 $client = new Client();
-$client->setAuthConfig(__DIR__ . '/gmail_client_secret.json');
+$client->setAuthConfig('/tmp/google_oauth.json');
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
