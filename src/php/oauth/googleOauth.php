@@ -17,6 +17,8 @@ if (strpos($host, 'localhost') !== false) {
     $dotenv->load();
 }
 
+const GOOGLECALLBACK = '/src/php/oauth/googleCallback.php';
+
 $client = new Client();
 $client->setAuthConfig([
     'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
@@ -34,7 +36,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     var_dump($userInfo);
 } else {
 
-    $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleCallback.php';
+    $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK;
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
