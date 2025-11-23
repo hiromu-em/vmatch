@@ -22,6 +22,7 @@ $client->setAuthConfig([
     'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
     'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET')
 ]);
+
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
