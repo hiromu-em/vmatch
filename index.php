@@ -20,8 +20,8 @@
         <div class="hero-content">
             <h1 class="main-title">仲間と一緒にVの世界へ</h1>
             <div class="auth-buttons">
-                <a href="src/php/NewUserRegistration/register.php" class="btn btn-primary">新規登録</a>
-                <a href="src/php/login.php" class="btn btn-secondary">ログイン</a>
+                <a href="/register" class="btn btn-primary">新規登録</a>
+                <a href="/login" class="btn btn-secondary">ログイン</a>
             </div>
         </div>
     </main>
