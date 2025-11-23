@@ -34,5 +34,7 @@
 
 	{$CADDY_SERVER_EXTRA_DIRECTIVES}
 
-	php_server split_path .php
+    try_files {path} {path}.php /index.php
+
+	php_server
 }
