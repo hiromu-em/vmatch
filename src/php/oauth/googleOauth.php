@@ -22,7 +22,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     var_dump($userInfo);
 } else {
 
-    $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleCallback.php';
+    $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleCallback.php';
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }

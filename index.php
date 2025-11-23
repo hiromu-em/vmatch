@@ -2,7 +2,7 @@
 
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 
-    $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleOauth.php';
+    $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleOauth.php';
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
