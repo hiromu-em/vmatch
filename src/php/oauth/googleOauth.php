@@ -10,7 +10,7 @@ session_start([
 ]);
 
 $client = new Client();
-$client->setAuthConfig(__DIR__ . '/../../../gmail_client_secret.json');
+$client->setAuthConfig(__DIR__ . '/gmail_client_secret.json');
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
