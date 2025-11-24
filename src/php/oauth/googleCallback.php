@@ -27,7 +27,7 @@ $client->setAuthConfig([
     'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET')
 ]);
 
-$client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK);
+$client->setRedirectUri('https://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK);
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 // 認可コードがない場合：Googleの認証ページへリダイレクト
