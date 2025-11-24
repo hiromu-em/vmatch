@@ -19,6 +19,8 @@ if (strpos($host, 'localhost') !== false) {
 }
 
 const GOOGLECALLBACK = 'googleCallback.php';
+const PROFILESETTNG = '../NewUserRegistration/profileSetting.php';
+const DASHBOARD = '../dashboard.php';
 
 // クライアント情報を設定
 $client = new Client();
@@ -27,22 +29,38 @@ $client->setAuthConfig([
     'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET')
 ]);
 
+// アクセストークンが無ければ認証に進む
+if (empty($_SESSION['access_token'])) {
+
+    header('Location: ' . filter_var(GOOGLECALLBACK, FILTER_SANITIZE_URL));
+    exit;
+}
+
 $client->addScope(Oauth2::USERINFO_EMAIL);
+$client->setAccessToken($_SESSION['access_token']);
 
-// アクセストークンが存在すれば、メールアドレスを取得
-if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-    $client->setAccessToken($_SESSION['access_token']);
+$oauth = new Oauth2($client);
+$userInfo = $oauth->userinfo->get();
 
-    $oauth = new Oauth2($client);
-    $userInfo = $oauth->userinfo->get();
+$userRegistrationService = new UserRegistrationService();
 
-    $userRegistrationService = new UserRegistrationService();
-    $emailExists = $userRegistrationService->emailExists($userInfo->email);
-    $emailExists ? header("Location"): "";
+// メールアドレスの確認
+$emailExists = $userRegistrationService->emailExists($userInfo->email);
+
+$redirect_dashboard = filter_var(DASHBOARD, FILTER_SANITIZE_URL);
+$redirect_profile = filter_var(PROFILESETTNG, FILTER_SANITIZE_URL);
+
+// リダイレクト先を変更
+$redirect_url = $emailExists ? $redirect_dashboard : $redirect_profile;
+
+if ($emailExists) {
+
+    header("Location: $redirect_url");
+    exit;
 
 } else {
 
-    $redirect_uri = GOOGLECALLBACK;
-    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    $userRegistrationService->registerEmail($userInfo->email);
+    header("Location: $redirect_url");
     exit;
 }
