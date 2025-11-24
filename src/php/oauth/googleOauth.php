@@ -20,6 +20,7 @@ if (strpos($host, 'localhost') !== false) {
 
 const GOOGLECALLBACK = 'googleCallback.php';
 
+// クライアント情報を設定
 $client = new Client();
 $client->setAuthConfig([
     'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
@@ -28,6 +29,7 @@ $client->setAuthConfig([
 
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
+// アクセストークンが存在すれば、メールアドレスを取得
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
 

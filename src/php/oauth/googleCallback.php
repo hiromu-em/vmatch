@@ -9,7 +9,6 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-// --- 環境設定 ---
 // 開発環境（localhost）の場合、.envファイルを読み込む
 $host = $_SERVER['HTTP_HOST'];
 if (strpos($host, 'localhost') !== false) {
@@ -20,7 +19,7 @@ if (strpos($host, 'localhost') !== false) {
 const GOOGLECALLBACK = '/src/php/oauth/googleCallback.php';
 const GOOGLEOAUTH = 'googleOauth.php';
 
-// --- Google API クライアントの初期化 ---
+//　Google API クライアントの初期化
 $client = new Client();
 $client->setAuthConfig([
     'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
@@ -55,8 +54,10 @@ if ($_GET['state'] !== $_SESSION['oauth_state']) {
 
 unset($_SESSION['oauth_state']);
 
+//コードをアクセストークンと交換
 $client->fetchAccessTokenWithAuthCode($_GET['code'], $_SESSION['code_verifier']);
 $_SESSION['access_token'] = $client->getAccessToken();
+
 $redirect_uri = GOOGLEOAUTH;
 header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
 exit;
