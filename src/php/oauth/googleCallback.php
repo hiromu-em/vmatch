@@ -18,7 +18,7 @@ if (strpos($host, 'localhost') !== false) {
 }
 
 const GOOGLECALLBACK = '/src/php/oauth/googleCallback.php';
-const GOOGLEOAUTH = '/src/php/oauth/googleOauth.php';
+const GOOGLEOAUTH = 'googleOauth.php';
 
 // --- Google API クライアントの初期化 ---
 $client = new Client();
@@ -27,7 +27,7 @@ $client->setAuthConfig([
     'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET')
 ]);
 
-$client->setRedirectUri('https://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK);
+$client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK);
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 // 認可コードがない場合：Googleの認証ページへリダイレクト
@@ -57,6 +57,6 @@ unset($_SESSION['oauth_state']);
 
 $client->fetchAccessTokenWithAuthCode($_GET['code'], $_SESSION['code_verifier']);
 $_SESSION['access_token'] = $client->getAccessToken();
-$redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . GOOGLEOAUTH;
+$redirect_uri = GOOGLEOAUTH;
 header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
 exit;

@@ -4,6 +4,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Google\Client;
 use Google\Service\Oauth2;
+use Vmatch\NewUserRegistration\UserRegistrationService;
 
 session_start([
     'use_strict_mode' => 1
@@ -17,7 +18,7 @@ if (strpos($host, 'localhost') !== false) {
     $dotenv->load();
 }
 
-const GOOGLECALLBACK = '/src/php/oauth/googleCallback.php';
+const GOOGLECALLBACK = 'googleCallback.php';
 
 $client = new Client();
 $client->setAuthConfig([
@@ -33,10 +34,13 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $oauth = new Oauth2($client);
     $userInfo = $oauth->userinfo->get();
 
-    var_dump($userInfo);
+    $userRegistrationService = new UserRegistrationService();
+    $emailExists = $userRegistrationService->emailExists($userInfo->email);
+    $emailExists ? header("Location"): "";
+
 } else {
 
-    $redirect_uri = 'https://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK;
+    $redirect_uri = GOOGLECALLBACK;
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
