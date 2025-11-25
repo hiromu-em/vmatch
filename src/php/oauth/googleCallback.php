@@ -25,7 +25,7 @@ if (strpos($host, 'localhost') !== false) {
     $urlSchema = 'http://';
 }
 
-//　Google APIクライアントの初期化
+// Google APIクライアントの初期化
 $client = new Client();
 $client->setAuthConfig([
     'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
