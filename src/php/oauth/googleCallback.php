@@ -13,9 +13,9 @@ const GOOGLECALLBACK = '/src/php/oauth/googleCallback.php';
 const GOOGLEOAUTH = 'googleOauth.php';
 
 /**
- * 開発環境（localhost）の場合、.envファイルを読み込む
- * ホスト名がlocalhostの場合、httpを$urlSchemaに代入
-*/
+ * ホスト名に 'localhost' が含まれる場合は開発環境とみなし、.env ファイルを読み込む。
+ * また、その場合は $urlSchema を 'http://' に設定し、それ以外は 'https://' を使用する。
+ */
 $host = $_SERVER['HTTP_HOST'];
 $urlSchema = 'https://';
 if (strpos($host, 'localhost') !== false) {
