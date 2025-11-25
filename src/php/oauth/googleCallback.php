@@ -9,24 +9,30 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-// 開発環境（localhost）の場合、.envファイルを読み込む
-$host = $_SERVER['HTTP_HOST'];
-if (strpos($host, 'localhost') !== false) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
-    $dotenv->load();
-}
-
 const GOOGLECALLBACK = '/src/php/oauth/googleCallback.php';
 const GOOGLEOAUTH = 'googleOauth.php';
 
-//　Google API クライアントの初期化
+/**
+ * 開発環境（localhost）の場合、.envファイルを読み込む
+ * ホスト名がlocalhostの場合、httpを$urlSchemaに代入
+*/
+$host = $_SERVER['HTTP_HOST'];
+$urlSchema = 'https://';
+if (strpos($host, 'localhost') !== false) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
+    $dotenv->load();
+
+    $urlSchema = 'http://';
+}
+
+//　Google APIクライアントの初期化
 $client = new Client();
 $client->setAuthConfig([
     'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
     'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET')
 ]);
 
-$client->setRedirectUri('https://' . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK);
+$client->setRedirectUri($urlSchema . $_SERVER['HTTP_HOST'] . GOOGLECALLBACK);
 $client->addScope(Oauth2::USERINFO_EMAIL);
 
 // 認可コードがない場合：Googleの認証ページへリダイレクト
