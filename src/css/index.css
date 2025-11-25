@@ -25,7 +25,6 @@ body {
     /* スクロールバーを隠す */
 }
 
-/* 背景 */
 .hero-background {
     position: fixed;
     top: 0;
@@ -39,7 +38,6 @@ body {
     z-index: -1;
 }
 
-/* ヘッダー */
 header {
     padding: 20px 40px;
 }
@@ -56,10 +54,11 @@ header {
 /* メインコンテンツ */
 .container {
     display: flex;
+    flex-direction: column; 
     justify-content: center;
     align-items: center;
+    gap: 18px; 
     height: calc(100% - 80px);
-    /* ヘッダーの高さを引く */
     text-align: center;
 }
 
@@ -118,11 +117,25 @@ header {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+form {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 6px;
+}
+
 .gsi-material-button {
+    margin-top: 6px;
+    min-width: 220px; 
+    padding-left: 14px;
+    padding-right: 18px;
+    height: 44px; 
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    user-select: none;
     -webkit-appearance: none;
+    appearance: none;
     background-color: WHITE;
     background-image: none;
     border: 1px solid #747775;
@@ -220,4 +233,19 @@ header {
 .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
     background-color: #303030;
     opacity: 8%;
+}
+
+/* 小さめ画面での崩れを防ぐ */
+@media (max-width: 640px) {
+    .main-title {
+        font-size: 2.0rem;
+    }
+    .auth-buttons .btn {
+        padding: 12px 20px;
+        margin: 6px 6px;
+    }
+    .gsi-material-button {
+        min-width: 180px;
+        font-size: 13px;
+    }
 }
