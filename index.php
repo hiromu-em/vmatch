@@ -1,13 +1,21 @@
 <?php
 
+/**
+ * hostがlocahostを含む場合、'http://' に設定し、それ以外は 'https://' を使用する。
+ */
+$host = $_SERVER['HTTP_HOST'];
+$urlSchema = strpos($host, 'localhost') !== false ? 'http://' : 'https://';
+
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 
-    $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleOauth.php';
+    $redirect_uri = $urlSchema . $_SERVER['HTTP_HOST'] . '/src/php/Oauth/googleOauth.php';
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 
 } else if (isset($_GET['oauth']) && $_GET['oauth'] === 'x') {
-
+    $redirect_uri = $urlSchema . $_SERVER['HTTP_HOST'] . '/src/php/Oauth/xoauth.php';
+    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    exit;
 
 }
 
