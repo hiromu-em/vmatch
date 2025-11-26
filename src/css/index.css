@@ -7,6 +7,8 @@
     --white-color: #ffffff;
     --font-main: 'Poppins', 'Noto Sans JP', sans-serif;
     --font-sub: 'Noto Sans JP', sans-serif;
+    --button-height: 44px; /* ここで統一高さを定義 */
+    --button-width: 200px;  /* 認証ボタンの幅を定義 */
 }
 
 * {
@@ -84,8 +86,11 @@ header {
 
 /* 認証ボタン */
 .auth-buttons .btn {
-    display: inline-block;
-    padding: 15px 35px;
+    display: inline-flex;           /* 横中央整列のために flex に */
+    align-items: center;
+    justify-content: center;
+    padding: 0 35px;               /* 垂直は height で制御 */
+    height: var(--button-height);  /* 統一高さを使用 */
     margin: 0 10px;
     border-radius: 50px;
     text-decoration: none;
@@ -122,6 +127,7 @@ form {
     justify-content: center;
     width: 100%;
     margin-top: 6px;
+    gap: 12px; /* ボタン同士の間隔 */
 }
 
 .gsi-material-button {
@@ -129,7 +135,7 @@ form {
     min-width: 220px; 
     padding-left: 14px;
     padding-right: 18px;
-    height: 44px; 
+    height: var(--button-height); /* 統一高さを使用 */
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -147,7 +153,6 @@ form {
     cursor: pointer;
     font-family: 'Roboto', arial, sans-serif;
     font-size: 14px;
-    height: 40px;
     letter-spacing: 0.25px;
     outline: none;
     overflow: hidden;
@@ -158,7 +163,7 @@ form {
     transition: background-color .218s, border-color .218s, box-shadow .218s;
     vertical-align: middle;
     white-space: nowrap;
-    width: auto;
+    width: var(--button-width);
     max-width: 400px;
     min-width: min-content;
 }
@@ -235,17 +240,38 @@ form {
     opacity: 8%;
 }
 
+/* X ボタン専用カラー上書き（黒系） */
+.x-material-button {
+    background-color: #0f1419;
+    border-color: rgba(255,255,255,0.08);
+    color: #ffffff;
+}
+
+.x-material-button .gsi-material-button-icon svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
 /* 小さめ画面での崩れを防ぐ */
 @media (max-width: 640px) {
-    .main-title {
-        font-size: 2.0rem;
+    :root {
+        --button-height: 40px; /* モバイルでは少し小さくする */
+        --button-width: 130px;  /* 認証ボタンの幅を調整 */
     }
-    .auth-buttons .btn {
-        padding: 12px 20px;
+     .main-title {
+         font-size: 2.0rem;
+     }
+     .auth-buttons .btn {
+        padding: 0 20px;
         margin: 6px 6px;
-    }
-    .gsi-material-button {
-        min-width: 180px;
-        font-size: 13px;
-    }
+        height: var(--button-height);
+     }
+     .gsi-material-button {
+         min-width: 180px;
+         font-size: 13px;
+         height: var(--button-height);
+         width: var(--button-width);
+     }
 }
