@@ -5,7 +5,12 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
     $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/src/php/oauth/googleOauth.php';
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
+
+} else if (isset($_GET['oauth']) && $_GET['oauth'] === 'x') {
+
+
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -57,6 +62,20 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
                         </svg>
                     </div>
                     <span class="gsi-material-button-contents">Sign up with Google</span>
+                </div>
+            </button>
+            <button class="gsi-material-button x-material-button" type="submit" name="oauth" value="x"
+                aria-label="Sign up with X">
+                <div class="gsi-material-button-state"></div>
+                <div class="gsi-material-button-content-wrapper">
+                    <div class="gsi-material-button-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M20.285 7.715a1 1 0 0 0-1.414-1.414L12 13.172 5.129 6.301A1 1 0 1 0 3.715 7.715L10.586 14.586 3.715 21.457a1 1 0 0 0 1.414 1.414L12 15.999l6.871 6.872a1 1 0 0 0 1.414-1.414L13.414 14.586l6.871-6.871z" />
+                        </svg>
+                    </div>
+                    <span class="gsi-material-button-contents">Sign up with X</span>
                 </div>
             </button>
         </form>
