@@ -64,8 +64,7 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
                     <span class="gsi-material-button-contents">Sign up with Google</span>
                 </div>
             </button>
-            <button class="gsi-material-button x-material-button" type="submit" name="oauth" value="x"
-                aria-label="Sign up with X">
+            <button class="gsi-material-button x-material-button" type="submit" name="oauth" value="x">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
                     <div class="gsi-material-button-icon" aria-hidden="true">
