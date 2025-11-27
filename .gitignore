@@ -1,5 +1,4 @@
 .env
-cacert.pem
 composer.lock
 gmail_client_secret.json
 vendor
