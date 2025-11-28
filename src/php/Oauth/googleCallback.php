@@ -38,11 +38,11 @@ $client->addScope(Oauth2::USERINFO_EMAIL);
 // 認可コードがない場合：Googleの認証ページへリダイレクト
 if (!isset($_GET['code'])) {
     $state = bin2hex(random_bytes(128 / 8));
-    $_SESSION['oauth_state'] = $state;
+    $_SESSION['google_oauth_state'] = $state;
     $client->setState($state);
 
     // PKCE (Proof Key for Code Exchange) のためのコード検証者を生成し、セッションに保存
-    $_SESSION['code_verifier'] = $client->getOAuth2Service()->generateCodeVerifier();
+    $_SESSION['google_code_verifier'] = $client->getOAuth2Service()->generateCodeVerifier();
 
     $client->setAccessType('offline');
     $client->setIncludeGrantedScopes(true);
@@ -53,16 +53,16 @@ if (!isset($_GET['code'])) {
 }
 
 // CSRF対策：stateを検証
-if ($_GET['state'] !== $_SESSION['oauth_state']) {
-    unset($_SESSION['oauth_state']);
+if ($_GET['state'] !== $_SESSION['google_oauth_state']) {
+    unset($_SESSION['google_oauth_state']);
     exit('Invalid state');
 }
 
-unset($_SESSION['oauth_state']);
+unset($_SESSION['google_oauth_state']);
 
 //コードをアクセストークンと交換
-$client->fetchAccessTokenWithAuthCode($_GET['code'], $_SESSION['code_verifier']);
-$_SESSION['access_token'] = $client->getAccessToken();
+$client->fetchAccessTokenWithAuthCode($_GET['code'], $_SESSION['google_code_verifier']);
+$_SESSION['google_access_token'] = $client->getAccessToken();
 
 $redirect_uri = GOOGLEOAUTH;
 header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));

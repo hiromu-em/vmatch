@@ -30,14 +30,14 @@ $client->setAuthConfig([
 ]);
 
 // アクセストークンが無ければ認証に進む
-if (empty($_SESSION['access_token'])) {
+if (empty($_SESSION['google_access_token'])) {
 
     header('Location: ' . filter_var(GOOGLECALLBACK, FILTER_SANITIZE_URL));
     exit;
 }
 
 $client->addScope(Oauth2::USERINFO_EMAIL);
-$client->setAccessToken($_SESSION['access_token']);
+$client->setAccessToken($_SESSION['google_access_token']);
 
 $oauth = new Oauth2($client);
 $userInfo = $oauth->userinfo->get();

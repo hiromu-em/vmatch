@@ -30,8 +30,8 @@ function createTwitterConnectionFromSession(): TwitterOAuth
     return new TwitterOAuth(
         $_ENV['X_APIKEY'] ?? getenv('X_APIKEY'),
         $_ENV['X_APIKEY_SECRET'] ?? getenv('X_APIKEY_SECRET'),
-        $_SESSION['oauth_token'] ?? null,
-        $_SESSION['oauth_token_secret'] ?? null
+        $_SESSION['x_oauth_token'] ?? null,
+        $_SESSION['x_oauth_token_secret'] ?? null
     );
 }
 
@@ -40,7 +40,7 @@ loadDotenvIfLocal();
 
 
 // トークンチェック
-if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_token']) {
+if (isset($_GET['oauth_token']) && $_SESSION['x_oauth_token'] !== $_GET['oauth_token']) {
     die('Error: OAuth token mismatch.');
 }
 
@@ -61,7 +61,7 @@ try {
     exit();
 }
 
-$_SESSION['access_token'] = $access_token;
+$_SESSION['x_access_token'] = $access_token;
 
 header('Location: xoauth.php');
 exit();

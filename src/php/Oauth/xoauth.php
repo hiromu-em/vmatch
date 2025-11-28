@@ -44,9 +44,9 @@ function createTwitterConnection(?string $token = null, ?string $secret = null):
 // .envファイル実行開始
 loadDotenvIfLocal();
 
-if (isset($_SESSION['access_token'])) {
+if (isset($_SESSION['x_access_token'])) {
 
-    $access_token = $_SESSION['access_token'];
+    $access_token = $_SESSION['x_access_token'];
 
     try {
         $connection = createTwitterConnection(
@@ -91,12 +91,12 @@ try {
     exit();
 }
 
-$_SESSION['oauth_token'] = $request_token['oauth_token'];
-$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+$_SESSION['x_oauth_token'] = $request_token['oauth_token'];
+$_SESSION['x_oauth_token_secret'] = $request_token['oauth_token_secret'];
 
 // 認証URLを取得してリダイレクト
 $url = $connection->url('oauth/authorize', [
-    'oauth_token' => $_SESSION['oauth_token']
+    'oauth_token' => $_SESSION['x_oauth_token']
 ]);
 
 header("Location: $url");
