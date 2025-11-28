@@ -1,10 +1,6 @@
 <?php
 
-/**
- * hostがlocahostを含む場合、'http://' に設定し、それ以外は 'https://' を使用する。
- */
-$host = $_SERVER['HTTP_HOST'];
-$urlSchema = strpos($host, 'localhost') !== false ? 'http://' : 'https://';
+$urlSchema = $_SERVER['HTTP_HOST'] === 'localhost:8080'  ? 'http://' : 'https://';
 
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 
@@ -16,7 +12,6 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
     $redirect_uri = $urlSchema . $_SERVER['HTTP_HOST'] . '/src/php/Oauth/xoauth.php';
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
-
 }
 
 ?>
