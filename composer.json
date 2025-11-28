@@ -10,7 +10,8 @@
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*",
         "ext-pgsql": "*",
-        "google/apiclient": "^2.18"
+        "google/apiclient": "^2.18",
+        "abraham/twitteroauth": "^8.1"
     },
     "scripts": {
         "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
