@@ -1,14 +1,12 @@
 <?php
 
-$urlSchema = $_SERVER['HTTP_HOST'] === 'localhost:8080' ? 'http://' : 'https://';
-
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 
-    header('Location: /src/php/Oauth/googleOauth.php');
+    header('Location: src/php/Oauth/googleOauth.php');
     exit;
 
 } else if (isset($_GET['oauth']) && $_GET['oauth'] === 'x') {
-    header('Location: /src/php/Oauth/xoauth.php');
+    header('Location: src/php/Oauth/xoauth.php');
     exit;
 }
 
