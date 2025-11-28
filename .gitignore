@@ -3,3 +3,4 @@ composer.lock
 gmail_client_secret.json
 vendor
 .vscode
+*.pem
