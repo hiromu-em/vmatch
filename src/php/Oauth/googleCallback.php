@@ -9,7 +9,7 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-const GOOGLECALLBACK = 'googleCallback.php';
+const GOOGLECALLBACK = 'src/php/oauth/googleCallback.php';
 const GOOGLEOAUTH = 'googleOauth.php';
 
 /**
