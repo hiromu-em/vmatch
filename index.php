@@ -1,16 +1,14 @@
 <?php
 
-$urlSchema = $_SERVER['HTTP_HOST'] === 'localhost:8080'  ? 'http://' : 'https://';
+$urlSchema = $_SERVER['HTTP_HOST'] === 'localhost:8080' ? 'http://' : 'https://';
 
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 
-    $redirect_uri = $urlSchema . $_SERVER['HTTP_HOST'] . '/src/php/Oauth/googleOauth.php';
-    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    header('Location: /src/php/Oauth/googleOauth.php');
     exit;
 
 } else if (isset($_GET['oauth']) && $_GET['oauth'] === 'x') {
-    $redirect_uri = $urlSchema . $_SERVER['HTTP_HOST'] . '/src/php/Oauth/xoauth.php';
-    header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+    header('Location: /src/php/Oauth/xoauth.php');
     exit;
 }
 
@@ -42,7 +40,7 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
                 <a href="src/php/login.php" class="btn btn-secondary">ログイン</a>
             </div>
         </div>
-        <form action="" method="get">
+        <form method="get">
             <button class="gsi-material-button" type="submit" name="oauth" value="google">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
