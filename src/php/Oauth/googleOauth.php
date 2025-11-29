@@ -2,13 +2,17 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-require_once __DIR__ .'/../../../index.php';
+require_once __DIR__ . '/../../../index.php';
 
 use Google\Client;
 use Google\Service\Oauth2;
 use Vmatch\NewUserRegistration\UserRegistrationService;
 
 session_start(['use_strict_mode' => 1]);
+
+const GOOGLECALLBACK = 'googleCallback.php';
+const PROFILESETTNG = '../NewUserRegistration/profileSetting.php';
+const DASHBOARD = '../dashboard.php';
 
 /**
  * Google クライアントを作成する
@@ -23,24 +27,20 @@ function createGoogleClient(): Client
     return $client;
 }
 
-const GOOGLECALLBACK = 'googleCallback.php';
-const PROFILESETTNG = '../NewUserRegistration/profileSetting.php';
-const DASHBOARD = '../dashboard.php';
-
 // .envファイル実行開始
 loadDotenvIfLocal();
 
-// クライアント情報を設定
-$client = createGoogleClient();
-
-// アクセストークンが無ければ認可フローへ進む
-if (empty($_SESSION['google_access_token'])) {
+// アクセストークンが無ければ認可フローに進む
+if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_token'])) {
     header('Location: ' . filter_var(GOOGLECALLBACK, FILTER_SANITIZE_URL));
     exit;
 }
 
-$client->addScope(Oauth2::USERINFO_EMAIL);
+$client = createGoogleClient();
 $client->setAccessToken($_SESSION['google_access_token']);
+
+// IDトークンの検証
+$token = $client->verifyIdToken();
 
 $oauth = new Oauth2($client);
 $userInfo = $oauth->userinfo->get();
