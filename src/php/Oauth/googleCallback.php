@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-require_once __DIR__ .'/../../../index.php';
+require_once __DIR__ . '/../../../index.php';
 
 use Google\Client;
 use Google\Service\Oauth2;
@@ -30,7 +30,7 @@ function createGoogleClient(?string $redirectUri = null): Client
     return $client;
 }
 
-// .envファイル実行開始
+// index.phpから関数をコールする
 loadDotenvIfLocal();
 
 // スキーマは localhost なら http、それ以外は https

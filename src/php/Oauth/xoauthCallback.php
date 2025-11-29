@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-require_once __DIR__ .'/../../../index.php';
+require_once __DIR__ . '/../../../index.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Abraham\TwitterOAuth\TwitterOAuthException;
@@ -24,7 +24,7 @@ function createTwitterConnectionFromSession(): TwitterOAuth
     );
 }
 
-// .envファイル実行開始
+// index.phpから関数をコールする
 loadDotenvIfLocal();
 
 
