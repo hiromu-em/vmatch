@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ .'/../../../index.php';
 
 use Google\Client;
 use Google\Service\Oauth2;
@@ -9,16 +10,9 @@ use Vmatch\NewUserRegistration\UserRegistrationService;
 
 session_start(['use_strict_mode' => 1]);
 
-function loadDotenvIfLocal(): void
-{
-    $host = $_SERVER['HTTP_HOST'] ?? '';
-    if (strpos($host, 'localhost') !== false) {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
-        $dotenv->load();
-    }
-}
-
-// クライアント情報を設定
+/**
+ * Google クライアントを作成する
+ */
 function createGoogleClient(): Client
 {
     $client = new Client();
@@ -33,7 +27,10 @@ const GOOGLECALLBACK = 'googleCallback.php';
 const PROFILESETTNG = '../NewUserRegistration/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 
+// .envファイル実行開始
 loadDotenvIfLocal();
+
+// クライアント情報を設定
 $client = createGoogleClient();
 
 // アクセストークンが無ければ認可フローへ進む

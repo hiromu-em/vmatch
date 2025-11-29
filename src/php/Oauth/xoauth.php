@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ .'/../../../index.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Abraham\TwitterOAuth\TwitterOAuthException;
@@ -11,18 +12,6 @@ session_start([
 ]);
 
 const X_CALLBACK_LOCALHOST_URL = 'http://localhost:8080/src/php/Oauth/xoauthCallback.php';
-
-/**
- * 開発環境なら.envファイルとlocalhost用のコールバックを読み込む
- */
-function loadDotenvIfLocal()
-{
-    if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
-
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
-        $dotenv->load();
-    }
-}
 
 /**
  * TwitterOAuthのインスタンスを作成する

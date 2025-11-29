@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ .'/../../../index.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Abraham\TwitterOAuth\TwitterOAuthException;
@@ -11,19 +12,7 @@ session_start([
 ]);
 
 /**
- * 開発環境なら.envファイルを読み込む
- */
-function loadDotenvIfLocal(): void
-{
-    $host = $_SERVER['HTTP_HOST'] ?? '';
-    if (strpos($host, 'localhost') !== false) {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
-        $dotenv->load();
-    }
-}
-
-/**
- * Twitter の接続生成（セッション内 request token を使用）
+ * Twitter の接続生成（セッション内oauth_tokenを使用）
  */
 function createTwitterConnectionFromSession(): TwitterOAuth
 {

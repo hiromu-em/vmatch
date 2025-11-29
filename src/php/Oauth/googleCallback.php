@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ .'/../../../index.php';
 
 use Google\Client;
 use Google\Service\Oauth2;
@@ -10,15 +11,6 @@ session_start(['use_strict_mode' => 1]);
 
 const GOOGLE_CALLBACK_PATH = '/src/php/Oauth/googleCallback.php';
 const GOOGLE_OAUTH_REDIRECT = 'googleOauth.php';
-
-function loadDotenvIfLocal(): void
-{
-    $host = $_SERVER['HTTP_HOST'] ?? '';
-    if (strpos($host, 'localhost') !== false) {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../../..");
-        $dotenv->load();
-    }
-}
 
 /**
  * Google クライアントを作成する<br>
@@ -38,7 +30,7 @@ function createGoogleClient(?string $redirectUri = null): Client
     return $client;
 }
 
-
+// .envファイル実行開始
 loadDotenvIfLocal();
 
 // スキーマは localhost なら http、それ以外は https
