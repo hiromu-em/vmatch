@@ -31,7 +31,7 @@ function loadDotenvIfLocal(): void
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@600&display=swap"
         rel="stylesheet">
-    <title>Vmatch - あなたにぴったりのVtuberが見つかる</title>
+    <title>Vmatch</title>
 </head>
 
 <body>
@@ -43,8 +43,8 @@ function loadDotenvIfLocal(): void
         <div class="hero-content">
             <h1 class="main-title">仲間と一緒にVの世界へ</h1>
             <div class="auth-buttons">
-                <a href="src/php/NewUserRegistration/register.php" class="btn btn-primary">新規登録</a>
-                <a href="src/php/login.php" class="btn btn-secondary">ログイン</a>
+                <a href="src/php/UserAuthentication/register.php" class="btn btn-primary">新規登録</a>
+                <a href="src/php/UserAuthentication/login.php" class="btn btn-secondary">ログイン</a>
             </div>
         </div>
         <form method="get">
