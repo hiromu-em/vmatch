@@ -80,22 +80,17 @@ class UserAuthentication
      */
     public function registerPassword(string $newPassword, string $newEmail): void
     {
-        $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $statement = $this->pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
-        $statement->execute([$passwordHash, $newEmail]);
+        $statement = $this->pdo->prepare("UPDATE users SET password_hash = ? WHERE email = ?");
+        $statement->execute([$newPassword, $newEmail]);
     }
 
     /**
      * パスワードの形式を検証
      * @param string $newPassword 新規パスワード
-     * @return array エラーコード情報
+     * @return array パスワード形式結果情報
      */
-    public function validatePassword(string $newPassword): array
+    public function validatePassword(?string $newPassword, $errorCodes = []): array
     {
-        $errorCodes = [];
-
-        $newPassword = trim($newPassword);
-
         //NULLチェック
         if (empty($newPassword)) {
             return $errorCodes[] = [4];

@@ -20,16 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? null;
 
     $userAuthentication = new UserAuthentication();
-    $passwordErrorCodes = $userAuthentication->validatePassword($password);
+    $errorCodes = $userAuthentication->validatePassword(trim($password));
 
     //パスワード形式OKならプロフィール設定へ移動する
-    if (empty($passwordErrorCodes)) {
+    if (empty($errorCodes)) {
 
-        $userAuthentication->registerPassword($password, $_SESSION['email']);
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $userAuthentication->registerPassword($passwordHash, $_SESSION['email']);
         header('Location: profileSetting.php');
         exit;
 
     } else {
+        
         $errorMessages = $userAuthentication->registrationError($passwordErrorCodes);
     }
 }
