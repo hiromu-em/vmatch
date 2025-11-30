@@ -9,29 +9,27 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_POST['email'] ?? null;
 
     $userAuthentication = new UserAuthentication();
-    $newUser = $userAuthentication->emailExists($email);
-    $isValidEmail = $userAuthentication->validateEmail($email);
+    $isNewUser = $userAuthentication->emailExists($email);
+    $isValidEmail = $userAuthentication->validateEmail(trim($email));
 
-    $errorCodes = [$newUser, $isValidEmail];
-    $uniqueErrorCodes = array_unique($errorCodes);
+    $errorCodes = [$isNewUser, $isValidEmail];
 
-    //メールアドレス形式OK && メールアドレス未登録ユーザーはパスワード設定画面へ移動する
-    if (max($uniqueErrorCodes) === 0) {
+    //メールアドレス形式OK&&メールアドレス未登録ユーザーはパスワード設定画面へ移動する
+    if (max(array_unique($errorCodes)) === 0) {
+
         $userAuthentication->registerEmail($email);
-
         $_SESSION['email'] = $email;
         header('Location: passwordSetting.php');
         exit;
 
     } else {
 
-        $errorMessages = $userAuthentication->registrationError($uniqueErrorCodes);
+        $errorMessages = $userAuthentication->registrationError($errorCodes);
     }
 }
 ?>
