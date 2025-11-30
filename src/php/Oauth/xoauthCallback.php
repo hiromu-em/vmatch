@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../../index.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Abraham\TwitterOAuth\TwitterOAuthException;
+use Vmatch\Config;
 
 session_start([
     'use_strict_mode' => 1
@@ -24,9 +25,8 @@ function createTwitterConnectionFromSession(): TwitterOAuth
     );
 }
 
-// index.phpから関数をコールする
-loadDotenvIfLocal();
-
+$config = new Config();
+$config->loadDotenvIfLocal();
 
 // トークンチェック
 if (isset($_GET['oauth_token']) && $_SESSION['x_oauth_token'] !== $_GET['oauth_token']) {

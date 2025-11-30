@@ -6,7 +6,8 @@ require_once __DIR__ . '/../../../index.php';
 
 use Google\Client;
 use Google\Service\Oauth2;
-use Vmatch\NewUserRegistration\UserRegistrationService;
+use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\Config;
 
 session_start(['use_strict_mode' => 1]);
 
@@ -27,8 +28,8 @@ function createGoogleClient(): Client
     return $client;
 }
 
-// .envファイル実行開始
-loadDotenvIfLocal();
+$config = new Config();
+$config->loadDotenvIfLocal();
 
 // アクセストークンが無ければ認可フローに進む
 if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_token'])) {
@@ -44,10 +45,10 @@ $token = $client->verifyIdToken();
 
 $oauth = new Oauth2($client);
 $userInfo = $oauth->userinfo->get();
-$userRegistrationService = new UserRegistrationService();
+$userAuthentication = new UserAuthentication();
 
 // メールアドレスの存在確認
-$emailExists = $userRegistrationService->emailExists($userInfo->email);
+$emailExists = $userAuthentication->emailExists($userInfo->email);
 
 // リダイレクト先を変更
 $redirect_dashboard = filter_var(DASHBOARD, FILTER_SANITIZE_URL);
@@ -61,6 +62,6 @@ if ($emailExists) {
 }
 
 // メールアドレスが存在しない場合、プロフィール設定へリダイレクト
-$userRegistrationService->registerEmail($userInfo->email);
+$userAuthentication->registerEmail($userInfo->email);
 header("Location: $redirect_url");
 exit;
