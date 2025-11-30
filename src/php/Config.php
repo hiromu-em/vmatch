@@ -42,7 +42,7 @@ class Config
     }
 
     /**
-     * ローカル環境であれば .env ファイルを読み込む
+     * ローカル環境であれば$_ENVをロードする
      */
     public function loadDotenvIfLocal()
     {
