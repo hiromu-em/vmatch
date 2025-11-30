@@ -14,8 +14,7 @@ class Config
     public function databaseConnection(): \PDO
     {
         //本番環境と開発環境の分岐
-        $host = $_SERVER['HTTP_HOST'] ?? '';
-        if (strpos($host, 'localhost') !== false) {
+        if ($this->loadDotenvIfLocal()) {
 
             $dsn = "pgsql:host={$_ENV['PGHOST']};port=21962;dbname={$_ENV['PGDATABASE']}";
             $user = $_ENV['PGUSER'];
@@ -45,12 +44,18 @@ class Config
 
     /**
      * ローカル環境であれば$_ENVをロードする
+     * @param bool $isLocal ローカル環境フラグ
+     * @return bool ローカル環境フラグの結果
      */
-    public function loadDotenvIfLocal()
+    public function loadDotenvIfLocal(bool $isLocal = false): bool
     {
         if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
             $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
             $dotenv->load();
+
+            $isLocal = true;
         }
+
+        return $isLocal;
     }
 }
