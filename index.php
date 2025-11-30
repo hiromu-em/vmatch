@@ -8,17 +8,6 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
     header('Location: src/php/Oauth/xoauth.php');
 }
 
-/**
- * ローカル環境であれば .env ファイルを読み込む
- */
-function loadDotenvIfLocal(): void
-{
-    if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-        $dotenv->load();
-    }
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">

@@ -40,4 +40,15 @@ class Config
 
         return $pdo;
     }
+
+    /**
+     * ローカル環境であれば .env ファイルを読み込む
+     */
+    public function loadDotenvIfLocal()
+    {
+        if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+            $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
+            $dotenv->load();
+        }
+    }
 }
