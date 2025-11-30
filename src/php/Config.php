@@ -3,12 +3,13 @@ namespace Vmatch;
 
 use PDOException;
 
-class DatabaseConfig
+class Config
 {
     /**
-     * データーベース接続
+     * データベース接続を確立する
+     * @return \PDO データベース接続オブジェクト
      */
-    public function connection(): \PDO
+    public function databaseConnection(): \PDO
     {
         //本番環境と開発環境の分岐
         $host = $_SERVER['HTTP_HOST'] ?? '';

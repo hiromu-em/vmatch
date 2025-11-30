@@ -1,7 +1,7 @@
 <?php
 namespace Vmatch\NewUserRegistration;
 
-use Vmatch\DatabaseConfig;
+use Vmatch\Config;
 
 class UserRegistrationService
 {
@@ -9,8 +9,8 @@ class UserRegistrationService
 
     public function __construct()
     {
-        $databaseConfig = new DatabaseConfig();
-        $this->pdo = $databaseConfig->connection();
+        $databaseConfig = new Config();
+        $this->pdo = $databaseConfig->databaseConnection();
     }
 
     /**
