@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-use Vmatch\NewUserRegistration\UserRegistrationService;
+use Vmatch\UserAuthentication\UserAuthentication;
 
 //本番環境と開発環境の分岐
 $host = $_SERVER['HTTP_HOST'];
@@ -26,18 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $password = $_POST['password'] ?? null;
 
-    $userRegistrationService = new UserRegistrationService();
-    $passwordErrorCodes = $userRegistrationService->validatePassword($password);
+    $userAuthentication = new UserAuthentication();
+    $passwordErrorCodes = $userAuthentication->validatePassword($password);
 
     //パスワード形式OKならプロフィール設定へ移動する
     if (empty($passwordErrorCodes)) {
 
-        $userRegistrationService->registerPassword($password, $_SESSION['email']);
+        $userAuthentication->registerPassword($password, $_SESSION['email']);
         header('Location: profileSetting.php');
         exit;
 
     } else {
-        $errorMessages = $userRegistrationService->registrationError($passwordErrorCodes);
+        $errorMessages = $userAuthentication->registrationError($passwordErrorCodes);
     }
 }
 ?>
@@ -63,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-            <form method="post">
+        <form method="post">
             <label for="password">パスワード</label>
             <input type="password" id="password" name="password" placeholder="英数字記号(@#$%&*_!)含めて8文字以上" required
                 autocomplete="off" size="33">

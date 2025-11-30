@@ -1,8 +1,9 @@
 <?php
-
-use Vmatch\NewUserRegistration\UserRegistrationService;
+declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
+
+use Vmatch\UserAuthentication\UserAuthentication;
 
 //本番環境と開発環境の分岐
 $host = $_SERVER['HTTP_HOST'];
@@ -21,16 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_POST['email'] ?? null;
 
-    $userRegistrationService = new UserRegistrationService();
-    $newUser = $userRegistrationService->emailExists($email);
-    $isValidEmail = $userRegistrationService->validateEmail($email);
+    $userAuthentication = new UserAuthentication();
+    $newUser = $userAuthentication->emailExists($email);
+    $isValidEmail = $userAuthentication->validateEmail($email);
 
     $errorCodes = [$newUser, $isValidEmail];
     $uniqueErrorCodes = array_unique($errorCodes);
 
     //メールアドレス形式OK && メールアドレス未登録ユーザーはパスワード設定画面へ移動する
     if (max($uniqueErrorCodes) === 0) {
-        $userRegistrationService->registerEmail($email);
+        $userAuthentication->registerEmail($email);
 
         $_SESSION['email'] = $email;
         header('Location: passwordSetting.php');
@@ -38,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else {
 
-        $errorMessages = $userRegistrationService->registrationError($uniqueErrorCodes);
+        $errorMessages = $userAuthentication->registrationError($uniqueErrorCodes);
     }
 }
 ?>

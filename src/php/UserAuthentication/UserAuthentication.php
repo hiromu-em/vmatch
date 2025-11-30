@@ -1,9 +1,11 @@
 <?php
-namespace Vmatch\NewUserRegistration;
+declare(strict_types=1);
+
+namespace Vmatch\UserAuthentication;
 
 use Vmatch\Config;
 
-class UserRegistrationService
+class UserAuthentication
 {
     private $pdo;
 
