@@ -1,0 +1,122 @@
+/* register.php 用スタイル — index.css の変数・トーンに合わせる */
+
+.register-card {
+    width: 480px;
+    max-width: calc(100% - 40px);
+    margin: 12px auto;
+    padding: 30px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    box-shadow: 0 8px 30px rgba(10, 10, 20, 0.6), 0 1px 0 rgba(255, 255, 255, 0.02) inset;
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    text-align: left;
+    color: var(--text-color);
+}
+
+.register-card .main-title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--white-color);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.input-label {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 6px;
+    display: block;
+}
+
+.text-input {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 48px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(0deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    color: var(--text-color);
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow .18s ease, transform .12s ease, border-color .12s ease;
+}
+
+.text-input:focus {
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.45), 0 0 12px rgba(155, 89, 182, 0.12);
+    transform: translateY(-2px);
+}
+
+.submit-btn {
+    align-self: center;
+    width: 213px;
+    max-width: 100%;
+    height: var(--button-height);
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+    transition: transform 0.3s ease, box-shadow .18s ease;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    transform: translateY(-4px);
+}
+
+.error-messages-container {
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 13px;
+}
+
+.error-item {
+    background: linear-gradient(90deg, rgba(233, 30, 99, 0.08), rgba(155, 89, 182, 0.04));
+    border: 1px solid rgba(233, 30, 99, 0.14);
+    color: #ffdbe6;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+.subnote {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+    .register-card {
+        padding: 18px;
+        width: calc(100% - 32px);
+    }
+
+    .text-input {
+        height: 44px;
+    }
+
+    .submit-btn {
+        width: 180px;
+    }
+}

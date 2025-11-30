@@ -40,24 +40,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vmatch-新規登録-</title>
+    <!-- 既存のグローバルスタイルと register 用スタイルを読み込む -->
+    <link rel="stylesheet" href="../../css/index.css">
+    <link rel="stylesheet" href="../../css/register.css">
 </head>
 
 <body>
-    <h1>新規登録</h1>
-    <?php if (!empty($errorMessages)): ?>
-        <div class="error-messages-container">
-            <?php foreach ($errorMessages as $message): ?>
-                <div class="error-item">
-                    <p><?php echo nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')); ?></p>
+    <div class="hero-background"></div>
+
+    <header>
+        <div class="logo"><a href="/">Vmatch</a></div>
+    </header>
+
+    <main class="container">
+        <section class="hero-content register-card">
+            <h1 class="main-title">新規登録</h1>
+
+            <?php if (!empty($errorMessages)): ?>
+                <div class="error-messages-container">
+                    <?php foreach ($errorMessages as $message): ?>
+                        <div class="error-item">
+                            <p><?php echo nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')); ?></p>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    <form method="post">
-        <label for="email">メールアドレス</label>
-        <input type="email" id="email" name="email" placeholder="sample@example.com" required autocomplete="off">
-        <button type="submit">送信</button>
-    </form>
+            <?php endif; ?>
+
+            <form method="post" class="auth-form" novalidate>
+                <p class="input-label">メールアドレス</p>
+                <input type="email" id="email" name="email" placeholder="sample@example.com" required autocomplete="off"
+                    class="text-input">
+                <button type="submit" class="btn btn-primary submit-btn">送信</button>
+            </form>
+
+            <p class="subnote">既にアカウントをお持ちの方は <a href="login.php" class="link">ログイン</a></p>
+        </section>
+    </main>
+
 </body>
 
 </html>
