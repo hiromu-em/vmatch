@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errorCodes = [$isNewUser, $isValidEmail];
 
     //メールアドレス形式OK&&メールアドレス未登録ユーザーはパスワード設定画面へ移動する
-    if (max(array_unique($errorCodes)) === 0) {
+    if (max($errorCodes) === 0) {
 
         $userAuthentication->registerEmail($email);
         $_SESSION['email'] = $email;
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else {
 
-        $errorMessages = $userAuthentication->registrationError($errorCodes);
+        $errorMessages = $userAuthentication->registrationError(array_unique($errorCodes));
     }
 }
 ?>
