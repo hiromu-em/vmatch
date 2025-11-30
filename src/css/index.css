@@ -247,7 +247,7 @@ form {
 /* X ボタン専用カラー上書き（黒系） */
 .x-material-button {
     background-color: #0f1419;
-    border-color: rgba(255,255,255,0.08);
+    border-color: rgba(255, 255, 255, 0.08);
     color: #ffffff;
 }
 
