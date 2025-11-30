@@ -43,7 +43,7 @@ class Config
     }
 
     /**
-     * ローカル環境であれば$_ENVをロードする
+     * ローカル環境であれば$_ENVをロード。それ以外はgetenv()から取得
      * @param bool $isLocal ローカル環境フラグ
      * @return bool ローカル環境フラグの結果
      */
