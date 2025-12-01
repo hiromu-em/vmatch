@@ -116,6 +116,24 @@ class UserAuthentication
     }
 
     /**
+     * プロバイダーIDの存在確認
+     * @param string $providerId プロバイダーID
+     * @return bool プロバイダーID存在結果
+     */
+    public function providerIdExists(string $providerId): bool
+    {
+        $query = "SELECT EXISTS(SELECT 1 FROM user_providers WHERE provider_user_id = ?) as status";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute([$providerId]);
+
+        $result = $statement->fetch();
+        $emailExists = $result['status'] ? true : false;
+
+        return $emailExists;
+
+    }
+
+    /**
      * 新規登録時のエラーメッセージを取得する
      * @param array $errorCodes エラーコード情報
      * @param array $errorMessages エラーメッセージ情報

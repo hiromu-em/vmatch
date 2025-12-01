@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use Vmatch\Oauth\GoogleAuthorization;
-use Google\Service\Oauth2;
 use Vmatch\UserAuthentication\UserAuthentication;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -27,25 +26,15 @@ if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_t
     $token = $client->verifyIdToken();
 }
 
-$oauth = new Oauth2($client);
-$userInfo = $oauth->userinfo->get();
 $userAuthentication = new UserAuthentication();
 
-// メールアドレスの存在確認
-$emailExists = $userAuthentication->emailExists($userInfo->email);
+if ($userAuthentication->providerIdExists($token['sub'])) {
 
-// リダイレクト先を変更
-$redirect_dashboard = filter_var(DASHBOARD, FILTER_SANITIZE_URL);
-$redirect_profile = filter_var(PROFILESETTNG, FILTER_SANITIZE_URL);
-$redirect_url = $emailExists ? $redirect_dashboard : $redirect_profile;
-
-if ($emailExists) {
-    // メールアドレスが存在する場合、ダッシュボードへリダイレクト
-    header("Location: $redirect_url");
+    // IDが存在する場合、ダッシュボードへリダイレクト
+    header('Location:' . filter_var(DASHBOARD, FILTER_SANITIZE_URL));
     exit;
 }
 
-// メールアドレスが存在しない場合、プロフィール設定へリダイレクト
-$userAuthentication->registerEmail($userInfo->email);
-header("Location: $redirect_url");
+// IDが存在しない場合、プロフィール設定へリダイレクト
+header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));
 exit;
