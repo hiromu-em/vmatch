@@ -22,12 +22,12 @@ if (!isset($_GET['code'])) {
 
 // CSRF対策：stateを検証
 if ($_GET['state'] !== $_SESSION['google_oauth_state']) {
-
-    $googleAuthorization->stateError($_GET['state']);
-
-} else {
-    unset($_SESSION['google_oauth_state']);
+    
+    $_SESSION['google_oauth_state'];
+    exit('Invalid state');
 }
+
+unset($_SESSION['google_oauth_state']);
 
 //コードをアクセストークンと交換
 $client->fetchAccessTokenWithAuthCode($_GET['code'], $_SESSION['google_code_verifier']);

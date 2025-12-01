@@ -64,15 +64,5 @@ class GoogleAuthorization
 
         return $auth_url;
     }
-
-    /**
-     * CSRF用：stateエラー処理
-     * @param string $state 受け取ったステート
-     */
-    public function stateError(string $state): void
-    {
-        unset($state);
-        exit('Invalid state');
-    }
 }
 
