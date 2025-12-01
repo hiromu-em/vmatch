@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 session_start(['use_strict_mode' => 1]);
 
 const GOOGLECALLBACK = 'googleCallback.php';
-const PROFILESETTNG = '../NewUserRegistration/profileSetting.php';
+const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 
 // アクセストークンがセッションにない場合、認証を開始
@@ -39,7 +39,7 @@ if ($userAuthentication->providerIdExists($token['sub'])) {
 $userAuthentication->registerEmail($token['email']);
 
 // ユーザーIDを取得
-$userId = $userAuthentication->userInfo($token['email']);
+$userId = $userAuthentication->userInfoSearch($token['email']);
 
 // user_providersテーブルにプロバイダーIDとユーザーIDを登録
 $userAuthentication->linkProviderUserId($userId, $token['sub']);

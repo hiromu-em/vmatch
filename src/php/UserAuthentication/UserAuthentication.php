@@ -26,11 +26,11 @@ class UserAuthentication
     }
 
     /**
-     * ユーザー情報を取得する
+     * ユーザー情報を検索する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @return int ユーザーID
+     * @return string ユーザーID
      */
-    public function userInfo($newEmail): int
+    public function userInfoSearch($newEmail): string
     {
         $statement = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
         $statement->execute([$newEmail]);
@@ -152,7 +152,7 @@ class UserAuthentication
      * @param int $userId ユーザーID
      * @param string $providerId プロバイダーID
      */
-    public function linkProviderUserId(int $userId, string $providerId, string $provider = 'google'): void
+    public function linkProviderUserId(string $userId, string $providerId, string $provider = 'google'): void
     {
         $statement = $this->pdo->prepare("INSERT INTO user_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
