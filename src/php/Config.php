@@ -58,4 +58,14 @@ class Config
 
         return $isLocal;
     }
+
+    /**
+     * URLスキームを取得
+     * @return string URLスキーム
+     */
+    public function urlScheme(): string
+    {
+        $host = $_SERVER['HTTP_HOST'] ?? '';
+        return (strpos($host, 'localhost') !== false) ? 'http://' : 'https://';
+    }
 }
