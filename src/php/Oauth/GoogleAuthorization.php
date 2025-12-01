@@ -35,7 +35,7 @@ class GoogleAuthorization
             'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET'),
         ]);
 
-        $this->client->addScope('email');
+        $this->client->setScopes('email');
         $this->client->setAccessToken($_SESSION['google_access_token'] ?? '');
 
         $this->client->setAccessType('offline');
