@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Vmatch\Oauth;
 
 use Google\Client;
-use Google\Service\Oauth2;
 use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -36,7 +35,7 @@ class GoogleAuthorization
             'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET'),
         ]);
 
-        $this->client->addScope(Oauth2::USERINFO_EMAIL);
+        $this->client->addScope('email');
         $this->client->setAccessToken($_SESSION['google_access_token'] ?? '');
 
         $this->client->setAccessType('offline');
