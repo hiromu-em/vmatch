@@ -148,7 +148,7 @@ class UserAuthentication
     }
 
     /**
-     * プロバイダーIDとユーザーIDをリンクする
+     * プロバイダーIDとユーザーIDを紐付ける
      * @param int $userId ユーザーID
      * @param string $providerId プロバイダーID
      */
