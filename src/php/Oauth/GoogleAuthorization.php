@@ -28,7 +28,7 @@ class GoogleAuthorization
      * GoogleClientの設定<br>
      * @return Client Google Clientオブジェクト
      */
-    public function clientConfig(?string $redirectUri = null): Client
+    public function clientConfig(): Client
     {
         $this->client = new Client();
         $this->client->setAuthConfig([

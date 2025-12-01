@@ -13,17 +13,16 @@ const GOOGLECALLBACK = 'googleCallback.php';
 const PROFILESETTNG = '../NewUserRegistration/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 
-$googleAuthorization = new GoogleAuthorization();
-$client = $googleAuthorization->clientConfig();
-
 // アクセストークンがセッションにない場合、認証を開始
 if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_token'])) {
+
     header('Location: ' . filter_var(GOOGLECALLBACK, FILTER_SANITIZE_URL));
     exit;
-}
 
-// IDトークンを検証
-if ($client->getAccessToken()) {
+} else {
+
+    $googleAuthorization = new GoogleAuthorization();
+    $client = $googleAuthorization->clientConfig();
 
     $token = $client->verifyIdToken();
 }
