@@ -26,6 +26,20 @@ class UserAuthentication
     }
 
     /**
+     * ユーザー情報を取得する
+     * @param string $newEmail 新規ユーザーメールアドレス
+     * @return int ユーザーID
+     */
+    public function userInfo($newEmail): int
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $statement->execute([$newEmail]);
+        $result = $statement->fetch();
+
+        return $result['id'];
+    }
+
+    /**
      * ユーザーのメールアドレスを確認する
      * @param string $newEmail 新規ユーザーメールアドレス
      * @param int $errorCode エラーコード
@@ -131,6 +145,17 @@ class UserAuthentication
 
         return $emailExists;
 
+    }
+
+    /**
+     * プロバイダーIDとユーザーIDをリンクする
+     * @param int $userId ユーザーID
+     * @param string $providerId プロバイダーID
+     */
+    public function linkProviderUserId(int $userId, string $providerId, string $provider = 'google'): void
+    {
+        $statement = $this->pdo->prepare("INSERT INTO user_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
+        $statement->execute([$userId, $provider, $providerId]);
     }
 
     /**

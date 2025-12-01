@@ -35,6 +35,15 @@ if ($userAuthentication->providerIdExists($token['sub'])) {
     exit;
 }
 
+// メールアドレスをusersテーブルに登録
+$userAuthentication->registerEmail($token['email']);
+
+// ユーザーIDを取得
+$userId = $userAuthentication->userInfo($token['email']);
+
+// user_providersテーブルにプロバイダーIDとユーザーIDを登録
+$userAuthentication->linkProviderUserId($userId, $token['sub']);
+
 // IDが存在しない場合、プロフィール設定へリダイレクト
 header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));
 exit;
