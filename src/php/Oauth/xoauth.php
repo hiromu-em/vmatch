@@ -1,93 +1,44 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-require_once __DIR__ . '/../../../index.php';
+use Vmatch\Oauth\TwitterAuthorization;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-use Abraham\TwitterOAuth\TwitterOAuthException;
-use Vmatch\Config;
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 session_start([
     'use_strict_mode' => 1
 ]);
 
-const X_CALLBACK_LOCALHOST_URL = 'http://localhost:8080/src/php/Oauth/xoauthCallback.php';
+$TwitterAuthorization = new TwitterAuthorization();
 
-/**
- * TwitterOAuthのインスタンスを作成する
- */
-function createTwitterConnection(?string $token = null, ?string $secret = null): TwitterOAuth
-{
-    $connection = new TwitterOAuth(
-        $_ENV['X_APIKEY'] ?? getenv('X_APIKEY'),
-        $_ENV['X_APIKEY_SECRET'] ?? getenv('X_APIKEY_SECRET'),
-        $token ?? null,
-        $secret ?? null
+if (isset($_SESSION['access_token'])) {
+
+    $access_token = $_SESSION['access_token'];
+
+    $connection = $TwitterAuthorization->createTwitterConnection(
+        $access_token['oauth_token'],
+        $access_token['oauth_token_secret']
     );
 
-    $connection->setApiVersion('1.1');
-
-    return $connection;
-}
-
-$config = new Config();
-$config->loadDotenvIfLocal();
-
-if (isset($_SESSION['x_access_token'])) {
-
-    $access_token = $_SESSION['x_access_token'];
-
-    try {
-        $connection = createTwitterConnection(
-            $access_token['oauth_token'],
-            $access_token['oauth_token_secret']
-        );
-
-        $user = $connection->get("account/verify_credentials", [
-            'include_email' => 'true',
-            'skip_status' => 'true',
-        ]);
-
-    } catch (TwitterOAuthException $e) {
-
-        echo 'Error: ' . $e->parsedMessage();
-        exit();
-
-    } catch (Exception $e) {
-
-        echo 'Error: ' . $e->getMessage();
-        exit();
-    }
+    $user = $connection->get("account/verify_credentials", [
+        'include_email' => 'true',
+        'skip_status' => 'true',
+        'include_entities' => 'false'
+    ]);
 
     exit;
 }
 
-try {
-    // TwitterOAuthのインスタンスを作成
-    $connection = createTwitterConnection();
+// リクエストトークンを取得
+$requestToken = $TwitterAuthorization->createRequestInfo($connection);
 
-    // 一時的なリクエストトークンを取得
-    $request_token = $connection->oauth('oauth/request_token', [
-        'oauth_callback' => (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) ? X_CALLBACK_LOCALHOST_URL : getenv('X_CALLBACK_URL')
-    ]);
+$_SESSION['oauth_token'] = $requestToken['oauth_token'];
+$_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
 
-} catch (TwitterOAuthException $e) {
-    echo 'Error: ' . $e->parsedMessage();
-    exit();
-
-} catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage();
-    exit();
-}
-
-$_SESSION['x_oauth_token'] = $request_token['oauth_token'];
-$_SESSION['x_oauth_token_secret'] = $request_token['oauth_token_secret'];
-
-// 認証URLを取得してリダイレクト
+// 認証URLへリダイレクト
 $url = $connection->url('oauth/authorize', [
-    'oauth_token' => $_SESSION['x_oauth_token']
+    'oauth_token' => $_SESSION['oauth_token']
 ]);
 
 header("Location: $url");
-exit();
+exit;

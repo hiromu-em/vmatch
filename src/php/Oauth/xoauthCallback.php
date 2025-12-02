@@ -1,56 +1,26 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-require_once __DIR__ . '/../../../index.php';
+use Vmatch\Oauth\TwitterAuthorization;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-use Abraham\TwitterOAuth\TwitterOAuthException;
-use Vmatch\Config;
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 session_start([
     'use_strict_mode' => 1
 ]);
 
-/**
- * Twitter の接続生成（セッション内oauth_tokenを使用）
- */
-function createTwitterConnectionFromSession(): TwitterOAuth
-{
-    return new TwitterOAuth(
-        $_ENV['X_APIKEY'] ?? getenv('X_APIKEY'),
-        $_ENV['X_APIKEY_SECRET'] ?? getenv('X_APIKEY_SECRET'),
-        $_SESSION['x_oauth_token'] ?? null,
-        $_SESSION['x_oauth_token_secret'] ?? null
-    );
-}
+const X_OAUTH_PATH = 'xoauth.php';
 
-$config = new Config();
-$config->loadDotenvIfLocal();
-
-// トークンチェック
-if (isset($_GET['oauth_token']) && $_SESSION['x_oauth_token'] !== $_GET['oauth_token']) {
+// コールバックからのリクエストを処理
+if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_token']) {
     die('Error: OAuth token mismatch.');
 }
 
-try {
-    // 一時的なリクエストトークンを使用してTwitterOAuthのインスタンスを作成
-    $connection = createTwitterConnectionFromSession();
+$twitterAuthorization = new TwitterAuthorization();
+$connection = $twitterAuthorization->createTwitterConnection($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 
-    $access_token = $connection->oauth("oauth/access_token", [
-        "oauth_verifier" => $_GET['oauth_verifier']
-    ]);
+// アクセストークンを取得してセッションに保存
+$_SESSION['access_token'] = $twitterAuthorization->exchangeAccessToken($connection);
 
-} catch (Exception $e) {
-    echo 'Error: ' . $e->getMessage();
-    exit();
-
-} catch (TwitterOAuthException $e) {
-    echo 'Error: ' . $e->parsedMessage();
-    exit();
-}
-
-$_SESSION['x_access_token'] = $access_token;
-
-header('Location: xoauth.php');
-exit();
+header('Location:' . X_OAUTH_PATH);
+exit;
