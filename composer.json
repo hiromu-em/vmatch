@@ -12,13 +12,5 @@
         "ext-pgsql": "*",
         "google/apiclient": "^2.18",
         "abraham/twitteroauth": "^8.1"
-    },
-    "scripts": {
-        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
-    },
-    "extra": {
-        "google/apiclient-services": [
-            "Oauth2"
-        ]
     }
 }
