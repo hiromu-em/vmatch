@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
  */
 class TwitterAuthorization
 {
-    private const string X_CALLBACK__URL = 'http://localhost:8080/src/php/Oauth/xoauthCallback.php';
+    private const string Twitter_CALLBACK__LOCAL_URL = 'http://localhost:8080/src/php/Oauth/twitterCallback.php';
 
     public function __construct()
     {
@@ -31,8 +31,8 @@ class TwitterAuthorization
     public function createTwitterConnection(?string $oauthToken = null, ?string $oauthTokenSecret = null): TwitterOAuth
     {
         $connection = new TwitterOAuth(
-            $_ENV['X_APIKEY'] ?? getenv('X_APIKEY'),
-            $_ENV['X_APIKEY_SECRET'] ?? getenv('X_APIKEY_SECRET'),
+            $_ENV['TWITTER_APIKEY'] ?? getenv('X_APIKEY'),
+            $_ENV['TWITTER_APIKEY_SECRET'] ?? getenv('X_APIKEY_SECRET'),
             $oauthToken ?? null,
             $oauthTokenSecret ?? null
         );
@@ -50,7 +50,8 @@ class TwitterAuthorization
     public function createRequestInfo(TwitterOAuth $connection): array
     {
         $request_token = $connection->oauth('oauth/request_token', [
-            'oauth_callback' => (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) ? self::X_CALLBACK__URL : getenv('X_CALLBACK_URL')
+            'oauth_callback' => (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) ?
+                self::Twitter_CALLBACK__LOCAL_URL : getenv('TWITTER_CALLBACK_URL')
         ]);
 
         return $request_token;
