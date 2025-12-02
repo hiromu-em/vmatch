@@ -2,11 +2,11 @@
 declare(strict_types=1);
 
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
-
     header('Location: src/php/Oauth/googleOauth.php');
-
-} else if (isset($_GET['oauth']) && $_GET['oauth'] === 'x') {
-    header('Location: src/php/Oauth/xoauth.php');
+    exit;
+} else if (isset($_GET['oauth']) && $_GET['oauth'] === 'twitter') {
+    header('Location: src/php/Oauth/twitterOauth.php');
+    exit;
 }
 
 ?>
@@ -62,7 +62,7 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
                     <span class="gsi-material-button-contents">Sign up with Google</span>
                 </div>
             </button>
-            <button class="gsi-material-button x-material-button" type="submit" name="oauth" value="x">
+            <button class="gsi-material-button x-material-button" type="submit" name="oauth" value="twitter">
                 <div class="gsi-material-button-state"></div>
                 <div class="gsi-material-button-content-wrapper">
                     <div class="gsi-material-button-icon" aria-hidden="true">
