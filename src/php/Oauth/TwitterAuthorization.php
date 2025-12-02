@@ -31,8 +31,8 @@ class TwitterAuthorization
     public function createTwitterConnection(?string $oauthToken = null, ?string $oauthTokenSecret = null): TwitterOAuth
     {
         $connection = new TwitterOAuth(
-            $_ENV['TWITTER_APIKEY'] ?? getenv('X_APIKEY'),
-            $_ENV['TWITTER_APIKEY_SECRET'] ?? getenv('X_APIKEY_SECRET'),
+            $_ENV['TWITTER_APIKEY'] ?? getenv('TWITTER_APIKEY'),
+            $_ENV['TWITTER_APIKEY_SECRET'] ?? getenv('TWITTER_APIKEY_SECRET'),
             $oauthToken ?? null,
             $oauthTokenSecret ?? null
         );
