@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class GoogleAuthorization
 {
-    private const GOOGLE_CALLBACK_PATH = '/src/php/Oauth/googleCallback.php';
+    private const string GOOGLE_CALLBACK_PATH = '/src/php/Oauth/googleCallback.php';
 
     private Client $client;
 
