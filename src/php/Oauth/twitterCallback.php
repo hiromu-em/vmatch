@@ -9,7 +9,7 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-const X_OAUTH_PATH = 'xoauth.php';
+const TWITTER_OAUTH_PATH = 'twitterOauth.php';
 
 // コールバックからのリクエストを処理
 if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_token']) {
@@ -22,5 +22,5 @@ $connection = $twitterAuthorization->createTwitterConnection($_SESSION['oauth_to
 // アクセストークンを取得してセッションに保存
 $_SESSION['access_token'] = $twitterAuthorization->exchangeAccessToken($connection);
 
-header('Location:' . X_OAUTH_PATH);
+header('Location:' . TWITTER_OAUTH_PATH);
 exit;
