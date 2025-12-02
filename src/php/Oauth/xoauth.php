@@ -29,6 +29,8 @@ if (isset($_SESSION['access_token'])) {
     exit;
 }
 
+$connection = $TwitterAuthorization->createTwitterConnection();
+
 // リクエストトークンを取得
 $requestToken = $TwitterAuthorization->createRequestInfo($connection);
 
