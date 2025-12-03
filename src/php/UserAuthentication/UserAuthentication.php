@@ -155,7 +155,7 @@ class UserAuthentication
      * @param int $userId ユーザーID
      * @param string $providerId プロバイダーID
      */
-    public function linkProviderUserId(string $userId, string $providerId, string $provider = 'google'): void
+    public function linkProviderUserId(string $userId, string $providerId, string $provider): void
     {
         $statement = $this->pdo->prepare("INSERT INTO user_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
