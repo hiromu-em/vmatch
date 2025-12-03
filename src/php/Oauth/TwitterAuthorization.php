@@ -9,7 +9,7 @@ use Vmatch\Config;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 /**
- * Twitter認証クラス
+ * Twitter認可クラス
  */
 class TwitterAuthorization
 {

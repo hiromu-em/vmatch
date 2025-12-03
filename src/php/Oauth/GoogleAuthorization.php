@@ -8,6 +8,9 @@ use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
+/**
+ * Google認可クラス
+ */
 class GoogleAuthorization
 {
     private const string GOOGLE_CALLBACK_PATH = '/src/php/Oauth/googleCallback.php';

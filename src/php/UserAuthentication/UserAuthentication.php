@@ -5,6 +5,9 @@ namespace Vmatch\UserAuthentication;
 
 use Vmatch\Config;
 
+/**
+ * ユーザー認証に関わる全てのメソッドを集約したクラス
+ */
 class UserAuthentication
 {
     private $pdo;
