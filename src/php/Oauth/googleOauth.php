@@ -39,7 +39,7 @@ $userAuthentication->registerEmail($token['email']);
 
 $userId = $userAuthentication->userInfoSearch($token['email']);
 
-$userAuthentication->linkProviderUserId($userId, $token['sub']);
+$userAuthentication->linkProviderUserId($userId, $token['sub'],'google');
 
 // IDが存在しない場合、プロフィール設定へリダイレクト
 header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));
