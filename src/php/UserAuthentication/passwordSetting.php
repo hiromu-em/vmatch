@@ -22,17 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userAuthentication = new UserAuthentication();
     $errorCodes = $userAuthentication->validatePassword(trim($password));
 
-    //パスワード形式OKならプロフィール設定へ移動する
-    if (empty($errorCodes)) {
+    // エラーコードが存在する場合、エラーメッセージを取得
+    if (!empty($errorCodes)) {
+
+        $errorMessages = $userAuthentication->registrationError($errorCodes);
+
+    } else {
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $userAuthentication->registerPassword($passwordHash, $_SESSION['email']);
         header('Location: profileSetting.php');
         exit;
-
-    } else {
-        
-        $errorMessages = $userAuthentication->registrationError($passwordErrorCodes);
     }
 }
 ?>
