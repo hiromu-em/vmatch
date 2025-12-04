@@ -9,7 +9,7 @@ declare(strict_types=1);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>サービスエラー Vmatch</title>
+    <title>システムエラー -Vmatch-</title>
 </head>
 
 <body>

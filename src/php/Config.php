@@ -5,12 +5,14 @@ namespace Vmatch;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
+use PDOException;
 
 class Config
 {
     /**
      * データベース接続を確立する
-     * @return \PDO データベース接続オブジェクト
+     * @return `pdo`データベース接続オブジェクト
+     * @throws \PDOException データベースの接続失敗
      */
     public function databaseConnection(): \PDO
     {
@@ -29,7 +31,14 @@ class Config
             $password = getenv('PGPASSWORD');
         }
 
-        $pdo = new \PDO($dsn, $user, $password);
+        try {
+            $pdo = new \PDO($dsn, $user, $password);
+        } catch (PDOException $e) {
+            http_response_code(500);
+            include __DIR__ . '/error/configError.php';
+            exit;
+        }
+
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 
@@ -39,8 +48,8 @@ class Config
     /**
      * 環境変数をロード
      * @param bool $isLocal ローカル環境フラグ
-     * @throws InvalidPathException 無効なパス
      * @return bool ローカル環境フラグの結果
+     * @throws InvalidPathException 無効なパス
      */
     public function loadDotenvIfLocal(bool $isLocal = false): bool
     {
@@ -51,10 +60,10 @@ class Config
 
             $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
             try {
-                $dotenv->load(); 
+                $dotenv->load();
             } catch (InvalidPathException $e) {
                 http_response_code(500);
-                include __DIR__ . '/error/databaseError.php';
+                include __DIR__ . '/error/configError.php';
                 exit;
             }
         }
