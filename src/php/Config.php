@@ -77,7 +77,6 @@ class Config
      */
     public function urlScheme(): string
     {
-        $host = $_SERVER['HTTP_HOST'] ?? '';
-        return (strpos($host, 'localhost') !== false) ? 'http://' : 'https://';
+        return (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) ? 'http://' : 'https://';
     }
 }
