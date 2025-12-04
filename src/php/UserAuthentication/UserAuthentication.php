@@ -170,7 +170,7 @@ class UserAuthentication
      * @param array $errorMessages エラーメッセージ情報
      * @return array エラーメッセージ結果
      */
-    public function registrationError(array $errorCodes, $errorMessages = []): array
+    public function registrationErrorMessage(array $errorCodes, $errorMessages = []): array
     {
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {

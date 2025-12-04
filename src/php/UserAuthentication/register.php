@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } else {
 
-        $errorMessages = $userAuthentication->registrationError(array_unique($errorCodes));
+        $errorMessages = $userAuthentication->registrationErrorMessage(array_unique($errorCodes));
     }
 }
 ?>
