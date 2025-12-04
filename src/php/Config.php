@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Vmatch;
 
-use PDOException;
+use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 
 class Config
 {
@@ -28,32 +29,34 @@ class Config
             $password = getenv('PGPASSWORD');
         }
 
-        try {
-            $pdo = new \PDO($dsn, $user, $password);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-
-        } catch (PDOException $e) {
-
-            //エラーページ表示（後日実装）
-            echo $e->getMessage();
-        }
+        $pdo = new \PDO($dsn, $user, $password);
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 
         return $pdo;
     }
 
     /**
-     * ローカル環境であれば$_ENVをロード。それ以外はgetenv()から取得
+     * 環境変数をロード
      * @param bool $isLocal ローカル環境フラグ
+     * @throws InvalidPathException 無効なパス
      * @return bool ローカル環境フラグの結果
      */
     public function loadDotenvIfLocal(bool $isLocal = false): bool
     {
         if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
-            $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../..');
-            $dotenv->load();
 
+            // フラグ変更
             $isLocal = true;
+
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+            try {
+                $dotenv->load(); 
+            } catch (InvalidPathException $e) {
+                http_response_code(500);
+                include __DIR__ . '/error/databaseError.php';
+                exit;
+            }
         }
 
         return $isLocal;
