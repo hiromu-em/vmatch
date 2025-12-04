@@ -68,6 +68,7 @@ class UserAuthentication
     /**
      * メールアドレス検証
      * @param string $newEmail 新規ユーザーメールアドレス
+     * @param int $errorCode エラーコード
      * @return int メールアドレス形式の結果情報
      */
     public function validateEmail(?string $newEmail, $errorCode = 0): int
@@ -104,6 +105,7 @@ class UserAuthentication
     /**
      * パスワードの形式を検証
      * @param string $newPassword 新規パスワード
+     * @param array $errorCodes エラーコード情報
      * @return array パスワード形式結果情報
      */
     public function validatePassword(?string $newPassword, $errorCodes = []): array
@@ -154,6 +156,7 @@ class UserAuthentication
      * プロバイダーIDとユーザーIDを紐付ける
      * @param int $userId ユーザーID
      * @param string $providerId プロバイダーID
+     * @param string $provider プロパイダ―名
      */
     public function linkProviderUserId(string $userId, string $providerId, string $provider): void
     {
