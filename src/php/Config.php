@@ -12,7 +12,7 @@ class Config
     /**
      * データベース接続を確立する
      * @return `pdo`データベース接続オブジェクト
-     * @throws \PDOException データベースの接続失敗
+     * @throws PDOException データベースの接続失敗
      */
     public function databaseConnection(): \PDO
     {
