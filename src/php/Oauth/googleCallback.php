@@ -21,7 +21,7 @@ if (!isset($_GET['state']) || $_GET['state'] !== $_SESSION['google_oauth_state']
 }
 
 // アクセス拒否の処理
-if ($_GET['error'] === 'access_denied') {
+if (isset($_GET['error'])) {
     header('Location: ' . filter_var('/', FILTER_SANITIZE_URL));
     exit;
 }
