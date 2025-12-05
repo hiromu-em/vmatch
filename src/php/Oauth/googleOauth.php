@@ -8,23 +8,22 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 session_start(['use_strict_mode' => 1]);
 
-const GOOGLECALLBACK = 'googleCallback.php';
 const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 
-// アクセストークンがセッションにない場合、認証を開始
+$googleAuthorization = new GoogleAuthorization();
+$client = $googleAuthorization->clientConfig();
+
+// アクセストークンがSESSIONに存在しない場合、認証サーバーのURLを生成
 if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_token'])) {
 
-    header('Location: ' . filter_var(GOOGLECALLBACK, FILTER_SANITIZE_URL));
+    $authUrl = $googleAuthorization->createAuthUrl();
+    header('Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL));
     exit;
-
-} else {
-
-    $googleAuthorization = new GoogleAuthorization();
-    $client = $googleAuthorization->clientConfig();
-
-    $token = $client->verifyIdToken();
 }
+
+// ユーザー情報を取得
+$token = $client->verifyIdToken();
 
 $userAuthentication = new UserAuthentication();
 
@@ -39,7 +38,7 @@ $userAuthentication->registerEmail($token['email']);
 
 $userId = $userAuthentication->userInfoSearch($token['email']);
 
-$userAuthentication->linkProviderUserId($userId, $token['sub'],'google');
+$userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
 
 // IDが存在しない場合、プロフィール設定へリダイレクト
 header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));
