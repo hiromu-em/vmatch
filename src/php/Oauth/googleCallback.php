@@ -13,17 +13,19 @@ $client = $googleAuthorization->clientConfig();
 // CSRF対策：stateを検証
 if ($_GET['state'] !== $_SESSION['google_oauth_state']) {
 
-    unset($_SESSION['google_oauth_state']);
-    exit('Invalid state');
+    unset($_SESSION['google_oauth_state'], $_SESSION['google_code_verifier']);
+    http_response_code(401);
+    include __DIR__ . '/../../php/error/oauthError.php';
+    exit;
 }
 
 //コードをアクセストークンと交換
 if (isset($_GET['code'])) {
 
-    unset($_SESSION['google_oauth_state']);
-
     $client->fetchAccessTokenWithAuthCode($_GET['code'], $_SESSION['google_code_verifier']);
     $_SESSION['google_access_token'] = $client->getAccessToken();
+
+    unset($_SESSION['google_oauth_state'], $_SESSION['google_code_verifier']);
 
     header('Location: ' . filter_var('googleOauth.php', FILTER_SANITIZE_URL));
     exit;
