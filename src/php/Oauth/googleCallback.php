@@ -11,12 +11,18 @@ $googleAuthorization = new GoogleAuthorization();
 $client = $googleAuthorization->clientConfig();
 
 // CSRF対策：stateを検証
-if ($_GET['state'] !== $_SESSION['google_oauth_state']) {
+if (!isset($_GET['state']) || $_GET['state'] !== $_SESSION['google_oauth_state']) {
 
     unset($_SESSION['google_oauth_state'], $_SESSION['google_code_verifier']);
     http_response_code(401);
 
     include __DIR__ . '/../../php/error/oauthError.php';
+    exit;
+}
+
+// アクセス拒否の処理
+if ($_GET['error'] === 'access_denied') {
+    header('Location: ' . filter_var('/', FILTER_SANITIZE_URL));
     exit;
 }
 
