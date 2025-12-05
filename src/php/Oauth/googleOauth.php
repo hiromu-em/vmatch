@@ -27,19 +27,21 @@ $token = $client->verifyIdToken();
 
 $userAuthentication = new UserAuthentication();
 
+// IDが存在する場合、ダッシュボードへリダイレクト
 if ($userAuthentication->providerIdExists($token['sub'])) {
-
-    // IDが存在する場合、ダッシュボードへリダイレクト
     header('Location:' . filter_var(DASHBOARD, FILTER_SANITIZE_URL));
     exit;
 }
 
+// ユーザーのメールアドレスを登録
 $userAuthentication->registerEmail($token['email']);
 
+// 該当するユーザーのIDを取得
 $userId = $userAuthentication->userInfoSearch($token['email']);
 
+// ユーザーIDとプロパイダ―IDの紐付け
 $userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
 
-// IDが存在しない場合、プロフィール設定へリダイレクト
+// プロフィール設定へリダイレクト
 header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));
 exit;
