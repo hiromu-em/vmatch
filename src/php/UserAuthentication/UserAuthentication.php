@@ -6,7 +6,7 @@ namespace Vmatch\UserAuthentication;
 use Vmatch\Config;
 
 /**
- * ユーザー認証に関わる全てのメソッドを集約したクラス
+ * ユーザー認証に関わるクラス
  */
 class UserAuthentication
 {
