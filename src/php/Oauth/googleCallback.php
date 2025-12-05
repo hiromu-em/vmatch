@@ -15,6 +15,7 @@ if ($_GET['state'] !== $_SESSION['google_oauth_state']) {
 
     unset($_SESSION['google_oauth_state'], $_SESSION['google_code_verifier']);
     http_response_code(401);
+
     include __DIR__ . '/../../php/error/oauthError.php';
     exit;
 }
