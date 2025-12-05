@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
  */
 class GoogleAuthorization
 {
-    private const string GOOGLE_CALLBACK_PATH = '/src/php/Oauth/googleCallback.php';
+    private const string GOOGLE_CALLBACK = '/src/php/Oauth/googleCallback.php';
 
     private Client $client;
 
@@ -44,7 +44,7 @@ class GoogleAuthorization
         $this->client->setAccessType('offline');
         $this->client->setIncludeGrantedScopes(true);
 
-        $redirectUri = $this->config->urlScheme() . $_SERVER['HTTP_HOST'] . self::GOOGLE_CALLBACK_PATH;
+        $redirectUri = $this->config->urlScheme() . $_SERVER['HTTP_HOST'] . self::GOOGLE_CALLBACK;
         $this->client->setRedirectUri($redirectUri);
 
         return $this->client;
