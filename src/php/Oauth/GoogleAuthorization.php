@@ -43,6 +43,7 @@ class GoogleAuthorization
 
         $this->client->setAccessType('offline');
         $this->client->setIncludeGrantedScopes(true);
+        $this->client->setPrompt('select_account');
 
         $redirectUri = $this->config->urlScheme() . $_SERVER['HTTP_HOST'] . self::GOOGLE_CALLBACK;
         $this->client->setRedirectUri($redirectUri);
