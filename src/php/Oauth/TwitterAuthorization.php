@@ -13,6 +13,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
  */
 class TwitterAuthorization
 {
+    private TwitterOAuth $connection;
+
     private const string Twitter_CALLBACK__LOCAL_URL = 'http://localhost:8080/src/php/Oauth/twitterCallback.php';
 
     public function __construct()
@@ -30,16 +32,16 @@ class TwitterAuthorization
      */
     public function createTwitterConnection(?string $oauthToken = null, ?string $oauthTokenSecret = null): TwitterOAuth
     {
-        $connection = new TwitterOAuth(
+        $this->connection = new TwitterOAuth(
             $_ENV['TWITTER_APIKEY'] ?? getenv('TWITTER_APIKEY'),
             $_ENV['TWITTER_APIKEY_SECRET'] ?? getenv('TWITTER_APIKEY_SECRET'),
             $oauthToken ?? null,
             $oauthTokenSecret ?? null
         );
 
-        $connection->setApiVersion('1.1');
+        $this->connection->setApiVersion('1.1');
 
-        return $connection;
+        return $this->connection;
     }
 
     /**
@@ -47,9 +49,9 @@ class TwitterAuthorization
      * @param TwitterOAuth $connection
      * @return array `request_token`
      */
-    public function createRequestInfo(TwitterOAuth $connection): array
+    public function createRequestInfo(): array
     {
-        $request_token = $connection->oauth('oauth/request_token', [
+        $request_token = $this->connection->oauth('oauth/request_token', [
             'oauth_callback' => (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) ?
                 self::Twitter_CALLBACK__LOCAL_URL : getenv('TWITTER_CALLBACK_URL')
         ]);
@@ -62,9 +64,9 @@ class TwitterAuthorization
      * @param TwitterOAuth $connection TwitterOAuth接続情報
      * @return array `access_token`
      */
-    public function exchangeAccessToken(TwitterOAuth $connection): array
+    public function exchangeAccessToken(): array
     {
-        $access_token = $connection->oauth("oauth/access_token", [
+        $access_token = $this->connection->oauth("oauth/access_token", [
             "oauth_verifier" => $_GET['oauth_verifier']
         ]);
 
@@ -75,9 +77,9 @@ class TwitterAuthorization
      * 認可サーバーのURLを作成
      * @return string 認可サーバーのURL
      */
-    public function createAuthUrl(TwitterOAuth $connection): string
+    public function createAuthUrl(): string
     {
-        $auth_url = $connection->url('oauth/authorize', [
+        $auth_url = $this->connection->url('oauth/authorize', [
             'oauth_token' => $_SESSION['oauth_token']
         ]);
 

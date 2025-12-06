@@ -51,13 +51,13 @@ if (isset($_SESSION['access_token'])) {
 $connection = $TwitterAuthorization->createTwitterConnection();
 
 // リクエストトークンを取得
-$requestToken = $TwitterAuthorization->createRequestInfo($connection);
+$requestToken = $TwitterAuthorization->createRequestInfo();
 
 $_SESSION['oauth_token'] = $requestToken['oauth_token'];
 $_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
 
 // 認証URLへリダイレクト
-$url = $TwitterAuthorization->createAuthUrl($connection);
+$url = $TwitterAuthorization->createAuthUrl();
 
 header("Location: $url");
 exit;
