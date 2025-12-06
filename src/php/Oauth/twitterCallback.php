@@ -9,15 +9,19 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-$_SESSION['oauth_token'] = 'dfsdfgserr';
-
 // トークンの照合
 if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_token']) {
 
     unset($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
-    http_response_code(401);
+    $clearUrl = strtok($_SERVER['REQUEST_URI'], '?');
 
-    include __DIR__ . '/../../php/error/oauthError.php';
+    header('Location: ' . filter_var($clearUrl, FILTER_SANITIZE_URL));
+    exit;
+
+} elseif (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
+
+    // 不正なアクセスの処理
+    include_once __DIR__ . '/../error/oauthError.php';
     exit;
 }
 
