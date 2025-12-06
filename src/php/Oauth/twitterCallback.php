@@ -21,6 +21,7 @@ if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_tok
 } elseif (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
 
     // 不正なアクセスの処理
+    http_response_code(401);
     include_once __DIR__ . '/../error/oauthError.php';
     exit;
 }
