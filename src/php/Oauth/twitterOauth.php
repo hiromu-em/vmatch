@@ -6,9 +6,7 @@ use Vmatch\UserAuthentication\UserAuthentication;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
-session_start([
-    'use_strict_mode' => 1
-]);
+session_start(['use_strict_mode' => 1]);
 
 const DASHBOARD = '../dashboard.php';
 const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
@@ -49,6 +47,7 @@ if (isset($_SESSION['access_token'])) {
     exit;
 }
 
+// Twitterの接続情報を取得する
 $connection = $TwitterAuthorization->createTwitterConnection();
 
 // リクエストトークンを取得
@@ -58,9 +57,7 @@ $_SESSION['oauth_token'] = $requestToken['oauth_token'];
 $_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
 
 // 認証URLへリダイレクト
-$url = $connection->url('oauth/authorize', [
-    'oauth_token' => $_SESSION['oauth_token']
-]);
+$url = $TwitterAuthorization->createAuthUrl($connection);
 
 header("Location: $url");
 exit;

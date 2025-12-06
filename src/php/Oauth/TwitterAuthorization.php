@@ -23,7 +23,7 @@ class TwitterAuthorization
     }
 
     /**
-     * Twitter接続情報を作成する
+     * Twitterの接続情報を作成する
      * @param string|null $oauthToken
      * @param string|null $oauthTokenSecret
      * @return TwitterOAuth TwitterOAuth接続情報
@@ -69,5 +69,18 @@ class TwitterAuthorization
         ]);
 
         return $access_token;
+    }
+
+    /**
+     * 認可サーバーのURLを作成
+     * @return string 認可サーバーのURL
+     */
+    public function createAuthUrl(TwitterOAuth $connection): string
+    {
+        $auth_url = $connection->url('oauth/authorize', [
+            'oauth_token' => $_SESSION['oauth_token']
+        ]);
+
+        return $auth_url;
     }
 }
