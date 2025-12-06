@@ -9,9 +9,22 @@ session_start([
     'use_strict_mode' => 1
 ]);
 
-// コールバックからのリクエストを処理
+$_SESSION['oauth_token'] = 'dfsdfgserr';
+
+// トークンの照合
 if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_token']) {
-    die('Error: OAuth token mismatch.');
+
+    unset($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+    http_response_code(401);
+
+    include __DIR__ . '/../../php/error/oauthError.php';
+    exit;
+}
+
+// アクセス拒否の処理
+if (isset($_GET['denied'])) {
+    header('Location: ' . filter_var('/', FILTER_SANITIZE_URL));
+    exit;
 }
 
 $twitterAuthorization = new TwitterAuthorization();
