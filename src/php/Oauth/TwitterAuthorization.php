@@ -25,12 +25,11 @@ class TwitterAuthorization
     }
 
     /**
-     * Twitterの接続情報を作成する
+     * Twitterの接続情報を作成
      * @param string|null $oauthToken
      * @param string|null $oauthTokenSecret
-     * @return TwitterOAuth TwitterOAuth接続情報
      */
-    public function createTwitterConnection(?string $oauthToken = null, ?string $oauthTokenSecret = null): TwitterOAuth
+    public function createTwitterConnection(?string $oauthToken = null, ?string $oauthTokenSecret = null): void
     {
         $this->connection = new TwitterOAuth(
             $_ENV['TWITTER_APIKEY'] ?? getenv('TWITTER_APIKEY'),
@@ -40,16 +39,14 @@ class TwitterAuthorization
         );
 
         $this->connection->setApiVersion('1.1');
-
-        return $this->connection;
     }
 
     /**
-     * リクエスト情報を作成する
+     * リクエストトークンを取得
      * @param TwitterOAuth $connection
      * @return array `request_token`
      */
-    public function createRequestInfo(): array
+    public function getRequestToken(): array
     {
         $request_token = $this->connection->oauth('oauth/request_token', [
             'oauth_callback' => (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) ?
@@ -60,7 +57,7 @@ class TwitterAuthorization
     }
 
     /**
-     * リクエストトークンとアクセストークンを交換する
+     * リクエストトークンとアクセストークンを交換
      * @param TwitterOAuth $connection TwitterOAuth接続情報
      * @return array `access_token`
      */
@@ -84,5 +81,20 @@ class TwitterAuthorization
         ]);
 
         return $auth_url;
+    }
+
+    /**
+     * ユーザーの認証情報を取得
+     * @return array ユーザー認証情報
+     */
+    public function getUserVerifyCredentials(): array
+    {
+        $user = get_object_vars($this->connection->get("account/verify_credentials", [
+            'include_email' => 'true',
+            'skip_status' => 'true',
+            'include_entities' => 'false'
+        ]));
+
+        return $user;
     }
 }
