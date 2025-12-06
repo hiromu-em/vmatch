@@ -17,7 +17,7 @@ if (isset($_GET['oauth_token']) && $_SESSION['oauth_token'] !== $_GET['oauth_tok
 }
 
 $twitterAuthorization = new TwitterAuthorization();
-$connection = $twitterAuthorization->createTwitterConnection($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+$twitterAuthorization->createTwitterConnection($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 
 // アクセストークンを取得してセッションに保存
 $_SESSION['access_token'] = $twitterAuthorization->exchangeAccessToken();
