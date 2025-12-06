@@ -11,24 +11,23 @@ session_start(['use_strict_mode' => 1]);
 const DASHBOARD = '../dashboard.php';
 const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 
-$TwitterAuthorization = new TwitterAuthorization();
+$twitterAuthorization = new TwitterAuthorization();
 
 if (isset($_SESSION['access_token'])) {
 
     $access_token = $_SESSION['access_token'];
 
-    $connection = $TwitterAuthorization->createTwitterConnection(
+    $twitterAuthorization->createTwitterConnection(
         $access_token['oauth_token'],
         $access_token['oauth_token_secret']
     );
 
-    $user = get_object_vars($connection->get("account/verify_credentials", [
-        'include_email' => 'true',
-        'skip_status' => 'true',
-        'include_entities' => 'false'
-    ]));
+    // ユーザー認証情報取得
+    $user = $twitterAuthorization->getUserVerifyCredentials();
 
     $userAuthentication = new UserAuthentication();
+
+    // プロパイダ―IDの存在確認
     if ($userAuthentication->providerIdExists($user['id_str'])) {
 
         // IDが存在する場合、ダッシュボードへリダイレクト
@@ -47,17 +46,18 @@ if (isset($_SESSION['access_token'])) {
     exit;
 }
 
-// Twitterの接続情報を取得する
-$connection = $TwitterAuthorization->createTwitterConnection();
+// Twitterの接続情報を作成
+$twitterAuthorization->createTwitterConnection();
 
 // リクエストトークンを取得
-$requestToken = $TwitterAuthorization->createRequestInfo();
+$requestToken = $twitterAuthorization->getRequestToken();
 
 $_SESSION['oauth_token'] = $requestToken['oauth_token'];
 $_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
 
-// 認証URLへリダイレクト
-$url = $TwitterAuthorization->createAuthUrl();
+// 認証URLを作成
+$url = $twitterAuthorization->createAuthUrl();
 
+// 認証サーバーにリダイレクト
 header("Location: $url");
 exit;
