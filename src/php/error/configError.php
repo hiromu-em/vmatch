@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 <body>
     <p>現在、システムに問題が発生しています。<br>時間をおいて再度お試しください。</p>
+    <p><a href="/">HOMEへ戻る</a></p>
 </body>
 
 </html>
