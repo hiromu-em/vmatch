@@ -20,7 +20,7 @@ $twitterAuthorization = new TwitterAuthorization();
 $connection = $twitterAuthorization->createTwitterConnection($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 
 // アクセストークンを取得してセッションに保存
-$_SESSION['access_token'] = $twitterAuthorization->exchangeAccessToken($connection);
+$_SESSION['access_token'] = $twitterAuthorization->exchangeAccessToken();
 
 header('Location:' . TWITTER_OAUTH_PATH);
 exit;
