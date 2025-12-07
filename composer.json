@@ -11,6 +11,8 @@
         "ext-pdo_pgsql": "*",
         "ext-pgsql": "*",
         "google/apiclient": "^2.18",
-        "abraham/twitteroauth": "^8.1"
+        "abraham/twitteroauth": "^8.1",
+        "coderjerk/bird-elephant": "^0.7.1",
+        "smolblog/oauth2-twitter": "^1.2"
     }
 }
