@@ -5,7 +5,7 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
     header('Location: src/php/Oauth/googleOauth.php');
     exit;
 } else if (isset($_GET['oauth']) && $_GET['oauth'] === 'twitter') {
-    header('Location: src/php/Oauth/twitterOauth.php');
+    header('Location: src/php/Oauth/twitterOauth2.php');
     exit;
 }
 
