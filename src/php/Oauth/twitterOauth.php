@@ -17,6 +17,7 @@ if (isset($_SESSION['access_token'])) {
 
     $access_token = $_SESSION['access_token'];
 
+    // Twitterの接続情報を作成
     $twitterAuthorization->createTwitterConnection(
         $access_token['oauth_token'],
         $access_token['oauth_token_secret']
@@ -37,8 +38,10 @@ if (isset($_SESSION['access_token'])) {
 
     $userAuthentication->registerEmail($user['email']);
 
+    // userIdを取得
     $userId = $userAuthentication->userInfoSearch($user['email']);
 
+    // プロバイダ―IDとuserIDを紐付ける
     $userAuthentication->linkProviderUserId($userId, $user['id_str'], 'twitter');
 
     // IDが存在しない場合、プロフィール設定へリダイレクト
