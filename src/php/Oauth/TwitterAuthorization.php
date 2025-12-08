@@ -25,15 +25,15 @@ class TwitterAuthorization
     }
 
     /**
-     * Twitterの接続情報を作成
+     * Twitter Oauth1.0aの接続情報を作成
      * @param string|null $oauthToken
      * @param string|null $oauthTokenSecret
      */
     public function createTwitterConnection(?string $oauthToken = null, ?string $oauthTokenSecret = null): void
     {
         $this->connection = new TwitterOAuth(
-            $_ENV['TWITTER_APIKEY'] ?? getenv('TWITTER_APIKEY'),
-            $_ENV['TWITTER_APIKEY_SECRET'] ?? getenv('TWITTER_APIKEY_SECRET'),
+            $_ENV['TWITTER_API_KEY'] ?? getenv('TWITTER_API_KEY'),
+            $_ENV['TWITTER_API_KEY_SECRET'] ?? getenv('TWITTER_API_KEY_SECRET'),
             $oauthToken ?? null,
             $oauthTokenSecret ?? null
         );
