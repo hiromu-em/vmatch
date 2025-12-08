@@ -67,7 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="post" class="auth-form" novalidate>
-                <p class="input-label">メールアドレス</p>
+                <div class="register-form-group">
+                    <label for="email" class="input-label">メールアドレス</label>
+                </div>
                 <input type="email" id="email" name="email" placeholder="sample@example.com" required autocomplete="off"
                     class="text-input">
                 <button type="submit" class="btn btn-primary submit-btn">送信</button>
