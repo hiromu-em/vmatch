@@ -17,11 +17,12 @@ class Config
     public function databaseConnection(): \PDO
     {
         //本番環境と開発環境の分岐
+        // 後日テーブル名を本番環境と開発環境で分ける
         if ($this->loadDotenvIfLocal()) {
 
-            $dsn = "pgsql:host={$_ENV['PGHOST']};port=21962;dbname={$_ENV['PGDATABASE']}";
-            $user = $_ENV['PGUSER'];
-            $password = $_ENV['PGPASSWORD'];
+            $dsn = "pgsql:host={$_ENV['PG_LOCAL_HOST']};port=5432;dbname={$_ENV['PG_LOCAL_DATABASE']}";
+            $user = $_ENV['PG_LOCAL_USER'];
+            $password = $_ENV['PG_LOCAL_PASSWORD'];
         } else {
 
             $host = getenv('PGHOST');
