@@ -49,6 +49,7 @@ if (isset($_SESSION['access_token'])) {
     exit;
 }
 
+
 // Twitterの接続情報を作成
 $twitterAuthorization->createTwitterConnection();
 
