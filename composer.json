@@ -12,8 +12,5 @@
         "ext-pgsql": "*",
         "google/apiclient": "^2.18",
         "abraham/twitteroauth": "^8.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^12.5"
     }
 }
