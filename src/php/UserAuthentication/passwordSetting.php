@@ -42,13 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/passwordSetting.css">
     <title>Vmatch-パスワード設定-</title>
 </head>
 
 <body>
+    <div class="password-setting-title">
+        <h3>パスワード設定</h3>
+    </div>
     <div class="password-setting-container">
         <h4>メールアドレス：<?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?></h4>
-        <h3>パスワード設定</h3>
         <?php if (!empty($errorMessages)): ?>
             <div class="error-messages-container">
                 <?php foreach ($errorMessages as $message): ?>
@@ -59,7 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
         <form method="post">
-            <label for="password">パスワード</label>
+            <div class="form-group" style="text-align: start;">
+                <label for="password">パスワード</label>
+            </div>
             <input type="password" id="password" name="password" placeholder="英数字記号(@#$%&*_!)含めて8文字以上" required
                 autocomplete="off" size="33">
             <button type="submit">送信</button>
