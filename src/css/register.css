@@ -85,7 +85,7 @@
 
 .error-item {
     background: linear-gradient(90deg, rgba(233, 30, 99, 0.08), rgba(155, 89, 182, 0.04));
-    border: 1px solid rgba(233, 30, 99, 0.14);
+    border: 2px solid rgba(233, 30, 99, 0.14);
     color: #ffdbe6;
     padding: 10px 12px;
     border-radius: 10px;
