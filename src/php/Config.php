@@ -53,7 +53,8 @@ class Config
      */
     public function loadDotenvIfLocal(bool $isLocal = false): bool
     {
-        if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        if (strpos($host, 'localhost') !== false) {
 
             // フラグ変更
             $isLocal = true;
