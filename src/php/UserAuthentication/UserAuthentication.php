@@ -24,7 +24,7 @@ class UserAuthentication
      */
     public function registerEmail(string $newEmail): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO users(email) VALUES (?)");
+        $statement = $this->pdo->prepare("INSERT INTO users_vmatch(email) VALUES (?)");
         $statement->execute([$newEmail]);
     }
 
@@ -35,7 +35,7 @@ class UserAuthentication
      */
     public function userInfoSearch($newEmail): string
     {
-        $statement = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $statement = $this->pdo->prepare("SELECT * FROM users_vmatch WHERE email = ?");
         $statement->execute([$newEmail]);
         $result = $statement->fetch();
 
@@ -55,7 +55,7 @@ class UserAuthentication
             return $errorCode = 3;
         }
 
-        $query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as status";
+        $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
         $statement = $this->pdo->prepare($query);
         $statement->execute([$newEmail]);
 
@@ -98,7 +98,7 @@ class UserAuthentication
      */
     public function registerPassword(string $newPassword, string $newEmail): void
     {
-        $statement = $this->pdo->prepare("UPDATE users SET password_hash = ? WHERE email = ?");
+        $statement = $this->pdo->prepare("UPDATE users_vmatch SET password_hash = ? WHERE email = ?");
         $statement->execute([$newPassword, $newEmail]);
     }
 
@@ -141,7 +141,7 @@ class UserAuthentication
      */
     public function providerIdExists(string $providerId): bool
     {
-        $query = "SELECT EXISTS(SELECT 1 FROM user_providers WHERE provider_user_id = ?) as status";
+        $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch_providers WHERE provider_user_id = ?) as status";
         $statement = $this->pdo->prepare($query);
         $statement->execute([$providerId]);
 
@@ -160,7 +160,7 @@ class UserAuthentication
      */
     public function linkProviderUserId(string $userId, string $providerId, string $provider): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO user_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
+        $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
     }
 
