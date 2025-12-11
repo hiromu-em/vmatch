@@ -3,6 +3,5 @@ composer.lock
 vendor
 .vscode
 *.pem
-*.phar
 *.bat
-*.cache
+tests/
