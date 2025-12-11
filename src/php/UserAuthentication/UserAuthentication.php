@@ -21,9 +21,14 @@ class UserAuthentication
     /**
      * ユーザーのメールアドレスをDBに登録する
      * @param string $newEmail 新規ユーザーメールアドレス
+     * @throws \InvalidArgumentException メールアドレスがNULLの場合にスロー
      */
-    public function registerEmail(string $newEmail): void
+    public function registerEmail(?string $newEmail): void
     {
+        if($newEmail === null) {
+            throw new \InvalidArgumentException();
+        }
+
         $statement = $this->pdo->prepare("INSERT INTO users_vmatch(email) VALUES (?)");
         $statement->execute([$newEmail]);
     }
@@ -170,8 +175,10 @@ class UserAuthentication
      * @param array $errorMessages エラーメッセージ情報
      * @return array エラーメッセージ結果
      */
-    public function registrationErrorMessage(array $errorCodes, $errorMessages = []): array
+    public function registrationErrorMessage(array $errorCodes): array
     {
+        $errorMessages = [];
+        
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
                 case 0:
