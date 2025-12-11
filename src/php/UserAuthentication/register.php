@@ -19,13 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $errorCodes = [$isNewUser, $isValidEmail];
 
-    //メールアドレス形式OK&&メールアドレス未登録ユーザーはパスワード設定画面へ移動する
+    // メールアドレス形式&&パスワード形式確認
     if (max($errorCodes) === 0) {
 
-        try{
+        try {
             $userAuthentication->registerEmail($email);
-        }catch (\InvalidArgumentException $e){
-            
+        } catch (\InvalidArgumentException $e) {
+
             // メールアドレスがNULLの場合のエラーメッセージ取得
             $errorMessages = $userAuthentication->registrationErrorMessage([3]);
         }
