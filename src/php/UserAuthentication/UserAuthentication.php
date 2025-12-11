@@ -25,7 +25,7 @@ class UserAuthentication
      */
     public function registerEmail(?string $newEmail): void
     {
-        if($newEmail === null) {
+        if ($newEmail === null) {
             throw new \InvalidArgumentException();
         }
 
@@ -73,11 +73,12 @@ class UserAuthentication
     /**
      * メールアドレス検証
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @param int $errorCode エラーコード
      * @return int メールアドレス形式の結果情報
      */
-    public function validateEmail(?string $newEmail, $errorCode = 0): int
+    public function validateEmail(?string $newEmail): int
     {
+        $errorCode = 0;
+
         //NULLチェック
         if (empty($newEmail)) {
             return $errorCode = 3;
@@ -110,11 +111,12 @@ class UserAuthentication
     /**
      * パスワードの形式を検証
      * @param string $newPassword 新規パスワード
-     * @param array $errorCodes エラーコード情報
      * @return array パスワード形式結果情報
      */
-    public function validatePassword(?string $newPassword, $errorCodes = []): array
+    public function validatePassword(?string $newPassword): array
     {
+        $errorCodes = [];
+
         //NULLチェック
         if (empty($newPassword)) {
             return $errorCodes[] = [4];
@@ -178,7 +180,7 @@ class UserAuthentication
     public function registrationErrorMessage(array $errorCodes): array
     {
         $errorMessages = [];
-        
+
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
                 case 0:
