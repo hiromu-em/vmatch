@@ -307,6 +307,30 @@ body {
     fill: currentColor;
 }
 
+/* エラーメッセージ */
+.error-messages-container {
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 13px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.error-item {
+    background: linear-gradient(90deg, rgba(233, 30, 99, 0.08), rgba(155, 89, 182, 0.04));
+    border: 2px solid rgba(233, 30, 99, 0.14);
+    color: #ffdbe6;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+.error-item p {
+    margin: 0;
+}
+
 /* 認証リンク */
 .login-auth-link {
     margin-top: 20px;
