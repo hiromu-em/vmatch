@@ -31,15 +31,15 @@ class UserAuthentication
     /**
      * ユーザーIDを取得する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @return array ユーザーID
+     * @return string ユーザーID情報
      */
-    public function getSearchUserId(string $newEmail): array
+    public function getSearchUserId(string $newEmail): string
     {
         $statement = $this->pdo->prepare("SELECT id FROM users_vmatch WHERE email = ?");
         $statement->execute([$newEmail]);
         $result = $statement->fetch();
 
-        return $result;
+        return $result['id'];
     }
 
     /**
@@ -142,6 +142,25 @@ class UserAuthentication
     }
 
     /**
+     * パスワードの照合
+     * @param string $password パスワード
+     * @param string $email メールアドレス
+     * @return bool 照合結果
+     */
+    public function verifyPassword(string $password, string $email): bool
+    {
+        $statement = $this->pdo->prepare("SELECT password_hash FROM users_vmatch WHERE email = ?");
+        $statement->execute([$email]);
+        $result = $statement->fetch();
+
+        if ($result && password_verify($password, $result['password_hash'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * プロバイダーIDの存在確認
      * @param string $providerId プロバイダーID
      * @return bool プロバイダーID存在結果
@@ -165,9 +184,8 @@ class UserAuthentication
      * @param string $providerId プロバイダーID
      * @param string $provider プロパイダ―名
      */
-    public function linkProviderUserId(array $userId, string $providerId, string $provider): void
+    public function linkProviderUserId(string $userId, string $providerId, string $provider): void
     {
-        $userId = $userId['id'];
         $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
     }
@@ -178,10 +196,10 @@ class UserAuthentication
      * @param bool $isLogin ログイン判定フラグ
      * @return array エラーメッセージ結果
      */
-    public function errorMessage(array $errorCodes, bool $isLogin = false): array
+    public function errorMessages(array $errorCodes, bool $isLogin = false): array
     {
         $errorMessages = [];
-        
+
         if ($isLogin) {
             $errorMessages[] = "メールアドレス\nまたはパスワードが正しくありません。";
             return $errorMessages;
