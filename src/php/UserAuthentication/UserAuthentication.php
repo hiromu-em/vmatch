@@ -191,19 +191,23 @@ class UserAuthentication
     }
 
     /**
+     * ログインエラーメッセージを取得する
+     * @return string エラーメッセージ情報
+     */
+    public function loginErrorMessages(): string
+    {
+        $errorMessage = "メールアドレス\nまたはパスワードが正しくありません。";
+        return $errorMessage;
+    }
+
+    /**
      * エラーメッセージを取得する
      * @param array $errorCodes エラーコード情報
-     * @param bool $isLogin ログイン判定フラグ
-     * @return array|string エラーメッセージ情報
+     * @return array エラーメッセージ情報
      */
-    public function errorMessage(array $errorCodes, bool $isLogin = false): array|string
+    public function errorMessage(array $errorCodes): array
     {
         $errorMessages = [];
-
-        if ($isLogin) {
-            $errorMessages = "メールアドレス\nまたはパスワードが正しくありません。";
-            return $errorMessages;
-        }
 
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
