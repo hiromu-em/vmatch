@@ -37,7 +37,7 @@ if ($userAuthentication->providerIdExists($token['sub'])) {
 $userAuthentication->registerEmail($token['email']);
 
 // 該当するユーザーのIDを検索する
-$userId = $userAuthentication->searchUserId($token['email']);
+$userId = $userAuthentication->getSearchUserId($token['email']);
 
 // ユーザーIDとプロパイダ―IDの紐付け
 $userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
