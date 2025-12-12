@@ -31,26 +31,12 @@ class UserAuthentication
     /**
      * ユーザーIDを取得する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @return string ユーザーID
+     * @return array ユーザーID
      */
-    public function searchUserId(?string $newEmail): string
+    public function getSearchUserId(string $newEmail): array
     {
-        $statement = $this->pdo->prepare("SELECT * FROM users_vmatch WHERE email = ?");
+        $statement = $this->pdo->prepare("SELECT id FROM users_vmatch WHERE email = ?");
         $statement->execute([$newEmail]);
-        $result = $statement->fetch();
-
-        return $result['id'];
-    }
-
-    /**
-     * ユーザー情報を取得する
-     * @param string $userId ユーザーID
-     * @return array ユーザー情報
-     */
-    public function getUserInfoById(string $userId): array
-    {
-        $statement = $this->pdo->prepare("SELECT * FROM users_vmatch WHERE id = ?");
-        $statement->execute([$userId]);
         $result = $statement->fetch();
 
         return $result;
@@ -59,11 +45,12 @@ class UserAuthentication
     /**
      * ユーザーのメールアドレスを確認する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @param int $errorCode エラーコード
      * @return int 新規メールアドレスの結果
      */
-    public function emailExists(?string $newEmail, $errorCode = 0): int
+    public function emailExists(?string $newEmail): int
     {
+        $errorCode = 0;
+
         //NULLチェック
         if (empty($newEmail)) {
             return $errorCode = 3;
@@ -88,12 +75,12 @@ class UserAuthentication
     {
         $errorCode = 0;
 
-        //NULLチェック
+        //NULLチェック or 空文字チェック
         if (empty($newEmail)) {
             return $errorCode = 3;
         }
 
-        // 空文字チェック、メールアドレスの形式チェック
+        // メールアドレスの形式チェック
         if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
             return $errorCode = 2;
         }
@@ -126,23 +113,27 @@ class UserAuthentication
     {
         $errorCodes = [];
 
-        //NULLチェック
+        //NULLチェック or 空文字チェック
         if (empty($newPassword)) {
             return $errorCodes[] = [4];
         }
 
+        // 文字列の長さチェック
         if (mb_strlen($newPassword) < 8) {
             $errorCodes[] = 5;
         }
 
+        // 英字の有無チェック
         if (!preg_match('/[A-Za-z]/', $newPassword)) {
             $errorCodes[] = 6;
         }
 
+        // 数字の有無チェック
         if (!preg_match('/\d/', $newPassword)) {
             $errorCodes[] = 7;
         }
 
+        // 記号の有無チェック
         if (!preg_match('/[@#\$%\^&\*]/', $newPassword)) {
             $errorCodes[] = 8;
         }
@@ -170,25 +161,31 @@ class UserAuthentication
 
     /**
      * プロバイダーIDとユーザーIDを紐付ける
-     * @param int $userId ユーザーID
+     * @param array $userId ユーザーID
      * @param string $providerId プロバイダーID
      * @param string $provider プロパイダ―名
      */
-    public function linkProviderUserId(string $userId, string $providerId, string $provider): void
+    public function linkProviderUserId(array $userId, string $providerId, string $provider): void
     {
+        $userId = $userId['id'];
         $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
     }
 
     /**
-     * 新規登録時のエラーメッセージを取得する
+     * エラーメッセージを取得する
      * @param array $errorCodes エラーコード情報
-     * @param array $errorMessages エラーメッセージ情報
+     * @param bool $isLogin ログイン判定フラグ
      * @return array エラーメッセージ結果
      */
-    public function registrationErrorMessage(array $errorCodes): array
+    public function errorMessage(array $errorCodes, bool $isLogin = false): array
     {
         $errorMessages = [];
+        
+        if ($isLogin) {
+            $errorMessages[] = "メールアドレス\nまたはパスワードが正しくありません。";
+            return $errorMessages;
+        }
 
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
@@ -220,6 +217,7 @@ class UserAuthentication
                     break;
             }
         }
+
 
         return $errorMessages;
     }
