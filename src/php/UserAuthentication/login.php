@@ -1,6 +1,14 @@
 <?php
 declare(strict_types=1);
 
+use Vmatch\UserAuthentication\UserAuthentication;
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
+session_start([
+    'use_strict_mode' => 1
+]);
+
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
     header('Location: ../Oauth/googleOauth.php');
     exit;
@@ -9,6 +17,23 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $email = $_POST['email'] ?? null;
+    $password = $_POST['password'] ?? null;
+
+    $userAuthentication = new UserAuthentication();
+    $validEmail = $userAuthentication->validateEmail($email);
+    $validPassword = $userAuthentication->validatePassword($password);
+
+    $errorCodes = array_unique([$validEmail, ...$validPassword]);
+    
+    // バリデーションのエラーメッセージ取得
+    if (max($errorCodes) !== 0) {
+        $errorMessages = $userAuthentication->errorMessage($errorCodes, true);
+    }
+    
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -33,16 +58,25 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
         <div class="login-hero-content">
             <h1 class="login-main-title">ログイン</h1>
         </div>
-        
-        <!-- メールアドレスとパスワードのログインフォーム -->
-        <form method="post" action="login.php" class="login-credentials-form">
+        <?php if (!empty($errorMessages)): ?>
+            <div class="error-messages-container">
+                <?php foreach ($errorMessages as $message): ?>
+                    <div class="error-item">
+                        <p><?php echo nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <form method="post" class="login-credentials-form">
             <div class="login-form-group">
                 <label for="email" class="login-form-label">メールアドレス</label>
-                <input type="email" id="email" name="email" class="login-form-input" autocomplete="off" required placeholder="example@email.com">
+                <input type="email" id="email" name="email" class="login-form-input" autocomplete="off" required
+                    placeholder="example@email.com">
             </div>
             <div class="login-form-group">
                 <label for="password" class="login-form-label">パスワード</label>
-                <input type="password" id="password" name="password" class="login-form-input" autocomplete="off" required placeholder="パスワードを入力">
+                <input type="password" id="password" name="password" class="login-form-input" autocomplete="off"
+                    required placeholder="パスワードを入力">
             </div>
             <button type="submit" class="login-submit-button">ログイン</button>
         </form>
@@ -77,7 +111,8 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
                     <span class="login-gsi-material-button-contents">Sign in with Google</span>
                 </div>
             </button>
-            <button class="login-gsi-material-button login-x-material-button" type="submit" name="oauth" value="twitter">
+            <button class="login-gsi-material-button login-x-material-button" type="submit" name="oauth"
+                value="twitter">
                 <div class="login-gsi-material-button-state"></div>
                 <div class="login-gsi-material-button-content-wrapper">
                     <div class="login-gsi-material-button-icon" aria-hidden="true">
