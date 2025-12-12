@@ -196,7 +196,7 @@ class UserAuthentication
      * @param bool $isLogin ログイン判定フラグ
      * @return array|string エラーメッセージ情報
      */
-    public function errorMessages(array $errorCodes, bool $isLogin = false): array|string
+    public function errorMessage(array $errorCodes, bool $isLogin = false): array|string
     {
         $errorMessages = [];
 
