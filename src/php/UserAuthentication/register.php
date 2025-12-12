@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $isNewUser = $userAuthentication->emailExists($email);
     $isValidEmail = $userAuthentication->validateEmail(trim($email));
 
-    $errorCodes = [$isNewUser, $isValidEmail];
+    $errorCodes = array_unique([$isNewUser, $isValidEmail]);
 
     // メールアドレス形式&&パスワード形式確認
     if (max($errorCodes) === 0) {
