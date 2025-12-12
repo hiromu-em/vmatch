@@ -21,30 +21,39 @@ class UserAuthentication
     /**
      * ユーザーのメールアドレスをDBに登録する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @throws \InvalidArgumentException メールアドレスがNULLの場合にスロー
      */
-    public function registerEmail(?string $newEmail): void
+    public function registerEmail(string $newEmail): void
     {
-        if ($newEmail === null) {
-            throw new \InvalidArgumentException();
-        }
-
         $statement = $this->pdo->prepare("INSERT INTO users_vmatch(email) VALUES (?)");
         $statement->execute([$newEmail]);
     }
 
     /**
-     * ユーザー情報を検索する
+     * ユーザーIDを取得する
      * @param string $newEmail 新規ユーザーメールアドレス
      * @return string ユーザーID
      */
-    public function userInfoSearch($newEmail): string
+    public function searchUserId(?string $newEmail): string
     {
         $statement = $this->pdo->prepare("SELECT * FROM users_vmatch WHERE email = ?");
         $statement->execute([$newEmail]);
         $result = $statement->fetch();
 
         return $result['id'];
+    }
+
+    /**
+     * ユーザー情報を取得する
+     * @param string $userId ユーザーID
+     * @return array ユーザー情報
+     */
+    public function getUserInfoById(string $userId): array
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM users_vmatch WHERE id = ?");
+        $statement->execute([$userId]);
+        $result = $statement->fetch();
+
+        return $result;
     }
 
     /**
