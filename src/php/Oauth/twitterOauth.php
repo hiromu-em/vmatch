@@ -38,8 +38,8 @@ if (isset($_SESSION['access_token'])) {
 
     $userAuthentication->registerEmail($user['email']);
 
-    // userIdを取得
-    $userId = $userAuthentication->userInfoSearch($user['email']);
+    // userIdを検索する
+    $userId = $userAuthentication->searchUserId($user['email']);
 
     // プロバイダ―IDとuserIDを紐付ける
     $userAuthentication->linkProviderUserId($userId, $user['id_str'], 'twitter');
