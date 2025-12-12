@@ -194,7 +194,7 @@ class UserAuthentication
      * ログインエラーメッセージを取得する
      * @return string エラーメッセージ情報
      */
-    public function loginErrorMessages(): string
+    public function loginErrorMessage(): string
     {
         $errorMessage = "メールアドレス\nまたはパスワードが正しくありません。";
         return $errorMessage;
