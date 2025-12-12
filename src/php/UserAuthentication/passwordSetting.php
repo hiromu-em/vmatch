@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // エラーコードが存在する場合、エラーメッセージを取得
     if (!empty($errorCodes)) {
 
-        $errorMessages = $userAuthentication->errorMessage($errorCodes);
+        $errorMessages = $userAuthentication->errorMessages($errorCodes);
 
     } else {
 

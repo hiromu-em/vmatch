@@ -205,7 +205,7 @@ class UserAuthentication
      * @param array $errorCodes エラーコード情報
      * @return array エラーメッセージ情報
      */
-    public function errorMessage(array $errorCodes): array
+    public function errorMessages(array $errorCodes): array
     {
         $errorMessages = [];
 
