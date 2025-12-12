@@ -22,14 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // メールアドレス形式&&パスワード形式確認
     if (max($errorCodes) === 0) {
 
-        try {
-            $userAuthentication->registerEmail($email);
-        } catch (\InvalidArgumentException $e) {
-
-            // メールアドレスがNULLの場合のエラーメッセージ取得
-            $errorMessages = $userAuthentication->registrationErrorMessage([3]);
-        }
-
+        $userAuthentication->registerEmail($email);
         $_SESSION['email'] = $email;
         header('Location: passwordSetting.php');
         exit;
