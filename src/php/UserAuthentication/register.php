@@ -15,13 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $userAuthentication = new UserAuthentication();
 
-    // 登録済みユーザー確認
+    // 既登録ユーザー確認
     $isRegisteredUsers = $userAuthentication->emailExists($email, false);
 
     // メールアドレス形式確認
     $isValidEmail = $userAuthentication->validateEmail(trim($email));
 
-    // メールアドレス形式&&未登録ユーザーの場合、登録処理
+    // メールアドレス形式OK && 未登録ユーザーの場合、登録処理へ進む
     if ($isValidEmail && !$isRegisteredUsers) {
         $_SESSION['email'] = $email;
         header('Location: newRegistration.php');
