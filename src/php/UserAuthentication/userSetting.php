@@ -24,9 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // パスワード形式が不正な場合、エラーメッセージを取得
     if (!$isValidPassword) {
-
         $errorMessages = $userAuthentication->errorMessages();
-
     } else {
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
