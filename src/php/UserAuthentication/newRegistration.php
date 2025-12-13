@@ -17,7 +17,7 @@ if ($_SESSION['email'] === null || !isset($_SESSION['email'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // セッションからメールアドレスを取得
-    // もしセッションにメールアドレスが無ければトップページへリダイレクト
+    // セッションにメールアドレスが無ければトップページへリダイレクト
     $email = $_SESSION['email'] ?? header('Location: /');
 
     $password = $_POST['password'] ?? null;
