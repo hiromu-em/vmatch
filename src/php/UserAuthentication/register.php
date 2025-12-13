@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // メールアドレス形式&&未登録ユーザーの場合、登録処理
     if ($isValidEmail && !$isRegisteredUsers) {
-        $userAuthentication->registerEmail($email);
         $_SESSION['email'] = $email;
         header('Location: passwordSetting.php');
         exit;
