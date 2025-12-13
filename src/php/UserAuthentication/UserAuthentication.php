@@ -117,38 +117,41 @@ class UserAuthentication
     /**
      * パスワードの形式を検証
      * @param string $newPassword 新規パスワード
-     * @return array パスワード形式結果情報
+     * @return bool パスワード形式結果
      */
-    public function validatePassword(?string $newPassword): array
+    public function validatePassword(?string $newPassword): bool
     {
-        $errorCodes = [];
-
         //NULLチェック or 空文字チェック
         if (empty($newPassword)) {
-            return $errorCodes[] = [4];
+            $this->errorCodes[] = 4;
+            return false;
         }
 
         // 文字列の長さチェック
         if (mb_strlen($newPassword) < 8) {
-            $errorCodes[] = 5;
+            $this->errorCodes[] = 5;
         }
 
         // 英字の有無チェック
         if (!preg_match('/[A-Za-z]/', $newPassword)) {
-            $errorCodes[] = 6;
+            $this->errorCodes[] = 6;
         }
 
         // 数字の有無チェック
         if (!preg_match('/\d/', $newPassword)) {
-            $errorCodes[] = 7;
+            $this->errorCodes[] = 7;
         }
 
         // 記号の有無チェック
         if (!preg_match('/[@#\$%\^&\*]/', $newPassword)) {
-            $errorCodes[] = 8;
+            $this->errorCodes[] = 8;
         }
 
-        return $errorCodes;
+        if (!empty($this->errorCodes)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
