@@ -6,29 +6,32 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Vmatch\UserAuthentication\UserAuthentication;
 
 session_start([
-    'read_and_close' => true,
     'use_strict_mode' => 1
 ]);
 
-if ($_SESSION['email'] === null) {
+if ($_SESSION['email'] === null || !isset($_SESSION['email'])) {
     header('Location: /');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // セッションからメールアドレスを取得
+    // もしセッションにメールアドレスが無ければトップページへリダイレクト
+    $email = $_SESSION['email'] ?? header('Location: /');
+
     $password = $_POST['password'] ?? null;
 
     $userAuthentication = new UserAuthentication();
-    $isValidPassword = $userAuthentication->validatePassword(trim($password));
+    $isValidPassword = $userAuthentication->validatePassword($password);
 
-    // パスワード形式が不正な場合、エラーメッセージを取得
+    // パスワード形式確認
     if (!$isValidPassword) {
         $errorMessages = $userAuthentication->errorMessages();
     } else {
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $userAuthentication->userRegistration($_SESSION['email'], $passwordHash);
+        $userAuthentication->userRegistration($email, $passwordHash);
         header('Location: profileSetting.php');
         exit;
     }
