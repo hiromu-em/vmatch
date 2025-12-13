@@ -104,17 +104,6 @@ class UserAuthentication
     }
 
     /**
-     * 新規ユーザーのパスワードをDBに登録する
-     * @param string $newPassword 新規パスワード
-     * @param string $newEmail 新規メールアドレス
-     */
-    public function registerPassword(string $newPassword, string $newEmail): void
-    {
-        $statement = $this->pdo->prepare("UPDATE users_vmatch SET password_hash = ? WHERE email = ?");
-        $statement->execute([$newPassword, $newEmail]);
-    }
-
-    /**
      * パスワードの形式を検証
      * @param string $newPassword 新規パスワード
      * @return bool パスワード形式結果
@@ -152,6 +141,18 @@ class UserAuthentication
         }
 
         return true;
+    }
+
+    /**
+     * 新規ユーザー登録処理
+     * @param string $email ユーザーメールアドレス
+     * @param string $passwordHash ハッシュ化パスワード
+     * @return void
+     */
+    public function userRegistration($email, $passwordHash): void
+    {
+        $stetement = $this->pdo->prepare("INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?)");
+        $stetement->execute([$email, $passwordHash]);
     }
 
     /**
