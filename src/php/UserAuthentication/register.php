@@ -14,22 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? null;
 
     $userAuthentication = new UserAuthentication();
-    $isNewUser = $userAuthentication->emailExists($email);
+
+    // 登録済みユーザー確認
+    $isRegisteredUsers = $userAuthentication->emailExists($email, false);
+
+    // メールアドレス形式確認
     $isValidEmail = $userAuthentication->validateEmail(trim($email));
 
-    $errorCodes = array_unique([$isNewUser, $isValidEmail]);
-
-    // メールアドレス形式&&パスワード形式確認
-    if (max($errorCodes) === 0) {
-
+    // メールアドレス形式&&未登録ユーザーの場合、登録処理
+    if ($isValidEmail && !$isRegisteredUsers) {
         $userAuthentication->registerEmail($email);
         $_SESSION['email'] = $email;
         header('Location: passwordSetting.php');
         exit;
 
     } else {
-
-        $errorMessages = $userAuthentication->ErrorMessages(array_unique($errorCodes));
+        // エラーメッセージを取得
+        $errorMessages = $userAuthentication->errorMessages();
     }
 }
 ?>
