@@ -65,7 +65,7 @@ class UserAuthentication
         $result = $statement->fetch();
 
         /**
-         * 登録済みユーザーの場合、登録処理時はエラーコードを追加
+         * 登録済みユーザーの場合、新規登録処理時はエラーコードを追加
          * ログイン処理時は追加しない
          */
         if ($result['status'] && !$loginFlag) {
