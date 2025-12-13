@@ -52,7 +52,7 @@ class UserAuthentication
      */
     public function emailExists(?string $newEmail, bool $loginFlag = true): bool
     {
-        //NULLチェック
+        //NULLチェック or 空文字チェック
         if (empty($newEmail)) {
             $this->errorCodes[] = 3;
             return true;
