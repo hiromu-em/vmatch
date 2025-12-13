@@ -12,6 +12,8 @@ class UserAuthentication
 {
     private $pdo;
 
+    private array $errorCodes = [];
+
     public function __construct()
     {
         $databaseConfig = new Config();
@@ -45,15 +47,15 @@ class UserAuthentication
     /**
      * ユーザーのメールアドレスを確認する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @return int 新規メールアドレスの結果
+     * @param bool $loginFlag ログインフラグ
+     * @return bool メールアドレス存在結果
      */
-    public function emailExists(?string $newEmail): int
+    public function emailExists(?string $newEmail, bool $loginFlag = true): bool
     {
-        $errorCode = 0;
-
         //NULLチェック
         if (empty($newEmail)) {
-            return $errorCode = 3;
+            $this->errorCodes[] = 3;
+            return true;
         }
 
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
@@ -61,36 +63,44 @@ class UserAuthentication
         $statement->execute([$newEmail]);
 
         $result = $statement->fetch();
-        $errorCode = $result['status'] ? 1 : 0;
 
-        return $errorCode;
+        /**
+         * 登録済みユーザーの場合、登録処理時はエラーコードを追加
+         * ログイン処理時は追加しない
+         */
+        if ($result['status'] && !$loginFlag) {
+            $this->errorCodes[] = 1;
+        }
+
+        return $result['status'] ? true : false;
     }
 
     /**
      * メールアドレス検証
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @return int メールアドレス形式の結果情報
+     * @return bool メールアドレス形式結果
      */
-    public function validateEmail(?string $newEmail): int
+    public function validateEmail(?string $newEmail): bool
     {
-        $errorCode = 0;
-
         //NULLチェック or 空文字チェック
         if (empty($newEmail)) {
-            return $errorCode = 3;
+            $this->errorCodes[] = 3;
+            return false;
         }
 
         // メールアドレスの形式チェック
         if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
-            return $errorCode = 2;
+            $this->errorCodes[] = 2;
+            return false;
         }
 
         //ドメイン存在チェック
         if (!checkdnsrr(substr(strrchr($newEmail, "@"), 1), "MX")) {
-            return $errorCode = 2;
+            $this->errorCodes[] = 2;
+            return false;
         }
 
-        return $errorCode;
+        return true;
     }
 
     /**
@@ -205,16 +215,15 @@ class UserAuthentication
      * @param array $errorCodes エラーコード情報
      * @return array エラーメッセージ情報
      */
-    public function errorMessages(array $errorCodes): array
+    public function errorMessages(): array
     {
-        $errorMessages = [];
-
+        $errorCodes = array_unique($this->errorCodes);
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
                 case 0:
                     break;
                 case 1:
-                    $errorMessages[] = "登録済みユーザーです。\nログインしてください。";
+                    $errorMessages[] = "登録済みユーザーです。ログインしてください。";
                     break;
                 case 2:
                     $errorMessages[] = "メールアドレスの形式が正しくありません。";
