@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $userAuthentication->registerPassword($passwordHash, $_SESSION['email']);
+        $userAuthentication->userRegistration($_SESSION['email'], $passwordHash);
         header('Location: profileSetting.php');
         exit;
     }
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/passwordSetting.css">
+    <link rel="stylesheet" href="../../css/userSetting.css">
     <title>Vmatch-パスワード設定-</title>
 </head>
 
