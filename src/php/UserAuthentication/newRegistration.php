@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // セッションにメールアドレスが無ければトップページへリダイレクト
     $email = $_SESSION['email'] ?? header('Location: /');
 
-    $password = $_POST['password'] ?? null;
+    $password = $_POST['password'] ?? '';
 
     $userAuthentication = new UserAuthentication();
     $isValidPassword = $userAuthentication->validatePassword($password);
