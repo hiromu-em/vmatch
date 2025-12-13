@@ -20,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? null;
 
     $userAuthentication = new UserAuthentication();
-    $errorCodes = $userAuthentication->validatePassword(trim($password));
+    $isValidPassword = $userAuthentication->validatePassword(trim($password));
 
-    // エラーコードが存在する場合、エラーメッセージを取得
-    if (!empty($errorCodes)) {
+    // パスワード形式が不正な場合、エラーメッセージを取得
+    if (!$isValidPassword) {
 
-        $errorMessages = $userAuthentication->errorMessages($errorCodes);
+        $errorMessages = $userAuthentication->errorMessages();
 
     } else {
 
