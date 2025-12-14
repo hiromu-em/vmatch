@@ -26,7 +26,7 @@ class UserAuthentication
     }
 
     /**
-     * ユーザーのメールアドレスをDBに登録する
+     * メールアドレスをDBに登録する
      * @param string $newEmail 新規ユーザーメールアドレス
      */
     public function registerEmail(string $newEmail): void
@@ -50,22 +50,22 @@ class UserAuthentication
     }
 
     /**
-     * ユーザーのメールアドレスを確認する
-     * @param string $newEmail 新規ユーザーメールアドレス
+     * メールアドレスを確認する
+     * @param string|null $email
      * @param bool $signIn サインインフラグ
      * @return bool メールアドレス存在結果
      */
-    public function emailExists(?string $newEmail, bool $signIn): bool
+    public function emailExists(?string $email, bool $signIn): bool
     {
         //NULLチェック or 空文字チェック
-        if (empty($newEmail)) {
+        if (empty($email)) {
             $this->errorCodes[] = 3;
             return true;
         }
 
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
         $statement = $this->pdo->prepare($query);
-        $statement->execute([$newEmail]);
+        $statement->execute([$email]);
 
         $result = $statement->fetch();
 
@@ -79,25 +79,25 @@ class UserAuthentication
 
     /**
      * メールアドレス検証
-     * @param string $newEmail 新規ユーザーメールアドレス
+     * @param string|null $email
      * @return bool メールアドレス形式結果
      */
-    public function validateEmail(?string $newEmail): bool
+    public function validateEmail(?string $email): bool
     {
         //NULLチェック or 空文字チェック
-        if (empty($newEmail)) {
+        if (empty($email)) {
             $this->errorCodes[] = 3;
             return false;
         }
 
         // メールアドレスの形式チェック
-        if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->errorCodes[] = 2;
             return false;
         }
 
         //ドメイン存在チェック
-        if (!checkdnsrr(substr(strrchr($newEmail, "@"), 1), "MX")) {
+        if (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
             $this->errorCodes[] = 2;
             return false;
         }
@@ -107,34 +107,34 @@ class UserAuthentication
 
     /**
      * パスワードの形式を検証
-     * @param string $newPassword 新規パスワード
+     * @param string|null $password
      * @return bool パスワード形式結果
      */
-    public function validatePassword(?string $newPassword): bool
+    public function validatePassword(?string $password): bool
     {
         //NULLチェック or 空文字チェック
-        if (empty($newPassword)) {
+        if (empty($password)) {
             $this->errorCodes[] = 4;
             return false;
         }
 
         // 文字列の長さチェック
-        if (mb_strlen($newPassword) < 8) {
+        if (mb_strlen($password) < 8) {
             $this->errorCodes[] = 5;
         }
 
         // 英字の有無チェック
-        if (!preg_match('/[A-Za-z]/', $newPassword)) {
+        if (!preg_match('/[A-Za-z]/', $password)) {
             $this->errorCodes[] = 6;
         }
 
         // 数字の有無チェック
-        if (!preg_match('/\d/', $newPassword)) {
+        if (!preg_match('/\d/', $password)) {
             $this->errorCodes[] = 7;
         }
 
         // 記号の有無チェック
-        if (!preg_match('/[@#\$%\^&\*]/', $newPassword)) {
+        if (!preg_match('/[@#\$%\^&\*]/', $password)) {
             $this->errorCodes[] = 8;
         }
 
