@@ -10,9 +10,14 @@ use Vmatch\Config;
  */
 class UserAuthentication
 {
+    // PDOインスタンス
     private $pdo;
 
+    // エラーコード配列
     private array $errorCodes = [];
+
+    // 認証済みユーザー情報
+    private ?array $authenticatedUser = null;
 
     public function __construct()
     {
@@ -157,11 +162,11 @@ class UserAuthentication
 
     /**
      * パスワードの照合
+     * @param string $email ユーザーメールアドレス
      * @param string $password パスワード
-     * @param string $email メールアドレス
      * @return bool 照合結果
      */
-    public function verifyPassword(string $password, string $email): bool
+    public function verifyPassword(string $email, string $password): bool
     {
         $statement = $this->pdo->prepare("SELECT password_hash FROM users_vmatch WHERE email = ?");
         $statement->execute([$email]);
@@ -172,6 +177,26 @@ class UserAuthentication
         } else {
             return false;
         }
+    }
+
+    /**
+     * 認証済みユーザーを設定する
+     * @param string $email メールアドレス
+     * @param string $password パスワード
+     */
+    public function setAuthenticatedUser($email, $password)
+    {
+        $this->authenticatedUser['email'] = $email;
+        $this->authenticatedUser['password'] = $password;
+    }
+
+    /**
+     * 認証済みユーザー情報を取得する
+     * @return array|null 認証済みユーザー情報
+     */
+    public function getAuthenticatedUser(): array|null
+    {
+        return $this->authenticatedUser;
     }
 
     /**
