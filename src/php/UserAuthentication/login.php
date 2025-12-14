@@ -31,9 +31,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessage = $userAuthentication->errorMessages(true);
     }
 
-    // エラーメッセージが空の場合、ログイン処理を実行
     if (empty($errorMessage)) {
-        
+        // DBにメールアドレス・パスワードが存在するか確認
+        $existingUsersEmail = $userAuthentication->emailExists($email);
+        $existingUsersPassword = $userAuthentication->verifyPassword($email, $password);
+
+        // 認証結果
+        $authenticationResults = $existingUsersEmail === $existingUsersPassword ? true : false;
+
+        // 認証成功・失敗による処理分岐
+        $authenticationResults
+            ? $userAuthentication->setAuthenticatedUser($email, $password)
+            : $errorMessage = $userAuthentication->errorMessages(true);
+    }
+
+    // 認証済みユーザー情報取得
+    $authenticatedUser = $userAuthentication->getAuthenticatedUser() ?? '';
+
+    if (empty($errorMessage) && $authenticatedUser !== '') {
+        // セッションに認証済みユーザー情報を保存
+        $_SESSION['authenticatedUser'] = $authenticatedUser;
+
+        // ダッシュボードへリダイレクト
+        header('Location: ../dashboard.php');
+        exit;
+
     }
 }
 ?>
