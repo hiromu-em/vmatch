@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $existingUsersPassword = $userAuthentication->verifyPassword($email, $password);
 
         // 認証結果
-        $authenticationResults = $existingUsersEmail === $existingUsersPassword ? true : false;
+        $authenticationResults = $existingUsersEmail && $existingUsersPassword === true ? true : false;
 
         // 認証成功・失敗による処理分岐
         $authenticationResults
