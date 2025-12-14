@@ -26,13 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validEmail = $userAuthentication->validateEmail($email);
     $validPassword = $userAuthentication->validatePassword($password);
 
-    $errorCodes = array_unique([$validEmail, ...$validPassword]);
-    
-    // バリデーションのエラーメッセージ取得
-    if (max($errorCodes) !== 0) {
-        $errorMessages = $userAuthentication->errorMessage($errorCodes, true);
+    // メールアドレス・パスワード形式確認
+    if (!$validEmail || !$validPassword) {
+        $errorMessage = $userAuthentication->errorMessages(true);
     }
-    
+
+    // エラーメッセージが空の場合、ログイン処理を実行
+    if (empty($errorMessage)) {
+        
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -58,13 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-hero-content">
             <h1 class="login-main-title">ログイン</h1>
         </div>
-        <?php if (!empty($errorMessages)): ?>
+        <?php if (!empty($errorMessage)): ?>
             <div class="error-messages-container">
-                <?php foreach ($errorMessages as $message): ?>
-                    <div class="error-item">
-                        <p><?php echo nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8')); ?></p>
-                    </div>
-                <?php endforeach; ?>
+                <div class="error-item">
+                    <p><?php echo nl2br(htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8')); ?></p>
+                </div>
             </div>
         <?php endif; ?>
         <form method="post" class="login-credentials-form">

@@ -205,22 +205,16 @@ class UserAuthentication
     }
 
     /**
-     * ログインエラーメッセージを取得する
-     * @return string エラーメッセージ情報
-     */
-    public function loginErrorMessage(): string
-    {
-        $errorMessage = "メールアドレス\nまたはパスワードが正しくありません。";
-        return $errorMessage;
-    }
-
-    /**
      * エラーメッセージを取得する
-     * @param array $errorCodes エラーコード情報
-     * @return array エラーメッセージ情報
+     * @param bool $loginError ログインエラーフラグ
+     * @return array|string エラーメッセージ情報
      */
-    public function errorMessages(): array
+    public function errorMessages($loginError = false): array|string
     {
+        if ($loginError) {
+            return "メールアドレス\nまたはパスワードが正しくありません。";
+        }
+
         $errorCodes = array_unique($this->errorCodes);
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
