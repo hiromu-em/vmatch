@@ -52,10 +52,10 @@ class UserAuthentication
     /**
      * ユーザーのメールアドレスを確認する
      * @param string $newEmail 新規ユーザーメールアドレス
-     * @param bool $loginFlag ログインフラグ
+     * @param bool $signIn サインインフラグ
      * @return bool メールアドレス存在結果
      */
-    public function emailExists(?string $newEmail, bool $loginFlag = true): bool
+    public function emailExists(?string $newEmail, bool $signIn): bool
     {
         //NULLチェック or 空文字チェック
         if (empty($newEmail)) {
@@ -69,11 +69,8 @@ class UserAuthentication
 
         $result = $statement->fetch();
 
-        /**
-         * 登録済みユーザーの場合、新規登録処理時はエラーコードを追加
-         * ログイン処理時は追加しない
-         */
-        if ($result['status'] && !$loginFlag) {
+        // 既登録ユーザーの場合エラーコードを追加
+        if ($result['status'] === true && $signIn === false) {
             $this->errorCodes[] = 1;
         }
 
