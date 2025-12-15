@@ -45,7 +45,7 @@ try {
     // 該当するユーザーのIDを検索する
     $userId = $userAuthentication->getSearchUserId($token['email']);
 
-    // ユーザーIDとプロパイダ―IDの紐付け
+    // ユーザーIDとプロパイダ―IDを紐付ける
     $userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
 
 } catch (PDOException $e) {

@@ -45,7 +45,7 @@ if (isset($_SESSION['access_token'])) {
         // ユーザーのメールアドレスを登録
         $userAuthentication->registerEmail($user['email']);
 
-        // userIdを検索する
+        // 該当するユーザーのIDを検索する
         $userId = $userAuthentication->getSearchUserId($user['email']);
 
         // プロバイダ―IDとuserIDを紐付ける
