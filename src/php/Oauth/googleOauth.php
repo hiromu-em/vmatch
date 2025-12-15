@@ -11,6 +11,7 @@ session_start(['use_strict_mode' => 1]);
 
 const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
+const CONFIGERROR = '../error/configError.php';
 
 $googleAuthorization = new GoogleAuthorization();
 $client = $googleAuthorization->clientConfig();
@@ -37,14 +38,21 @@ if ($userAuthentication->providerIdExists($token['sub'])) {
     exit;
 }
 
-// ユーザーのメールアドレスを登録
-$userAuthentication->registerEmail($token['email']);
+try {
+    // ユーザーのメールアドレスを登録
+    $userAuthentication->registerEmail($token['email']);
 
-// 該当するユーザーのIDを検索する
-$userId = $userAuthentication->getSearchUserId($token['email']);
+    // 該当するユーザーのIDを検索する
+    $userId = $userAuthentication->getSearchUserId($token['email']);
 
-// ユーザーIDとプロパイダ―IDの紐付け
-$userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
+    // ユーザーIDとプロパイダ―IDの紐付け
+    $userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
+
+} catch (PDOException $e) {
+    http_response_code(500);
+    header('Location:' . filter_var(CONFIGERROR, FILTER_SANITIZE_URL));
+    exit;
+}
 
 // プロフィール設定へリダイレクト
 header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));
