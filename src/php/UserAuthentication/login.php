@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -22,7 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
 
-    $userAuthentication = new UserAuthentication();
+    // データベース接続の取得
+    $databaseConfig = new Config();
+    
+    // ユーザー認証クラスのインスタンス化
+    $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
+
     $validEmail = $userAuthentication->validateEmail($email);
     $validPassword = $userAuthentication->validatePassword($password);
 

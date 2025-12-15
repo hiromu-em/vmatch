@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\Config;
 
 session_start([
     'use_strict_mode' => 1
@@ -21,8 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_SESSION['email'] ?? header('Location: /');
 
     $password = $_POST['password'] ?? '';
+    
+    // データベース接続の取得
+    $databaseConfig = new Config();
 
-    $userAuthentication = new UserAuthentication();
+    $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
     $isValidPassword = $userAuthentication->validatePassword($password);
 
     // パスワード形式確認

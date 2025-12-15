@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Vmatch\Oauth\GoogleAuthorization;
 use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -25,7 +26,10 @@ if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_t
 // ユーザー情報を取得
 $token = $client->verifyIdToken();
 
-$userAuthentication = new UserAuthentication();
+// データベース接続の取得
+$databaseConfig = new Config();
+
+$userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 
 // IDが存在する場合、ダッシュボードへリダイレクト
 if ($userAuthentication->providerIdExists($token['sub'])) {

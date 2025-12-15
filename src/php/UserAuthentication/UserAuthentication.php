@@ -3,26 +3,22 @@ declare(strict_types=1);
 
 namespace Vmatch\UserAuthentication;
 
-use Vmatch\Config;
-
 /**
  * ユーザー認証に関わるクラス
  */
 class UserAuthentication
 {
-    // PDOインスタンス
-    private $pdo;
-
     // エラーコード配列
     private array $errorCodes = [];
 
     // 認証済みユーザー情報
     private ?array $authenticatedUser = null;
 
-    public function __construct()
+    /**
+     * @param \PDO $databaseConnection データベース接続
+     */
+    public function __construct(private \PDO $databaseConnection)
     {
-        $databaseConfig = new Config();
-        $this->pdo = $databaseConfig->databaseConnection();
     }
 
     /**
@@ -31,7 +27,7 @@ class UserAuthentication
      */
     public function registerEmail(string $newEmail): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO users_vmatch(email) VALUES (?)");
+        $statement = $this->databaseConnection->prepare("INSERT INTO users_vmatch(email) VALUES (?)");
         $statement->execute([$newEmail]);
     }
 
@@ -42,7 +38,7 @@ class UserAuthentication
      */
     public function getSearchUserId(string $newEmail): string
     {
-        $statement = $this->pdo->prepare("SELECT id FROM users_vmatch WHERE email = ?");
+        $statement = $this->databaseConnection->prepare("SELECT id FROM users_vmatch WHERE email = ?");
         $statement->execute([$newEmail]);
         $result = $statement->fetch();
 
@@ -64,7 +60,7 @@ class UserAuthentication
         }
 
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
-        $statement = $this->pdo->prepare($query);
+        $statement = $this->databaseConnection->prepare($query);
         $statement->execute([$email]);
 
         $result = $statement->fetch();
@@ -153,7 +149,7 @@ class UserAuthentication
      */
     public function userRegistration($email, $passwordHash): void
     {
-        $stetement = $this->pdo->prepare("INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?)");
+        $stetement = $this->databaseConnection->prepare("INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?)");
         $stetement->execute([$email, $passwordHash]);
     }
 
@@ -165,7 +161,7 @@ class UserAuthentication
      */
     public function verifyPassword(string $email, string $password): bool
     {
-        $statement = $this->pdo->prepare("SELECT password_hash FROM users_vmatch WHERE email = ?");
+        $statement = $this->databaseConnection->prepare("SELECT password_hash FROM users_vmatch WHERE email = ?");
         $statement->execute([$email]);
         $result = $statement->fetch();
 
@@ -204,7 +200,7 @@ class UserAuthentication
     public function providerIdExists(string $providerId): bool
     {
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch_providers WHERE provider_user_id = ?) as status";
-        $statement = $this->pdo->prepare($query);
+        $statement = $this->databaseConnection->prepare($query);
         $statement->execute([$providerId]);
 
         $result = $statement->fetch();
@@ -222,7 +218,7 @@ class UserAuthentication
      */
     public function linkProviderUserId(string $userId, string $providerId, string $provider): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
+        $statement = $this->databaseConnection->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
     }
 

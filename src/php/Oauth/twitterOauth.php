@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Vmatch\Oauth\TwitterAuthorization;
 use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -25,8 +26,11 @@ if (isset($_SESSION['access_token'])) {
 
     // ユーザー認証情報取得
     $user = $twitterAuthorization->getUserVerifyCredentials();
+    
+    // データベース接続の取得
+    $databaseConfig = new Config();
 
-    $userAuthentication = new UserAuthentication();
+    $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 
     // プロパイダ―IDの存在確認
     if ($userAuthentication->providerIdExists($user['id_str'])) {
