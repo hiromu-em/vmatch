@@ -11,6 +11,7 @@ session_start(['use_strict_mode' => 1]);
 
 const DASHBOARD = '../dashboard.php';
 const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
+const CONFIGERROR = '../error/configError.php';
 
 $twitterAuthorization = new TwitterAuthorization();
 
@@ -26,7 +27,7 @@ if (isset($_SESSION['access_token'])) {
 
     // ユーザー認証情報取得
     $user = $twitterAuthorization->getUserVerifyCredentials();
-    
+
     // データベース接続の取得
     $databaseConfig = new Config();
 
@@ -40,13 +41,23 @@ if (isset($_SESSION['access_token'])) {
         exit;
     }
 
-    $userAuthentication->registerEmail($user['email']);
+    try {
+        // ユーザーのメールアドレスを登録
+        $userAuthentication->registerEmail($user['email']);
 
-    // userIdを検索する
-    $userId = $userAuthentication->getSearchUserId($user['email']);
+        // userIdを検索する
+        $userId = $userAuthentication->getSearchUserId($user['email']);
 
-    // プロバイダ―IDとuserIDを紐付ける
-    $userAuthentication->linkProviderUserId($userId, $user['id_str'], 'twitter');
+        // プロバイダ―IDとuserIDを紐付ける
+        $userAuthentication->linkProviderUserId($userId, $user['id_str'], 'twitter');
+
+    } catch (PDOException $e) {
+
+        // エラーページへリダイレクト
+        http_response_code(500);
+        header('Location:' . filter_var(CONFIGERROR, FILTER_SANITIZE_URL));
+        exit;
+    }
 
     // IDが存在しない場合、プロフィール設定へリダイレクト
     header('Location:' . filter_var(PROFILESETTNG, FILTER_SANITIZE_URL));

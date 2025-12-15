@@ -49,6 +49,8 @@ try {
     $userAuthentication->linkProviderUserId($userId, $token['sub'], 'google');
 
 } catch (PDOException $e) {
+
+    // エラーページへリダイレクト
     http_response_code(500);
     header('Location:' . filter_var(CONFIGERROR, FILTER_SANITIZE_URL));
     exit;
