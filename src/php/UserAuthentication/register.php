@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // データベース接続の取得
     $databaseConfig = new Config();
-    
+
     $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 
-    // 既登録ユーザー確認
-    $isRegisteredUsers = $userAuthentication->emailExists($email, false);
-
     // メールアドレス形式確認
-    $isValidEmail = $userAuthentication->validateEmail(trim($email));
+    $isValidEmail = $userAuthentication->validateEmail($email);
+
+    // 既登録ユーザー確認
+    $isRegisteredUsers = $userAuthentication->emailExists($userAuthentication->getEmail(), false);
 
     // メールアドレス形式OK && 未登録ユーザーの場合、登録処理へ進む
     if ($isValidEmail && !$isRegisteredUsers) {
