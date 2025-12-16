@@ -17,7 +17,7 @@ class UserAuthentication
     /**
      * @param \PDO $databaseConnection データベース接続
      */
-    public function __construct(private \PDO $databaseConnection)
+    public function __construct(private ?\PDO $databaseConnection = null)
     {
     }
 
