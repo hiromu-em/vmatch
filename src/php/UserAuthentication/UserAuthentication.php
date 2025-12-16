@@ -50,8 +50,7 @@ class UserAuthentication
 
     /**
      * メールアドレスを確認する
-     * @param string|null $email
-     * @param bool $signIn サインインフラグ
+     * @param string $email メールアドレス
      * @return bool メールアドレス存在結果
      */
     public function emailExists(string $email): bool
