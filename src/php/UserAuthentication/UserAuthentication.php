@@ -8,6 +8,9 @@ namespace Vmatch\UserAuthentication;
  */
 class UserAuthentication
 {
+    // ユーザーメールアドレス
+    private string $userEmail;
+
     // エラーコード配列
     private array $errorCodes = [];
 
@@ -51,14 +54,8 @@ class UserAuthentication
      * @param bool $signIn サインインフラグ
      * @return bool メールアドレス存在結果
      */
-    public function emailExists(?string $email, bool $signIn): bool
+    public function emailExists(string $email, bool $signIn): bool
     {
-        //NULLチェック or 空文字チェック
-        if (empty($email)) {
-            $this->errorCodes[] = 3;
-            return true;
-        }
-
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
         $statement = $this->databaseConnection->prepare($query);
         $statement->execute([$email]);
@@ -86,6 +83,8 @@ class UserAuthentication
             return false;
         }
 
+        $email = trim($email);
+
         // メールアドレスの形式チェック
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->errorCodes[] = 2;
@@ -98,7 +97,28 @@ class UserAuthentication
             return false;
         }
 
+        // ユーザーメールアドレスを設定
+        $this->setEmail($email);
+
         return true;
+    }
+
+    /**
+     * ユーザーメールアドレスを設定する
+     * @param string $email ユーザーメールアドレス
+     */
+    public function setEmail(string $email): void
+    {
+        $this->userEmail = $email;
+    }
+
+    /**
+     * ユーザーメールアドレスを取得する
+     * @return string ユーザーメールアドレス
+     */
+    public function getEmail(): string
+    {
+        return $this->userEmail;
     }
 
     /**
