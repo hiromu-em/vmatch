@@ -23,7 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $isValidEmail = $userAuthentication->validateEmail($email);
 
     // 既登録ユーザー確認
-    $isRegisteredUsers = $userAuthentication->emailExists($userAuthentication->getEmail(), false);
+    $isRegisteredUsers = $userAuthentication->emailExists($userAuthentication->getEmail());
+
+    // サインインコード設定
+    $userAuthentication->setSignInCodes($isRegisteredUsers, false);
 
     // メールアドレス形式OK && 未登録ユーザーの場合、登録処理へ進む
     if ($isValidEmail && !$isRegisteredUsers) {

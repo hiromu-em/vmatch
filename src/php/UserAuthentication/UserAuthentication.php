@@ -54,7 +54,7 @@ class UserAuthentication
      * @param bool $signIn サインインフラグ
      * @return bool メールアドレス存在結果
      */
-    public function emailExists(string $email, bool $signIn): bool
+    public function emailExists(string $email): bool
     {
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
         $statement = $this->databaseConnection->prepare($query);
@@ -62,12 +62,23 @@ class UserAuthentication
 
         $result = $statement->fetch();
 
-        // 既登録ユーザーの場合エラーコードを追加
-        if ($result['status'] === true && $signIn === false) {
-            $this->errorCodes[] = 1;
-        }
-
         return $result['status'] ? true : false;
+    }
+
+    /**
+     * サインインコード設定
+     * @param bool $emailExists メールアドレス存在フラグ
+     * @param bool $signIn サインインフラグ
+     * @return array エラーコード配列
+     */
+    public function setSignInCodes(bool $emailExists, bool $signIn): void
+    {
+        if ($emailExists && !$signIn) {
+            $this->errorCodes[] = 1;
+            return;
+        }
+        
+        $this->errorCodes[] = 0;
     }
 
     /**
@@ -245,6 +256,7 @@ class UserAuthentication
     /**
      * エラーメッセージを取得する
      * @param bool $loginError ログインエラーフラグ
+     * @param bool $emailExistence メールアドレス存在フラグ
      * @return array|string エラーメッセージ情報
      */
     public function errorMessages($loginError = false): array|string

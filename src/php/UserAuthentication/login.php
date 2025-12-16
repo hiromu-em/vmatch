@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errorMessage)) {
         // DBにメールアドレス・パスワードが存在するか確認
-        $existingUsersEmail = $userAuthentication->emailExists($email, true);
+        $existingUsersEmail = $userAuthentication->emailExists($email);
         $existingUsersPassword = $userAuthentication->verifyPassword($email, $password);
 
         // 認証結果
