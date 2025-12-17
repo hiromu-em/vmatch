@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Vmatch\UserAuthentication\UserAuthentication;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class UserAuthenticationTest extends TestCase
 {
@@ -66,9 +67,21 @@ class UserAuthenticationTest extends TestCase
     }
 
     /**
+     * testEmailExists用データプロバイダー
+     */
+    public static function emailExistsProvider()
+    {
+        return [
+            'DBにメールアドレスが存在する場合' => [true, true],
+            'DBにメールアドレスが存在しない場合' => [false, false],
+        ];
+    }
+
+    /**
      * メールアドレス存在確認のテスト
      */
-    public function testEmailExists()
+     #[DataProvider('emailExistsProvider')]
+    public function testEmailExists(bool $dbStatus, bool $expected)
     {
         $stetementMock = $this->createMock(PDOStatement::class);
 
@@ -80,7 +93,7 @@ class UserAuthenticationTest extends TestCase
         $stetementMock
             ->expects($this->once())
             ->method('fetch')
-            ->willReturn(['status' => false]);
+            ->willReturn(['status' => $dbStatus]);
 
         $pdoMock = $this->createMock(PDO::class);
         $pdoMock
@@ -90,8 +103,6 @@ class UserAuthenticationTest extends TestCase
             ->willReturn($stetementMock);
 
         $userAuth = new UserAuthentication($pdoMock);
-        $result = $userAuth->emailExists(self::EMAIL);
-
-        $this->assertFalse($result);
+        $this->assertSame($expected, $userAuth->emailExists(self::EMAIL));
     }
 }
