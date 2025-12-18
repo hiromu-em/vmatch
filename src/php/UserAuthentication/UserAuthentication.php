@@ -73,11 +73,11 @@ class UserAuthentication
     public function setSignInCodes(bool $emailExists, bool $signIn): void
     {
         if ($emailExists && !$signIn) {
-            $this->errorCodes[] = 1;
+            $this->setErrorCodes(1);
             return;
         }
         
-        $this->errorCodes[] = 0;
+        $this->setErrorCodes(0);
     }
 
     /**
@@ -89,7 +89,7 @@ class UserAuthentication
     {
         //NULLチェック or 空文字チェック
         if (empty($email)) {
-            $this->errorCodes[] = 3;
+            $this->setErrorCodes(3);
             return false;
         }
 
@@ -97,13 +97,13 @@ class UserAuthentication
 
         // メールアドレスの形式チェック
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->errorCodes[] = 2;
+            $this->setErrorCodes(2);
             return false;
         }
 
         //ドメイン存在チェック
         if (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
-            $this->errorCodes[] = 2;
+            $this->setErrorCodes(2);
             return false;
         }
 
@@ -140,28 +140,28 @@ class UserAuthentication
     {
         //NULLチェック or 空文字チェック
         if (empty($password)) {
-            $this->errorCodes[] = 4;
+            $this->setErrorCodes(4);
             return false;
         }
 
         // 文字列の長さチェック
         if (mb_strlen($password) < 8) {
-            $this->errorCodes[] = 5;
+            $this->setErrorCodes(5);
         }
 
         // 英字の有無チェック
         if (!preg_match('/[A-Za-z]/', $password)) {
-            $this->errorCodes[] = 6;
+            $this->setErrorCodes(6);
         }
 
         // 数字の有無チェック
         if (!preg_match('/\d/', $password)) {
-            $this->errorCodes[] = 7;
+            $this->setErrorCodes(7);
         }
 
         // 記号の有無チェック
         if (!preg_match('/[@#\$%\^&\*]/', $password)) {
-            $this->errorCodes[] = 8;
+            $this->setErrorCodes(8);
         }
 
         if (!empty($this->errorCodes)) {
@@ -253,6 +253,24 @@ class UserAuthentication
     }
 
     /**
+     * エラーコードを設定する
+     * @param array $errorCodes エラーコード配列
+     */
+    public function setErrorCodes(int $errorCode): void
+    {
+        $this->errorCodes[] = $errorCode;
+    }
+
+    /**
+     * エラーコードを取得する
+     * @return array エラーコード配列
+     */
+    public function getErrorCodes(): array
+    {
+        return $this->errorCodes;
+    }
+
+    /**
      * エラーメッセージを取得する
      * @param bool $loginError ログインエラーフラグ
      * @param bool $emailExistence メールアドレス存在フラグ
@@ -264,7 +282,7 @@ class UserAuthentication
             return "メールアドレス\nまたはパスワードが正しくありません。";
         }
 
-        $errorCodes = array_unique($this->errorCodes);
+        $errorCodes = array_unique($this->getErrorCodes());
         foreach ($errorCodes as $errorCode) {
             switch ($errorCode) {
                 case 0:
