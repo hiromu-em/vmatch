@@ -132,4 +132,35 @@ class UserAuthenticationTest extends TestCase
         $userAuthentication->setSignInCodes($emailExists, $signInFlag);
         $this->assertSame($expectedCode, $userAuthentication->getErrorCodes());
     }
+
+    /**
+     * testvalidateEmail用データプロバイダー
+     * @return array<string, array<?string, bool>>
+     */
+    public static function validateEmailProvider()
+    {
+        return [
+            '有効なメールアドレス形式' => ['example@example.com', true, []],
+            '有効なメールアドレス形式（スペース）' => [' example@example.com ', true, []],
+            'メールアドレスが空文字の場合' => ['', false, [3]],
+            'メールアドレスがNULLの場合' => [null, false, [3]],
+            '無効なメールアドレス形式' => ['invalid-...email@gmasil.com', false, [2]],
+            '無効なドメイン形式' => ['user@invalid-domain', false, [2]],
+        ];
+    }
+
+    /**
+     * メールアドレス形式確認テスト
+     * @param string|null $email メールアドレス
+     * @param bool $expected 期待値
+     */
+    #[DataProvider('validateEmailProvider')]
+    public function testvalidateEmail(?string $email, bool $expected, array $errorcodes)
+    {
+        $userAuthentication = new UserAuthentication();
+
+        $isValid = $userAuthentication->validateEmail($email);
+        $this->assertSame($expected, $isValid);
+        $this->assertSame($errorcodes, $userAuthentication->getErrorCodes());
+    }
 }
