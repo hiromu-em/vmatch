@@ -9,7 +9,7 @@ namespace Vmatch\UserAuthentication;
 class UserAuthentication
 {
     // ユーザーメールアドレス
-    private string $userEmail;
+    private string $userEmail = '';
 
     // エラーコード配列
     private array $errorCodes = [];
