@@ -68,6 +68,7 @@ class UserAuthenticationTest extends TestCase
 
     /**
      * testEmailExists用データプロバイダー
+     * @return array<string, array<bool, bool>>
      */
     public static function emailExistsProvider()
     {
@@ -78,9 +79,11 @@ class UserAuthenticationTest extends TestCase
     }
 
     /**
-     * メールアドレス存在確認のテスト
+     * メールアドレス存在確認テスト
+     * @param bool $dbStatus DBからのステータス
+     * @param bool $expected 期待値
      */
-     #[DataProvider('emailExistsProvider')]
+    #[DataProvider('emailExistsProvider')]
     public function testEmailExists(bool $dbStatus, bool $expected)
     {
         $stetementMock = $this->createMock(PDOStatement::class);
@@ -104,5 +107,29 @@ class UserAuthenticationTest extends TestCase
 
         $userAuth = new UserAuthentication($pdoMock);
         $this->assertSame($expected, $userAuth->emailExists(self::EMAIL));
+    }
+
+    /**
+     * testSetSignInCodes用データプロバイダー
+     * @return array<string, array<bool, bool>>
+     */
+    public static function setSignInCodesProvider()
+    {
+        return [
+            'メールアドレスが存在し、サインインフラグがtrueの場合' => [true, true, [0]],
+            'メールアドレスが存在し、サインインフラグがfalseの場合' => [true, false, [1]],
+            'メールアドレスが存在せず、サインインフラグがtrueの場合' => [false, true, [0]],
+            'メールアドレスが存在せず、サインインフラグがfalseの場合' => [false, false, [0]],
+        ];
+    }
+    /**
+     * サインインコード設定テスト
+     */
+    #[DataProvider('setSignInCodesProvider')]
+    public function testSetSignInCodes(bool $emailExists, bool $signInFlag, array $expectedCode)
+    {
+        $userAuthentication = new UserAuthentication();
+        $userAuthentication->setSignInCodes($emailExists, $signInFlag);
+        $this->assertSame($expectedCode, $userAuthentication->getErrorCodes());
     }
 }
