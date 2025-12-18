@@ -282,36 +282,17 @@ class UserAuthentication
 
         $errorCodes = array_unique($this->getErrorCodes());
         foreach ($errorCodes as $errorCode) {
-            switch ($errorCode) {
-                case 0:
-                    break;
-                case 1:
-                    $errorMessages[] = "登録済みユーザーです。ログインしてください。";
-                    break;
-                case 2:
-                    $errorMessages[] = "メールアドレスの形式が正しくありません。";
-                    break;
-                case 3:
-                    $errorMessages[] = "メールアドレスを入力してください。";
-                    break;
-                case 4:
-                    $errorMessages[] = "パスワードを入力してください。";
-                    break;
-                case 5:
-                    $errorMessages[] = "8文字以上入力してください。";
-                    break;
-                case 6:
-                    $errorMessages[] = "英字を1文字含めてください。";
-                    break;
-                case 7:
-                    $errorMessages[] = "数字を1文字含めてください。";
-                    break;
-                case 8:
-                    $errorMessages[] = "記号(@ # $ % ^ & *) を1文字含めてください。";
-                    break;
-            }
+            $errorMessages[] = match ($errorCode) {
+                1 => "登録済みユーザーです。ログインしてください。",
+                2 => "メールアドレスの形式が正しくありません。",
+                3 => "メールアドレスを入力してください。",
+                4 => "パスワードを入力してください。",
+                5 => "8文字以上入力してください。",
+                6 => "英字を1文字含めてください。",
+                7 => "数字を1文字含めてください。",
+                8 => "記号(@ # $ % ^ & *) を1文字含めてください。"
+            };
         }
-
 
         return $errorMessages;
     }
