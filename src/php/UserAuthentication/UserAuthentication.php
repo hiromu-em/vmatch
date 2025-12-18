@@ -15,7 +15,7 @@ class UserAuthentication
     private array $errorCodes = [];
 
     // 認証済みユーザー情報
-    private ?array $authenticatedUser = null;
+    private array $authenticatedUser = [];
 
     /**
      * @param \PDO $databaseConnection データベース接続
@@ -213,9 +213,9 @@ class UserAuthentication
 
     /**
      * 認証済みユーザー情報を取得する
-     * @return array|null 認証済みユーザー情報
+     * @return array 認証済みユーザー情報
      */
-    public function getAuthenticatedUser(): array|null
+    public function getAuthenticatedUser(): array
     {
         return $this->authenticatedUser;
     }
