@@ -76,8 +76,6 @@ class UserAuthentication
             $this->setErrorCodes(1);
             return;
         }
-        
-        $this->setErrorCodes(0);
     }
 
     /**
