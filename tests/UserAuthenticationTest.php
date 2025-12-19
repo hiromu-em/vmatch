@@ -111,15 +111,15 @@ class UserAuthenticationTest extends TestCase
 
     /**
      * testSetSignInCodes用データプロバイダー
-     * @return array<string, array<bool, bool>>
+     * @return array<string, array{bool, bool, int[]}>
      */
     public static function setSignInCodesProvider()
     {
         return [
-            'メールアドレスが存在し、サインインフラグがtrueの場合' => [true, true, [0]],
+            'メールアドレスが存在し、サインインフラグがtrueの場合' => [true, true, []],
             'メールアドレスが存在し、サインインフラグがfalseの場合' => [true, false, [1]],
-            'メールアドレスが存在せず、サインインフラグがtrueの場合' => [false, true, [0]],
-            'メールアドレスが存在せず、サインインフラグがfalseの場合' => [false, false, [0]],
+            'メールアドレスが存在せず、サインインフラグがtrueの場合' => [false, true, []],
+            'メールアドレスが存在せず、サインインフラグがfalseの場合' => [false, false, []],
         ];
     }
     /**
@@ -135,7 +135,7 @@ class UserAuthenticationTest extends TestCase
 
     /**
      * testvalidateEmail用データプロバイダー
-     * @return array<string, array<?string, bool>>
+     * @return array<string, array{?string,bool,int[]}>
      */
     public static function validateEmailProvider()
     {
@@ -153,6 +153,7 @@ class UserAuthenticationTest extends TestCase
      * メールアドレス形式確認テスト
      * @param string|null $email メールアドレス
      * @param bool $expected 期待値
+     * @param int[] $errorcodes エラーコード
      */
     #[DataProvider('validateEmailProvider')]
     public function testvalidateEmail(?string $email, bool $expected, array $errorcodes)
@@ -160,6 +161,39 @@ class UserAuthenticationTest extends TestCase
         $userAuthentication = new UserAuthentication();
 
         $isValid = $userAuthentication->validateEmail($email);
+        $this->assertSame($expected, $isValid);
+        $this->assertSame($errorcodes, $userAuthentication->getErrorCodes());
+    }
+
+    /**
+     * testvalidatePassword用データプロバイダー
+     * @return array<string, array{?string, bool,int[]}>
+     */
+    public static function validatePasswordProvider()
+    {
+        return [
+            '有効なパスワード形式' => ['StrongP@ssw0rd', true, []],
+            'パスワードが空文字の場合' => ['', false, [4]],
+            'パスワードがNULLの場合' => [null, false, [4]],
+            '文字列が8文字より短い場合' => ['sam3@', false, [5]],
+            '英字が含まれていない場合' => ['12345678@', false, [6]],
+            '数字が含まれていない場合' => ['Password@', false, [7]],
+            '記号が含まれていない場合' => ['Password1', false, [8]],
+        ];
+    }
+
+    /**
+     * パスワード形式確認テスト
+     * @param string|null $password パスワード
+     * @param bool $expected 期待値
+     * @param int[] $errorcodes エラーコード
+     */
+    #[DataProvider('validatePasswordProvider')]
+    public function testValidatePassword(?string $password, bool $expected, array $errorcodes)
+    {
+        $userAuthentication = new UserAuthentication();
+
+        $isValid = $userAuthentication->validatePassword($password);
         $this->assertSame($expected, $isValid);
         $this->assertSame($errorcodes, $userAuthentication->getErrorCodes());
     }
