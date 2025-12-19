@@ -197,4 +197,34 @@ class UserAuthenticationTest extends TestCase
         $this->assertSame($expected, $isValid);
         $this->assertSame($errorcodes, $userAuthentication->getErrorCodes());
     }
+
+    /**
+     * ユーザー登録テスト
+     */
+    public function testUserRegistration()
+    {
+        $pdoMock = $this->createMock(PDO::class);
+        $passwordHash = password_hash('StrongP@ssw0rd', PASSWORD_BCRYPT);
+
+        $statementMock = $this->createMock(PDOStatement::class);
+        $statementMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with([
+                self::EMAIL,
+                $passwordHash
+            ]);
+
+        $pdoMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with("INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?)")
+            ->willReturn($statementMock);
+
+        $userAuth = new UserAuthentication($pdoMock);
+        $userAuth->userRegistration(
+            self::EMAIL,
+            $passwordHash
+        );
+    }
 }
