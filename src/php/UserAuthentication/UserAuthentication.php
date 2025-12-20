@@ -230,11 +230,9 @@ class UserAuthentication
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch_providers WHERE provider_user_id = ?) as status";
         $statement = $this->databaseConnection->prepare($query);
         $statement->execute([$providerId]);
-
         $result = $statement->fetch();
-        $emailExists = $result['status'] ? true : false;
 
-        return $emailExists;
+        return $result['status'] ? true : false;
 
     }
 
