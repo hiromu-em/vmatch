@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class UserAuthenticationTest extends TestCase
 {
     private const string EMAIL = 'sample@example.com';
+
+    private const string PASSWORD = 'StrongP@ssw0rd';
+
     /**
      * メールアドレスをDBに登録するテスト
      */
@@ -204,7 +207,7 @@ class UserAuthenticationTest extends TestCase
     public function testUserRegistration()
     {
         $pdoMock = $this->createMock(PDO::class);
-        $passwordHash = password_hash('StrongP@ssw0rd', PASSWORD_BCRYPT);
+        $passwordHash = password_hash(self::PASSWORD, PASSWORD_BCRYPT);
 
         $statementMock = $this->createMock(PDOStatement::class);
         $statementMock
@@ -226,5 +229,52 @@ class UserAuthenticationTest extends TestCase
             self::EMAIL,
             $passwordHash
         );
+    }
+
+    /**
+     * testPasswordVerification用データプロバイダー
+     * @return array<string, array{string, bool}>
+     */
+    public static function passwordVerificationProvider()
+    {
+        return [
+            '正しいパスワードの場合' => [self::PASSWORD, true],
+            '誤ったパスワードの場合' => ['WrongPssw0rd', false],
+        ];
+    }
+
+    /**
+     * パスワード照合テスト
+     * @param string $password パスワード
+     * @param bool $expected 期待値
+     */
+    #[DataProvider('passwordVerificationProvider')]
+    public function testPasswordVerification(string $password, bool $expected)
+    {
+        $passwordHash = password_hash(self::PASSWORD, PASSWORD_BCRYPT);
+
+        $statementMock = $this->createMock(PDOStatement::class);
+        $pdoMock = $this->createMock(PDO::class);
+
+        $statementMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with([self::EMAIL]);
+
+        $statementMock
+            ->expects($this->once())
+            ->method('fetch')
+            ->willReturn(['password_hash' => $passwordHash]);
+
+        $pdoMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with("SELECT password_hash FROM users_vmatch WHERE email = ?")
+            ->willReturn($statementMock);
+
+        $userAuth = new UserAuthentication($pdoMock);
+        $isValid = $userAuth->verifyPassword(self::EMAIL, $password);
+
+        $this->assertSame($expected, $isValid);
     }
 }
