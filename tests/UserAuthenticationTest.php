@@ -321,4 +321,35 @@ class UserAuthenticationTest extends TestCase
 
         $this->assertSame($expected, $result);
     }
+
+    /**
+     * linkProviderUserIdテスト
+     */
+    public function testLinkProviderUserId()
+    {
+        $pdoMock = $this->createMock(PDO::class);
+
+        $statementMock = $this->createMock(PDOStatement::class);
+        $statementMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with([
+                '761e3a6e-m502-425v-l1cc-4b644c5989e9',
+                'google',
+                'provider-123'
+            ]);
+
+        $pdoMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)")
+            ->willReturn($statementMock);
+
+        $userAuth = new UserAuthentication($pdoMock);
+        $userAuth->linkProviderUserId(
+            '761e3a6e-m502-425v-l1cc-4b644c5989e9',
+            'provider-123',
+            'google'
+        );
+    }
 }
