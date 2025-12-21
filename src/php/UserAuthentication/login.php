@@ -23,9 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
 
-    // データベース接続の取得
+    // データベース接続設定のインスタンス化
     $databaseConfig = new Config();
-    
+
     // ユーザー認証クラスのインスタンス化
     $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 
@@ -34,21 +34,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // メールアドレス・パスワード形式確認
     if (!$validEmail || !$validPassword) {
-        $errorMessage = $userAuthentication->errorMessages(true);
+
+        $userAuthentication->setErrorCodes(9);
+
+        // エラーメッセージ取得
+        $errorMessage = array_filter($userAuthentication->errorMessages(), function ($message) {
+            return $message === "メールアドレス\nまたはパスワードが正しくありません.";
+        });
     }
 
     if (empty($errorMessage)) {
+
         // DBにメールアドレス・パスワードが存在するか確認
         $existingUsersEmail = $userAuthentication->emailExists($email);
         $existingUsersPassword = $userAuthentication->verifyPassword($email, $password);
 
-        // 認証結果
-        $authenticationResults = $existingUsersEmail && $existingUsersPassword === true ? true : false;
+        // 認証済みユーザー情報設定またはエラーコード設定
+        $existingUsersEmail && $existingUsersPassword === true
+            ? $userAuthentication->setAuthenticatedUser($email, $password) : $userAuthentication->setErrorCodes(9);
 
-        // 認証成功・失敗による処理分岐
-        $authenticationResults
-            ? $userAuthentication->setAuthenticatedUser($email, $password)
-            : $errorMessage = $userAuthentication->errorMessages(true);
+        // エラーメッセージ取得
+        if (!empty($userAuthentication->getErrorCodes())) {
+            $errorMessage = $userAuthentication->errorMessages();
+        }
     }
 
     // 認証済みユーザー情報取得
@@ -91,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($errorMessage)): ?>
             <div class="error-messages-container">
                 <div class="error-item">
-                    <p><?php echo nl2br(htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8')); ?></p>
+                    <p><?php echo nl2br(htmlspecialchars(array_pop($errorMessage), ENT_QUOTES, 'UTF-8')); ?></p>
                 </div>
             </div>
         <?php endif; ?>

@@ -268,16 +268,10 @@ class UserAuthentication
 
     /**
      * エラーメッセージを取得する
-     * @param bool $loginError ログインエラーフラグ
-     * @param bool $emailExistence メールアドレス存在フラグ
-     * @return array|string エラーメッセージ情報
+     * @return array エラーメッセージ情報
      */
-    public function errorMessages($loginError = false): array|string
+    public function errorMessages(): array
     {
-        if ($loginError) {
-            return "メールアドレス\nまたはパスワードが正しくありません。";
-        }
-
         $errorCodes = array_unique($this->getErrorCodes());
         foreach ($errorCodes as $errorCode) {
             $errorMessages[] = match ($errorCode) {
@@ -288,7 +282,8 @@ class UserAuthentication
                 5 => "8文字以上入力してください。",
                 6 => "英字を1文字含めてください。",
                 7 => "数字を1文字含めてください。",
-                8 => "記号(@ # $ % ^ & *) を1文字含めてください。"
+                8 => "記号(@ # $ % ^ & *) を1文字含めてください。",
+                9 => "メールアドレス\nまたはパスワードが正しくありません。",
             };
         }
 
