@@ -296,7 +296,7 @@ class UserAuthenticationTest extends TestCase
      * @param bool $expected 期待値
      */
     #[DataProvider('providerIdExistsProvider')]
-    public function testproviderIdExists(bool $dbStatus, bool $expected)
+    public function testProviderIdExists(bool $dbStatus, bool $expected)
     {
         $statementMock = $this->createMock(PDOStatement::class);
         $statementMock
