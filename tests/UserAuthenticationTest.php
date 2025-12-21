@@ -352,4 +352,43 @@ class UserAuthenticationTest extends TestCase
             'google'
         );
     }
+
+    /**
+     * testErrorMessages用データプロバイダー
+     * @return array<string, array{int[], string[]}>
+     */
+    public static function errorMessagesProvider()
+    {
+        return [
+            '複数のエラーメッセージ' => [[3,5,7], [
+                "メールアドレスを入力してください。",
+                "8文字以上入力してください。",
+                "数字を1文字含めてください。"
+            ]],
+            '単一のエラーメッセージ' => [[4], [
+                "パスワードを入力してください。"
+            ]],
+            '重複するエラーメッセージ' => [[2,2,3], [
+                "メールアドレスの形式が正しくありません。",
+                "メールアドレスを入力してください。"
+            ]]
+        ];
+    }
+
+    /**
+     * エラーメッセージ取得テスト
+     * @param int[] $errorCodes エラーコード
+     * @param string[] $expectedMessages 期待値
+     */
+    #[DataProvider('errorMessagesProvider')]
+    public function testErrorMessages(array $errorCodes, array $expectedMessages)
+    {
+        $userAuth = new UserAuthentication();
+        foreach ($errorCodes as $code) {
+            $userAuth->setErrorCodes($code);
+        }
+
+        $messages = $userAuth->errorMessages();
+        $this->assertSame($expectedMessages, $messages);
+    }
 }
