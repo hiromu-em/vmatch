@@ -277,4 +277,48 @@ class UserAuthenticationTest extends TestCase
 
         $this->assertSame($expected, $isValid);
     }
+
+    /**
+     * testproviderIdExists用データプロバイダー
+     * @return array<string, array<bool, bool>>
+     */
+    public static function providerIdExistsProvider()
+    {
+        return [
+            'プロバイダーIDが存在する場合' => [true, true],
+            'プロバイダーIDが存在しない場合' => [false, false],
+        ];
+    }
+
+    /**
+     * providerIdExistsテスト
+     * @param bool $dbStatus DBからのステータス
+     * @param bool $expected 期待値
+     */
+    #[DataProvider('providerIdExistsProvider')]
+    public function testproviderIdExists(bool $dbStatus, bool $expected)
+    {
+        $statementMock = $this->createMock(PDOStatement::class);
+        $statementMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with(['provider-123']);
+
+        $statementMock
+            ->expects($this->once())
+            ->method('fetch')
+            ->willReturn(['status' => $dbStatus]);
+
+        $pdoMock = $this->createMock(PDO::class);
+        $pdoMock
+            ->expects($this->once())
+            ->method('prepare')
+            ->with("SELECT EXISTS(SELECT 1 FROM users_vmatch_providers WHERE provider_user_id = ?) as status")
+            ->willReturn($statementMock);
+
+        $userAuth = new UserAuthentication($pdoMock);
+        $result = $userAuth->providerIdExists('provider-123');
+
+        $this->assertSame($expected, $result);
+    }
 }
