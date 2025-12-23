@@ -17,13 +17,8 @@ class GoogleAuthorization
 
     private Client $client;
 
-    private Config $config;
-
-    public function __construct()
+    public function __construct(private ?Config $config = null)
     {
-        // 環境変数の読み込み
-        $this->config = new Config();
-        $this->config->loadDotenvIfLocal();
     }
 
     /**

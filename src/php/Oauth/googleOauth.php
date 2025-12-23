@@ -13,7 +13,10 @@ const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 const CONFIGERROR = '../error/configError.php';
 
-$googleAuthorization = new GoogleAuthorization();
+// データベース接続の取得
+$databaseConfig = new Config();
+
+$googleAuthorization = new GoogleAuthorization($databaseConfig);
 $client = $googleAuthorization->clientConfig();
 
 // アクセストークンがSESSIONに存在しない場合、認証サーバーのURLを生成
@@ -26,9 +29,6 @@ if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_t
 
 // ユーザー情報を取得
 $token = $client->verifyIdToken();
-
-// データベース接続の取得
-$databaseConfig = new Config();
 
 $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 
