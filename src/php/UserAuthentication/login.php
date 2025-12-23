@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? null;
 
     // データベース接続設定のインスタンス化
-    $databaseConfig = new Config();
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $databaseConfig = new Config($host);
 
     // ユーザー認証クラスのインスタンス化
     $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());

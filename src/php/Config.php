@@ -9,6 +9,15 @@ use PDOException;
 
 class Config
 {
+    // ホスト名
+    private string $host;
+
+    public function __construct(string $host)
+    {
+        // ホスト名設定
+        $this->host = $host;
+    }
+
     /**
      * データベース接続を確立する
      * @return `pdo`データベース接続オブジェクト
@@ -46,30 +55,38 @@ class Config
     }
 
     /**
-     * 環境変数をロード
-     * @param bool $isLocal ローカル環境フラグ
-     * @return bool ローカル環境フラグの結果
-     * @throws InvalidPathException 無効なパス
+     * ホスト名を取得
+     * @return string ホスト名
      */
-    public function loadDotenvIfLocal(bool $isLocal = false): bool
+    public function getHost(): string
     {
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        if (strpos($host, 'localhost') !== false) {
+        return $this->host;
+    }
 
-            // フラグ変更
-            $isLocal = true;
+    /**
+     * ローカル環境の場合、.envファイルを読み込む
+     * @return bool ローカル環境フラグの結果
+     */
+    public function loadDotenvIfLocal(): bool
+    {
+        if (strpos($this->getHost(), 'localhost') !== false) {
 
-            $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
-            try {
-                $dotenv->load();
-            } catch (InvalidPathException $e) {
-                http_response_code(500);
-                include __DIR__ . '/error/configError.php';
-                exit;
-            }
+            $this->loadDotenv();
+
+            return true;
         }
 
-        return $isLocal;
+        return false;
+    }
+
+    /**
+     * .envファイルを読み込む
+     * @throws InvalidPathException 無効なパス
+     */
+    public function loadDotenv()
+    {
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+        $dotenv->load();
     }
 
     /**

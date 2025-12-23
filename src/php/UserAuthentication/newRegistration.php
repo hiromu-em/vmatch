@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     
     // データベース接続の取得
-    $databaseConfig = new Config();
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $databaseConfig = new Config($host);
 
     $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
     $isValidPassword = $userAuthentication->validatePassword($password);

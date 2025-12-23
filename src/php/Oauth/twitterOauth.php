@@ -29,7 +29,8 @@ if (isset($_SESSION['access_token'])) {
     $user = $twitterAuthorization->getUserVerifyCredentials();
 
     // データベース接続の取得
-    $databaseConfig = new Config();
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $databaseConfig = new Config($host);
 
     $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 

@@ -14,7 +14,8 @@ const DASHBOARD = '../dashboard.php';
 const CONFIGERROR = '../error/configError.php';
 
 // データベース接続の取得
-$databaseConfig = new Config();
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$databaseConfig = new Config($host);
 
 $googleAuthorization = new GoogleAuthorization($databaseConfig);
 $client = $googleAuthorization->clientConfig();

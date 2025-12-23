@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
 
     // データベース接続の取得
-    $databaseConfig = new Config();
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $databaseConfig = new Config($host);
 
     $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
 
