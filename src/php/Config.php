@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Vmatch;
 
 use Dotenv\Dotenv;
-use Dotenv\Exception\InvalidPathException;
 use PDOException;
 
 class Config
@@ -81,7 +80,6 @@ class Config
 
     /**
      * .envファイルを読み込む
-     * @throws InvalidPathException 無効なパス
      */
     public function loadDotenv()
     {
