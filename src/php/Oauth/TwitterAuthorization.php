@@ -17,13 +17,6 @@ class TwitterAuthorization
 
     private const string Twitter_CALLBACK__LOCAL_URL = 'http://localhost:8080/src/php/Oauth/twitterCallback.php';
 
-    public function __construct()
-    {
-        // 環境変数の読み込み
-        $config = new Config();
-        $config->loadDotenvIfLocal();
-    }
-
     /**
      * Twitter Oauth1.0aの接続情報を作成
      * @param string|null $oauthToken
