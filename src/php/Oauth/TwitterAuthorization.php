@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Vmatch\Oauth;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 

@@ -15,6 +15,11 @@ const CONFIGERROR = '../error/configError.php';
 
 $twitterAuthorization = new TwitterAuthorization();
 
+// 環境変数の読み込み（ローカル環境のみ）
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$config = new Config($host);
+$config->loadDotenvIfLocal();
+
 if (isset($_SESSION['access_token'])) {
 
     $access_token = $_SESSION['access_token'];
@@ -29,9 +34,7 @@ if (isset($_SESSION['access_token'])) {
     $user = $twitterAuthorization->getUserVerifyCredentials();
 
     // データベース接続の設定
-    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $databaseConfig = new Config($host);
-    $databaseSettings = $databaseConfig->getDatabaseSettings();
+    $databaseSettings = $config->getDatabaseSettings();
 
     $databaseConnection = new \PDO(
         $databaseSettings['dsn'],
@@ -40,9 +43,10 @@ if (isset($_SESSION['access_token'])) {
         $databaseSettings['options']
     );
 
+    // ユーザー認証クラスのインスタンス化
     $userAuthentication = new UserAuthentication($databaseConnection);
 
-    // プロパイダ―IDの存在確認
+    // プロバイダーIDの存在確認
     if ($userAuthentication->providerIdExists($user['id_str'])) {
 
         // IDが存在する場合、ダッシュボードへリダイレクト

@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // データベース接続の設定
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $databaseConfig = new Config($host);
-    $databaseSettings = $databaseConfig->getDatabaseSettings();
+    $config = new Config($host);
+    $databaseSettings = $config->getDatabaseSettings();
     
     $databaseConnection = new \PDO(
         $databaseSettings['dsn'],

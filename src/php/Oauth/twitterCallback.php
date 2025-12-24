@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Vmatch\Oauth\TwitterAuthorization;
+use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -34,8 +35,12 @@ if ($_SESSION['oauth_token'] !== $_GET['oauth_token']) {
     exit;
 }
 
-
 $twitterAuthorization = new TwitterAuthorization();
+
+// 環境変数の読み込み（ローカル環境のみ）
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$config = new Config($host);
+$config->loadDotenvIfLocal();
 
 // Twitterの接続情報を作成
 $twitterAuthorization->createTwitterConnection($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
