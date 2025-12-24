@@ -14,11 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $email = $_POST['email'] ?? '';
 
-    // データベース接続の取得
+    // データベース接続の設定
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $databaseConfig = new Config($host);
+    $databaseSettings = $databaseConfig->getDatabaseSettings();
+    
+    $databaseConnection = new \PDO(
+        $databaseSettings['dsn'],
+        $databaseSettings['user'],
+        $databaseSettings['password'],
+        $databaseSettings['options']
+    );
 
-    $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
+    $userAuthentication = new UserAuthentication($databaseConnection);
 
     // メールアドレス形式確認
     $isValidEmail = $userAuthentication->validateEmail($email);

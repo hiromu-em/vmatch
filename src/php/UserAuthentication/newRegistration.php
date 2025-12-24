@@ -22,12 +22,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_SESSION['email'] ?? header('Location: /');
 
     $password = $_POST['password'] ?? '';
-    
-    // データベース接続の取得
+
+    // データベース接続の設定
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $databaseConfig = new Config($host);
+    $databaseSettings = $databaseConfig->getDatabaseSettings();
 
-    $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
+    $databaseConnection = new \PDO(
+        $databaseSettings['dsn'],
+        $databaseSettings['user'],
+        $databaseSettings['password'],
+        $databaseSettings['options']
+    );
+
+    $userAuthentication = new UserAuthentication($databaseConnection);
     $isValidPassword = $userAuthentication->validatePassword($password);
 
     // パスワード形式確認

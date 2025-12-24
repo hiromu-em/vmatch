@@ -13,11 +13,11 @@ const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 const CONFIGERROR = '../error/configError.php';
 
-// データベース接続の取得
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$databaseConfig = new Config($host);
+$config = new Config($host);
+$config->loadDotenvIfLocal();
 
-$googleAuthorization = new GoogleAuthorization($databaseConfig);
+$googleAuthorization = new GoogleAuthorization($config);
 $client = $googleAuthorization->clientConfig();
 
 // アクセストークンがSESSIONに存在しない場合、認証サーバーのURLを生成
@@ -31,7 +31,16 @@ if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_t
 // ユーザー情報を取得
 $token = $client->verifyIdToken();
 
-$userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
+// データベース接続の設定
+$databaseSettings = $config->getDatabaseSettings();
+$databaseConnection = new \PDO(
+    $databaseSettings['dsn'],
+    $databaseSettings['user'],
+    $databaseSettings['password'],
+    $databaseSettings['options']
+);
+
+$userAuthentication = new UserAuthentication($databaseConnection);
 
 // IDが存在する場合、ダッシュボードへリダイレクト
 if ($userAuthentication->providerIdExists($token['sub'])) {

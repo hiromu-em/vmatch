@@ -28,11 +28,19 @@ if (isset($_SESSION['access_token'])) {
     // ユーザー認証情報取得
     $user = $twitterAuthorization->getUserVerifyCredentials();
 
-    // データベース接続の取得
+    // データベース接続の設定
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
     $databaseConfig = new Config($host);
+    $databaseSettings = $databaseConfig->getDatabaseSettings();
 
-    $userAuthentication = new UserAuthentication($databaseConfig->databaseConnection());
+    $databaseConnection = new \PDO(
+        $databaseSettings['dsn'],
+        $databaseSettings['user'],
+        $databaseSettings['password'],
+        $databaseSettings['options']
+    );
+
+    $userAuthentication = new UserAuthentication($databaseConnection);
 
     // プロパイダ―IDの存在確認
     if ($userAuthentication->providerIdExists($user['id_str'])) {

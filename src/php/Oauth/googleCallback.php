@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Vmatch\Oauth\GoogleAuthorization;
+use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -30,7 +31,12 @@ if (isset($_GET['error'])) {
     exit;
 }
 
-$googleAuthorization = new GoogleAuthorization();
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$config = new Config($host);
+$config->loadDotenvIfLocal();
+
+// Google認証クラスのインスタンス化
+$googleAuthorization = new GoogleAuthorization($config);
 $client = $googleAuthorization->clientConfig();
 
 //コードをアクセストークンと交換

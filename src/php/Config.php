@@ -4,13 +4,15 @@ declare(strict_types=1);
 namespace Vmatch;
 
 use Dotenv\Dotenv;
-use PDOException;
 
 class Config
 {
     // ホスト名
     private string $host;
 
+    /**
+     * @param string $host ホスト名
+     */
     public function __construct(string $host)
     {
         // ホスト名設定
@@ -18,11 +20,10 @@ class Config
     }
 
     /**
-     * データベース接続を確立する
-     * @return `pdo`データベース接続オブジェクト
-     * @throws PDOException データベースの接続失敗
+     * 環境に応じたデータベース接続の設定を取得
+     * @return array データベース接続設定
      */
-    public function databaseConnection(): \PDO
+    public function getDatabaseSettings(): array
     {
         //本番環境と開発環境の分岐
         if ($this->loadDotenvIfLocal()) {
@@ -39,18 +40,15 @@ class Config
             $password = getenv('PGPASSWORD');
         }
 
-        try {
-            $pdo = new \PDO($dsn, $user, $password);
-        } catch (PDOException $e) {
-            http_response_code(500);
-            include __DIR__ . '/error/configError.php';
-            exit;
-        }
-
-        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-
-        return $pdo;
+        return [
+            'dsn' => $dsn,
+            'user' => $user,
+            'password' => $password,
+            'options' => [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+            ]
+        ];
     }
 
     /**
