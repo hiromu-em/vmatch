@@ -27,19 +27,51 @@ class Config
     {
         //本番環境と開発環境の分岐
         if ($this->loadDotenvIfLocal()) {
-
-            $dsn = "pgsql:host={$_ENV['PG_LOCAL_HOST']};port=5432;dbname={$_ENV['PG_LOCAL_DATABASE']}";
-            $user = $_ENV['PG_LOCAL_USER'];
-            $password = $_ENV['PG_LOCAL_PASSWORD'];
+            return $this->getLocalDatabaseSettings();
         } else {
-
-            $host = getenv('PGHOST');
-            $database = getenv('PGDATABASE');
-            $dsn = "pgsql:host={$host};port=5432;dbname={$database}";
-            $user = getenv('PGUSER');
-            $password = getenv('PGPASSWORD');
+            return $this->getProductionDatabaseSettings();
         }
+    }
 
+    /**
+     * ローカル環境用のデータベース設定を取得
+     * @return array データベース接続設定
+     */
+    protected function getLocalDatabaseSettings(): array
+    {
+        $host = $this->getEnv('PG_LOCAL_HOST');
+        $database = $this->getEnv('PG_LOCAL_DATABASE');
+        $dsn = "pgsql:host={$host};port=5432;dbname={$database}";
+        $user = $this->getEnv('PG_LOCAL_USER');
+        $password = $this->getEnv('PG_LOCAL_PASSWORD');
+
+        return $this->buildDatabaseSettings($dsn, $user, $password);
+    }
+
+    /**
+     * 本番環境用のデータベース設定を取得
+     * @return array データベース接続設定
+     */
+    protected function getProductionDatabaseSettings(): array
+    {
+        $host = $this->getEnv('PGHOST');
+        $database = $this->getEnv('PGDATABASE');
+        $dsn = "pgsql:host={$host};port=5432;dbname={$database}";
+        $user = $this->getEnv('PGUSER');
+        $password = $this->getEnv('PGPASSWORD');
+
+        return $this->buildDatabaseSettings($dsn, $user, $password);
+    }
+
+    /**
+     * データベース設定配列を構築
+     * @param string $dsn DSN文字列
+     * @param string|false $user ユーザー名
+     * @param string|false $password パスワード
+     * @return array データベース接続設定
+     */
+    protected function buildDatabaseSettings(string $dsn, $user, $password): array
+    {
         return [
             'dsn' => $dsn,
             'user' => $user,
@@ -52,6 +84,30 @@ class Config
     }
 
     /**
+     * 環境変数を取得（テスト時にオーバーライド可能）
+     * @param string $key 環境変数のキー
+     * @return string|false 環境変数の値
+     */
+    protected function getEnv(string $key)
+    {
+        // $_ENVが設定されている場合はそちらを優先
+        if (isset($_ENV[$key])) {
+            return $_ENV[$key];
+        }
+        return getenv($key);
+    }
+
+    /**
+     * サーバー変数を取得（テスト時にオーバーライド可能）
+     * @param string $key サーバー変数のキー
+     * @return string|null サーバー変数の値
+     */
+    protected function getServerVar(string $key): ?string
+    {
+        return $_SERVER[$key] ?? null;
+    }
+
+    /**
      * ホスト名を取得
      * @return string ホスト名
      */
@@ -61,15 +117,22 @@ class Config
     }
 
     /**
+     * ローカル環境かどうかを判定
+     * @return bool ローカル環境の場合はtrue
+     */
+    public function isLocalEnvironment(): bool
+    {
+        return strpos($this->getHost(), 'localhost') !== false;
+    }
+
+    /**
      * ローカル環境の場合、.envファイルを読み込む
      * @return bool ローカル環境フラグの結果
      */
     public function loadDotenvIfLocal(): bool
     {
-        if (strpos($this->getHost(), 'localhost') !== false) {
-
+        if ($this->isLocalEnvironment()) {
             $this->loadDotenv();
-
             return true;
         }
 
@@ -79,10 +142,19 @@ class Config
     /**
      * .envファイルを読み込む
      */
-    public function loadDotenv()
+    public function loadDotenv(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+        $dotenv = $this->createDotenv();
         $dotenv->load();
+    }
+
+    /**
+     * Dotenvインスタンスを作成（テスト時にオーバーライド可能）
+     * @return Dotenv Dotenvインスタンス
+     */
+    protected function createDotenv(): Dotenv
+    {
+        return Dotenv::createImmutable(__DIR__ . '/../..');
     }
 
     /**
@@ -91,6 +163,7 @@ class Config
      */
     public function urlScheme(): string
     {
-        return strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ? 'http://' : 'https://';
+        $httpHost = $this->getServerVar('HTTP_HOST');
+        return $httpHost && strpos($httpHost, 'localhost') !== false ? 'http://' : 'https://';
     }
 }
