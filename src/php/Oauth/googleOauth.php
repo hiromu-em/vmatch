@@ -22,7 +22,7 @@ $config->loadDotenvIfLocal();
 
 // GoogleAuthorizationクラスのインスタンス化 & Google Clientの設定
 $googleAuthorization = new GoogleAuthorization($config, new \Google\Client());
-$client = $googleAuthorization->clientConfig($_SESSION['google_access_token'] ?? '');
+$client = $googleAuthorization->clientSetting($_SESSION['google_access_token'] ?? '');
 
 // アクセストークンがSESSIONに存在しない場合、認証サーバーのURLを生成
 if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_token'])) {

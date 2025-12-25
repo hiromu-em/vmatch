@@ -25,11 +25,11 @@ class GoogleAuthorization
     }
 
     /**
-     * Google Clientの設定<br>
+     * Google Clientの設定
      * @param string $accessToken アクセストークン
      * @return Client Google Clientオブジェクト
      */
-    public function clientConfig(string $accessToken = ''): Client
+    public function clientSetting(string $accessToken = ''): Client
     {
         $this->client->setAuthConfig($this->config->getGoogleClientEnvVars());
 

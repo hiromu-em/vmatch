@@ -37,7 +37,7 @@ $config->loadDotenvIfLocal();
 
 // Google認証クラスのインスタンス化
 $googleAuthorization = new GoogleAuthorization($config);
-$client = $googleAuthorization->clientConfig();
+$client = $googleAuthorization->clientSetting();
 
 //コードをアクセストークンと交換
 if (isset($_GET['code'])) {
