@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 /**
  * Google認可クラス
  */
-class GoogleAuthorization
+class GoogleAuthorization implements GoogleAuthorizationInterface
 {
     private const string GOOGLE_CALLBACK = '/src/php/Oauth/googleCallback.php';
 
@@ -45,22 +45,42 @@ class GoogleAuthorization
 
         return $this->client;
     }
-
     /**
-     * 認可サーバーのURLを生成<br>
+     * 認可サーバーのURLを生成
+     * @param string $state stateパラメーター
      * @return string 認可サーバーのURL
      */
     public function createAuthUrl(): string
     {
-        $state = bin2hex(random_bytes(128 / 8));
-        $_SESSION['google_oauth_state'] = $state;
+        return $this->client->createAuthUrl();
+    }
+
+    /**
+     * stateパラメーターの生成
+     * @return string 生成されたstateパラメーター
+     */
+    public function createState(): string
+    {
+        return bin2hex(random_bytes(128 / 8));
+    }
+
+    /**
+     * stateパラメーターの設定
+     * @param string $state stateパラメーター
+     * @return void
+     */
+    public function setState(string $state): void
+    {
         $this->client->setState($state);
+    }
 
-        // PKCE (Proof Key for Code Exchange) のためのコード検証者を生成し、セッションに保存
-        $_SESSION['google_code_verifier'] = $this->client->getOAuth2Service()->generateCodeVerifier();
-        $auth_url = $this->client->createAuthUrl();
-
-        return $auth_url;
+    /**
+     * コード検証者の取得
+     * @return string コード検証者
+     */
+    public function generateCodeVerifier(): string
+    {
+        return $this->client->getOAuth2Service()->generateCodeVerifier();
     }
 }
 

@@ -27,7 +27,19 @@ $client = $googleAuthorization->clientSetting($_SESSION['google_access_token'] ?
 // アクセストークンがSESSIONに存在しない場合、認証サーバーのURLを生成
 if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_token'])) {
 
+    // stateパラメーターを生成してSESSIONに保存
+    $state = $googleAuthorization->createState();
+    $_SESSION['google_oauth_state'] = $state;
+    
+    // stateパラメーターを設定
+    $googleAuthorization->setState($state);
+
+    // コード検証者を生成してSESSIONに保存
+    $_SESSION['google_code_verifier'] = $googleAuthorization->generateCodeVerifier();
+    
+    // 認可サーバーのURLを生成してリダイレクト
     $authUrl = $googleAuthorization->createAuthUrl();
+
     header('Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL));
     exit;
 }
