@@ -166,4 +166,16 @@ class Config
         $httpHost = $this->getServerVar('HTTP_HOST');
         return $httpHost && strpos($httpHost, 'localhost') !== false ? 'http://' : 'https://';
     }
+
+    /**
+     * Googleクライアントの環境変数を取得
+     * @return array Googleクライアントの環境変数
+     */
+    public function getGoogleClientEnvVars(): array
+    {
+        return [
+            'client_id' => $this->getEnv('CLIENTID'),
+            'client_secret' => $this->getEnv('CLIENTSECRET'),
+        ];
+    }
 }

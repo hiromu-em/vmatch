@@ -15,32 +15,32 @@ class GoogleAuthorization
 {
     private const string GOOGLE_CALLBACK = '/src/php/Oauth/googleCallback.php';
 
-    private Client $client;
-
-    public function __construct(private ?Config $config = null)
+    /**
+     * コンストラクタ<br>
+     * @param Config|null $config Configオブジェクト
+     * @param Client|null $client Google Clientオブジェクト
+     */
+    public function __construct(private ?Config $config = null, private ?Client $client = null)
     {
     }
 
     /**
-     * GoogleClientの設定<br>
+     * Google Clientの設定<br>
+     * @param string $accessToken アクセストークン
      * @return Client Google Clientオブジェクト
      */
-    public function clientConfig(): Client
+    public function clientConfig(string $accessToken = ''): Client
     {
-        $this->client = new Client();
-        $this->client->setAuthConfig([
-            'client_id' => $_ENV['CLIENTID'] ?? getenv('CLIENTID'),
-            'client_secret' => $_ENV['CLIENTSECRET'] ?? getenv('CLIENTSECRET'),
-        ]);
+        $this->client->setAuthConfig($this->config->getGoogleClientEnvVars());
 
         $this->client->setScopes('email');
-        $this->client->setAccessToken($_SESSION['google_access_token'] ?? '');
+        $this->client->setAccessToken($accessToken);
 
         $this->client->setAccessType('offline');
         $this->client->setIncludeGrantedScopes(true);
         $this->client->setPrompt('select_account');
 
-        $redirectUri = $this->config->urlScheme() . $_SERVER['HTTP_HOST'] . self::GOOGLE_CALLBACK;
+        $redirectUri = $this->config->urlScheme() . $this->config->getHost() . self::GOOGLE_CALLBACK;
         $this->client->setRedirectUri($redirectUri);
 
         return $this->client;
