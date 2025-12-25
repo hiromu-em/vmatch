@@ -234,6 +234,67 @@ class ConfigTest extends TestCase
         $this->assertFalse($settings['user']);
         $this->assertFalse($settings['password']);
     }
+
+    /**
+     * Googleクライアント環境変数取得テスト（正常系）
+     */
+    public function testGetGoogleClientEnvVars(): void
+    {
+        $config = $this->createTestableConfig('localhost');
+
+        // テスト用の環境変数を設定
+        $config->setEnvVar('CLIENTID', 'test-client-id-12345');
+        $config->setEnvVar('CLIENTSECRET', 'test-client-secret-67890');
+
+        $envVars = $config->getGoogleClientEnvVars();
+
+        // 配列構造の検証
+        $this->assertIsArray($envVars);
+        $this->assertArrayHasKey('client_id', $envVars);
+        $this->assertArrayHasKey('client_secret', $envVars);
+
+        // 値の検証
+        $this->assertEquals('test-client-id-12345', $envVars['client_id']);
+        $this->assertEquals('test-client-secret-67890', $envVars['client_secret']);
+    }
+
+    /**
+     * Googleクライアント環境変数取得テスト（環境変数未設定）
+     */
+    public function testGetGoogleClientEnvVarsWithMissingEnvVars(): void
+    {
+        $config = $this->createTestableConfig('localhost');
+
+        // 環境変数を設定しない
+        $envVars = $config->getGoogleClientEnvVars();
+
+        // 配列構造の検証
+        $this->assertIsArray($envVars);
+        $this->assertArrayHasKey('client_id', $envVars);
+        $this->assertArrayHasKey('client_secret', $envVars);
+
+        // 環境変数が未設定の場合はfalseが返される
+        $this->assertFalse($envVars['client_id']);
+        $this->assertFalse($envVars['client_secret']);
+    }
+
+    /**
+     * Googleクライアント環境変数取得テスト（一部のみ設定）
+     */
+    public function testGetGoogleClientEnvVarsWithPartialEnvVars(): void
+    {
+        $config = $this->createTestableConfig('localhost');
+
+        // client_idのみ設定
+        $config->setEnvVar('CLIENTID', 'test-client-id');
+
+        $envVars = $config->getGoogleClientEnvVars();
+
+        // 配列構造の検証
+        $this->assertIsArray($envVars);
+        $this->assertEquals('test-client-id', $envVars['client_id']);
+        $this->assertFalse($envVars['client_secret']);
+    }
 }
 
 
