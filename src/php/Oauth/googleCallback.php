@@ -8,28 +8,34 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 session_start(['use_strict_mode' => 1]);
 
-// CSRF対策：stateを検証
-if (isset($_GET['state']) && $_GET['state'] !== $_SESSION['google_oauth_state']) {
-    
-    unset($_SESSION['google_oauth_state'], $_SESSION['google_code_verifier']);
-    $clearUrl = strtok($_SERVER['REQUEST_URI'], '?');
-    
-    header('Location: ' . filter_var($clearUrl, FILTER_SANITIZE_URL));
-    exit;
-
-} elseif (!isset($_GET['state']) || !isset($_GET['code'])) {
-    
-    // 不正なアクセスの処理
-    http_response_code(401);
-    include_once __DIR__ . '/../error/oauthError.php';
-    exit;
-}
-
-// アクセス拒否の処理
 if (isset($_GET['error'])) {
+
+    // アクセス拒否の処理
     header('Location: ' . filter_var('/', FILTER_SANITIZE_URL));
     exit;
 }
+
+$googleAuthorization = new GoogleAuthorization();
+
+// セッションからstateパラメーターを設定
+$googleAuthorization->setState($_SESSION['google_oauth_state'] ?? '');
+
+try {
+    // CSRF対策：stateを検証
+    $googleAuthorization->verifyState($_GET['state'] ?? '');
+
+} catch (\InvalidArgumentException $e) {
+
+    unset($_SESSION['google_oauth_state'], $_SESSION['google_code_verifier']);
+    $clearUrl = strtok($_SERVER['REQUEST_URI'], '?');
+
+    http_response_code(400);
+
+    // CSRF検出時のエラーページへリダイレクト
+    header('Location: ' . filter_var('../error/oauthError.php', FILTER_SANITIZE_URL));
+    exit;
+}
+
 
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $config = new Config($host);

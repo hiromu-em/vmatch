@@ -35,11 +35,31 @@ interface GoogleAuthorizationInterface
      * @param string $state stateパラメーター
      * @return void
      */
+    public function setClientState(string $state): void;
+
+    /**
+     * stateパラメーターの設定
+     * @param string $state stateパラメーター
+     * @return void
+     */
     public function setState(string $state): void;
+
+    /**
+     * stateパラメーターの取得
+     * @return string stateパラメーター
+     */
+    public function getState(): string;
     
     /**
      * コード検証者の生成
      * @return string コード検証者
      */
     public function generateCodeVerifier(): string;
+
+    /**
+     * stateパラメーターの検証
+     * @param string $state stateパラメーター
+     * @return bool 検証結果
+     */
+    public function verifyState(string $state): void;
 }

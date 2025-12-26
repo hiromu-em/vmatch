@@ -13,8 +13,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
  */
 class GoogleAuthorization implements GoogleAuthorizationInterface
 {
+    /** @var string $state stateパラメーター */
+    private string $state = '';
+    
     /**
-     * コンストラクタ<br>
      * @param Config|null $config Configオブジェクト
      * @param Client|null $client Google Clientオブジェクト
      */
@@ -63,13 +65,31 @@ class GoogleAuthorization implements GoogleAuthorizationInterface
     }
 
     /**
-     * stateパラメーターの設定
+     * Clientにstateパラメーターを設定
      * @param string $state stateパラメーター
      * @return void
      */
-    public function setState(string $state): void
+    public function setClientState(string $state): void
     {
         $this->client->setState($state);
+    }
+
+    /**
+     * stateパラメーターの取得
+     * @return string stateパラメーター
+     */
+    public function setState(string $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * stateパラメーターの取得
+     * @return string stateパラメーター
+     */   
+    public function getState(): string
+    {
+        return $this->state;
     }
 
     /**
@@ -79,6 +99,18 @@ class GoogleAuthorization implements GoogleAuthorizationInterface
     public function generateCodeVerifier(): string
     {
         return $this->client->getOAuth2Service()->generateCodeVerifier();
+    }
+
+    /**
+     * stateパラメーターの検証
+     * @param string $state stateパラメーター
+     * @return bool 検証結果
+     */
+    public function verifyState(string $state): void
+    {
+        if ($state !== $this->getState()) {
+            throw new \InvalidArgumentException();
+        }
     }
 }
 

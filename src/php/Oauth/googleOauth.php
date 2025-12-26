@@ -32,7 +32,7 @@ if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_t
     $_SESSION['google_oauth_state'] = $state;
     
     // stateパラメーターを設定
-    $googleAuthorization->setState($state);
+    $googleAuthorization->setClientState($state);
 
     // コード検証者を生成してSESSIONに保存
     $_SESSION['google_code_verifier'] = $googleAuthorization->generateCodeVerifier();
