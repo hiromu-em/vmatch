@@ -5,7 +5,7 @@ namespace Vmatch;
 
 use Dotenv\Dotenv;
 
-class Config
+class Config implements ConfigInterface
 {
     // ホスト名
     private string $host;
@@ -37,7 +37,7 @@ class Config
      * ローカル環境用のデータベース設定を取得
      * @return array データベース接続設定
      */
-    protected function getLocalDatabaseSettings(): array
+    public function getLocalDatabaseSettings(): array
     {
         $host = $this->getEnv('PG_LOCAL_HOST');
         $database = $this->getEnv('PG_LOCAL_DATABASE');
@@ -52,7 +52,7 @@ class Config
      * 本番環境用のデータベース設定を取得
      * @return array データベース接続設定
      */
-    protected function getProductionDatabaseSettings(): array
+    public function getProductionDatabaseSettings(): array
     {
         $host = $this->getEnv('PGHOST');
         $database = $this->getEnv('PGDATABASE');
@@ -70,7 +70,7 @@ class Config
      * @param string|false $password パスワード
      * @return array データベース接続設定
      */
-    protected function buildDatabaseSettings(string $dsn, $user, $password): array
+    public function buildDatabaseSettings(string $dsn, $user, $password): array
     {
         return [
             'dsn' => $dsn,
@@ -88,7 +88,7 @@ class Config
      * @param string $key 環境変数のキー
      * @return string|false 環境変数の値
      */
-    protected function getEnv(string $key)
+    public function getEnv(string $key)
     {
         // $_ENVが設定されている場合はそちらを優先
         if (isset($_ENV[$key])) {
@@ -102,7 +102,7 @@ class Config
      * @param string $key サーバー変数のキー
      * @return string|null サーバー変数の値
      */
-    protected function getServerVar(string $key): ?string
+    public function getServerVar(string $key): ?string
     {
         return $_SERVER[$key] ?? null;
     }
@@ -152,7 +152,7 @@ class Config
      * Dotenvインスタンスを作成（テスト時にオーバーライド可能）
      * @return Dotenv Dotenvインスタンス
      */
-    protected function createDotenv(): Dotenv
+    public function createDotenv(): Dotenv
     {
         return Dotenv::createImmutable(__DIR__ . '/../..');
     }
