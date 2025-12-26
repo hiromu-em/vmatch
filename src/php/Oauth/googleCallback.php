@@ -36,9 +36,11 @@ try {
     exit;
 }
 
+$config = new Config();
 
+// 環境変数の読み込み（ローカル環境のみ）
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$config = new Config($host);
+$config->setHost($host);
 $config->loadDotenvIfLocal();
 
 // Google認証クラスのインスタンス化

@@ -37,9 +37,11 @@ if ($_SESSION['oauth_token'] !== $_GET['oauth_token']) {
 
 $twitterAuthorization = new TwitterAuthorization();
 
+$config = new Config();
+
 // 環境変数の読み込み（ローカル環境のみ）
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$config = new Config($host);
+$config->setHost($host);
 $config->loadDotenvIfLocal();
 
 // Twitterの接続情報を作成

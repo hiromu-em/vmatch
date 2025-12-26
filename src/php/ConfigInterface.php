@@ -10,11 +10,6 @@ use Dotenv\Dotenv;
 interface ConfigInterface
 {
     /**
-     * @param string $host ホスト名
-     */
-    public function __construct(string $host);
-
-    /**
      * 環境に応じたデータベース接続の設定を取得
      * @return array データベース接続設定
      */
@@ -60,6 +55,13 @@ interface ConfigInterface
      * @return string ホスト名
      */
     public function getHost(): string;
+
+    /**
+     * ホスト名を設定
+     * @param string $host ホスト名
+     * @return string ホスト名
+     */
+    public function setHost(string $host): string;
 
     /**
      * ローカル環境かどうかを判定

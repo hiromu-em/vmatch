@@ -23,9 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
 
+    $config = new Config();
+
     // データベース接続の設定
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $config = new Config($host);
+    $config->setHost($host);
     $databaseSettings = $config->getDatabaseSettings();
 
     $databaseConnection = new \PDO(

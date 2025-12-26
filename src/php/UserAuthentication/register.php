@@ -15,10 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
 
     // データベース接続の設定
+    $config = new Config();
+
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $config = new Config($host);
+    $config->setHost($host);
     $databaseSettings = $config->getDatabaseSettings();
-    
+
     $databaseConnection = new \PDO(
         $databaseSettings['dsn'],
         $databaseSettings['user'],

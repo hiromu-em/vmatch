@@ -13,10 +13,11 @@ const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
 const DASHBOARD = '../dashboard.php';
 const CONFIGERROR = '../error/configError.php';
 
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$config = new Config();
 
-// Configクラスのインスタンス化 & dotenvの読み込み
-$config = new Config($host);
+// 環境変数の読み込み（ローカル環境のみ）
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$config->setHost($host);
 $config->loadDotenvIfLocal();
 
 $googleAuthorization = new GoogleAuthorization($config, new \Google\Client());

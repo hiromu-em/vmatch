@@ -11,15 +11,6 @@ class Config implements ConfigInterface
     private string $host;
 
     /**
-     * @param string $host ホスト名
-     */
-    public function __construct(string $host)
-    {
-        // ホスト名設定
-        $this->host = $host;
-    }
-
-    /**
      * 環境に応じたデータベース接続の設定を取得
      * @return array データベース接続設定
      */
@@ -114,6 +105,16 @@ class Config implements ConfigInterface
     public function getHost(): string
     {
         return $this->host;
+    }
+
+    /**
+     * ホスト名を取得
+     * @param string $host ホスト名
+     * @return string ホスト名
+     */
+    public function setHost(string $host): string
+    {
+        return $this->host = $host;
     }
 
     /**
