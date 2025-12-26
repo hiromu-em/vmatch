@@ -13,8 +13,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
  */
 class GoogleAuthorization implements GoogleAuthorizationInterface
 {
-    private const string GOOGLE_CALLBACK = '/src/php/Oauth/googleCallback.php';
-
     /**
      * コンストラクタ<br>
      * @param Config|null $config Configオブジェクト

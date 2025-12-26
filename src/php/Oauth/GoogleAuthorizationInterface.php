@@ -8,6 +8,8 @@ namespace Vmatch\Oauth;
  */
 interface GoogleAuthorizationInterface
 {
+    public const string GOOGLE_CALLBACK = '/src/php/Oauth/googleCallback.php';
+    
     /**
      * Google Clientの設定
      * @param string $accessToken アクセストークン
