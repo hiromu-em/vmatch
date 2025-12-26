@@ -31,7 +31,7 @@ if (!isset($_SESSION['google_access_token']) || empty($_SESSION['google_access_t
 
     // コード検証者を生成してSESSIONに保存
     $_SESSION['google_code_verifier'] = $googleAuthorization->generateCodeVerifier();
-    
+
     $authUrl = $googleAuthorization->createAuthUrl();
     header('Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL));
     exit;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Vmatch\Oauth;
 
 use Google\Client;
-use Vmatch\Config;
+use Vmatch\ConfigInterface;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -15,12 +15,12 @@ class GoogleAuthorization implements GoogleAuthorizationInterface
 {
     /** @var string $state stateパラメーター */
     private string $state = '';
-    
+
     /**
-     * @param Config|null $config Configオブジェクト
+     * @param ConfigInterface|null $config 設定インターフェース
      * @param Client|null $client Google Clientオブジェクト
      */
-    public function __construct(private ?Config $config = null, private ?Client $client = null)
+    public function __construct(private ?ConfigInterface $config = null, private ?Client $client = null)
     {
     }
 
@@ -86,7 +86,7 @@ class GoogleAuthorization implements GoogleAuthorizationInterface
     /**
      * stateパラメーターの取得
      * @return string stateパラメーター
-     */   
+     */
     public function getState(): string
     {
         return $this->state;
