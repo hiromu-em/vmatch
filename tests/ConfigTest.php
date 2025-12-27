@@ -15,11 +15,13 @@ class ConfigTest extends TestCase
     public function testIsLocalEnvironment(): void
     {
         // ローカル環境
-        $config = new Config('localhost');
+        $config = new Config();
+        $config->setHost('localhost');
         $this->assertTrue($config->isLocalEnvironment());
 
         // 本番環境
-        $config = new Config('example.com');
+        $config = new Config();
+        $config->setHost('example.com');
         $this->assertFalse($config->isLocalEnvironment());
     }
 
@@ -28,10 +30,12 @@ class ConfigTest extends TestCase
      */
     public function testGetHost(): void
     {
-        $config = new Config('localhost');
+        $config = new Config();
+        $config->setHost('localhost');
         $this->assertEquals('localhost', $config->getHost());
 
-        $config = new Config('example.com');
+        $config = new Config();
+        $config->setHost('example.com');
         $this->assertEquals('example.com', $config->getHost());
     }
 
@@ -40,10 +44,15 @@ class ConfigTest extends TestCase
      */
     public function testGetLocalDatabaseSettings(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getEnv', 'createDotenv']);
-        $config->__construct('localhost');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getEnv', 'getHost'])
+            ->getMock();
 
-        // getEnvの振る舞いを設定
+        $config
+            ->expects($this->once())
+            ->method('getHost')
+            ->willReturn('localhost');
+
         $config
             ->expects($this->exactly(4))
             ->method('getEnv')
@@ -53,11 +62,6 @@ class ConfigTest extends TestCase
                 ['PG_LOCAL_USER', 'test_user'],
                 ['PG_LOCAL_PASSWORD', 'test_pass']
             ]);
-
-        // Dotenvモックを設定
-        $mockDotenv = $this->createMock(Dotenv::class);
-        $mockDotenv->expects($this->once())->method('load');
-        $config->method('createDotenv')->willReturn($mockDotenv);
 
         $settings = $config->getDatabaseSettings();
 
@@ -78,10 +82,15 @@ class ConfigTest extends TestCase
      */
     public function testGetProductionDatabaseSettings(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getEnv']);
-        $config->__construct('example.com');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getEnv', 'getHost'])
+            ->getMock();
 
-        // getEnvの振る舞いを設定
+        $config
+            ->expects($this->once())
+            ->method('getHost')
+            ->willReturn('example.com');
+
         $config
             ->expects($this->exactly(4))
             ->method('getEnv')
@@ -110,8 +119,14 @@ class ConfigTest extends TestCase
      */
     public function testDatabaseSettingsOptions(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getEnv']);
-        $config->__construct('example.com');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getEnv', 'getHost'])
+            ->getMock();
+
+        $config
+            ->expects($this->once())
+            ->method('getHost')
+            ->willReturn('example.com');
 
         $config
             ->expects($this->exactly(4))
@@ -136,8 +151,9 @@ class ConfigTest extends TestCase
      */
     public function testUrlSchemeForLocalhost(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getServerVar']);
-        $config->__construct('localhost');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getServerVar'])
+            ->getMock();
 
         $config
             ->expects($this->once())
@@ -154,8 +170,9 @@ class ConfigTest extends TestCase
      */
     public function testUrlSchemeForProduction(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getServerVar']);
-        $config->__construct('example.com');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getServerVar'])
+            ->getMock();
 
         $config
             ->expects($this->once())
@@ -172,8 +189,9 @@ class ConfigTest extends TestCase
      */
     public function testUrlSchemeWithoutHttpHost(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getServerVar']);
-        $config->__construct('example.com');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getServerVar'])
+            ->getMock();
 
         $config
             ->expects($this->once())
@@ -190,8 +208,14 @@ class ConfigTest extends TestCase
      */
     public function testLoadDotenvIfLocalForLocalhost(): void
     {
-        $config = $this->createPartialMock(Config::class, ['createDotenv']);
-        $config->__construct('localhost');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['createDotenv', 'getHost'])
+            ->getMock();
+
+        $config
+            ->expects($this->once())
+            ->method('getHost')
+            ->willReturn('localhost');
 
         $mockDotenv = $this->createMock(Dotenv::class);
         $mockDotenv
@@ -212,8 +236,14 @@ class ConfigTest extends TestCase
      */
     public function testLoadDotenvIfLocalForProduction(): void
     {
-        $config = $this->createPartialMock(Config::class, ['createDotenv']);
-        $config->__construct('example.com');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['createDotenv', 'getHost'])
+            ->getMock();
+
+        $config
+            ->expects($this->once())
+            ->method('getHost')
+            ->willReturn('example.com');
 
         $mockDotenv = $this->createMock(Dotenv::class);
         $mockDotenv
@@ -234,8 +264,9 @@ class ConfigTest extends TestCase
      */
     public function testGetGoogleClientEnvVars(): void
     {
-        $config = $this->createPartialMock(Config::class, ['getEnv']);
-        $config->__construct('localhost');
+        $config = $this->getMockBuilder(Config::class)
+            ->onlyMethods(['getEnv'])
+            ->getMock();
 
         // テスト用の環境変数を設定
         $config

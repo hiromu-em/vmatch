@@ -7,8 +7,11 @@ use Dotenv\Dotenv;
 
 class Config implements ConfigInterface
 {
-    // ホスト名
-    private string $host;
+    /**
+     * ホスト名
+     * @var string
+     */
+    private string $host = '';
 
     /**
      * 環境に応じたデータベース接続の設定を取得
