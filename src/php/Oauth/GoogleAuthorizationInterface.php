@@ -12,7 +12,6 @@ interface GoogleAuthorizationInterface
 
     /**
      * Google Clientの設定
-     * @param string $accessToken アクセストークン
      * @return \Google\Client Google Clientオブジェクト
      */
     public function setClient(): \Google\Client;
