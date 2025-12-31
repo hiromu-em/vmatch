@@ -48,8 +48,6 @@ class GoogleAuthorization
 
     /**
      * アクセストークンの設定
-     * @param array $accessToken アクセストークン
-     * @return void
      */
     public function setAccessToken(array $accessToken): void
     {
@@ -58,7 +56,6 @@ class GoogleAuthorization
 
     /**
      * 認可サーバーのURLを生成
-     * @param string $state stateパラメーター
      * @return string 認可サーバーのURL
      */
     public function createAuthUrl(): string
@@ -68,7 +65,7 @@ class GoogleAuthorization
 
     /**
      * stateパラメーターの生成
-     * @return string 生成されたstateパラメーター
+     * @return string 生成されたstate
      */
     public function createState(): string
     {
@@ -76,9 +73,7 @@ class GoogleAuthorization
     }
 
     /**
-     * Clientにstateパラメーターを設定
-     * @param string $state stateパラメーター
-     * @return void
+     * Clientにstateを設定
      */
     public function setClientState(string $state): void
     {
@@ -86,8 +81,7 @@ class GoogleAuthorization
     }
 
     /**
-     * stateパラメーターの取得
-     * @return string stateパラメーター
+     * stateの設定
      */
     public function setState(string $state): void
     {
@@ -95,8 +89,7 @@ class GoogleAuthorization
     }
 
     /**
-     * stateパラメーターの取得
-     * @return string stateパラメーター
+     * stateの取得
      */
     public function getState(): string
     {
@@ -105,7 +98,6 @@ class GoogleAuthorization
 
     /**
      * コード検証者の取得
-     * @return string コード検証者
      */
     public function generateCodeVerifier(): string
     {
@@ -113,8 +105,7 @@ class GoogleAuthorization
     }
 
     /**
-     * stateパラメーターの検証
-     * @param string $state stateパラメーター
+     * stateの検証
      * @return bool 検証結果
      */
     public function verifyState(string $state): void
@@ -128,7 +119,6 @@ class GoogleAuthorization
      * 認可コードをアクセストークンと交換
      * @param string $code 認可コード
      * @param string $codeVerifier コード検証者
-     * @return void
      */
     public function fetchAccessToken(string $code, string $codeVerifier): void
     {
@@ -137,7 +127,6 @@ class GoogleAuthorization
 
     /**
      * アクセストークンの取得
-     * @return array アクセストークン情報
      */
     public function getAccessToken(): array
     {
@@ -146,7 +135,6 @@ class GoogleAuthorization
 
     /**
      * IDトークンの取得
-     * @return array|false IDトークン情報
      */
     public function getIdToken(): array|false
     {
