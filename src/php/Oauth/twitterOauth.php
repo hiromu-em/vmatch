@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Vmatch\Oauth\TwitterAuthorization;
 use Vmatch\UserAuthentication\UserAuthentication;
 use Vmatch\Config;
@@ -20,14 +21,22 @@ $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $config->setHost($host);
 $config->loadDotenvIfLocal();
 
-$twitterAuthorization = new TwitterAuthorization();
+$twitterAutho = new TwitterOAuth(
+    $_ENV['TWITTER_API_KEY'] ?? getenv('TWITTER_API_KEY'),
+    $_ENV['TWITTER_API_KEY_SECRET'] ?? getenv('TWITTER_API_KEY_SECRET')
+);
+
+$twitterAuthorization = new TwitterAuthorization($twitterAutho);
+
+// APIバージョンを設定
+$twitterAuthorization->setApiVersion();
 
 if (isset($_SESSION['access_token']) || !empty($_SESSION['access_token'])) {
 
     $access_token = $_SESSION['access_token'];
 
     // Twitterの接続情報を作成
-    $twitterAuthorization->createTwitterConnection(
+    $twitterAuthorization->setOauthToken(
         $access_token['oauth_token'],
         $access_token['oauth_token_secret']
     );
@@ -86,8 +95,6 @@ if (isset($_SESSION['access_token']) || !empty($_SESSION['access_token'])) {
     exit;
 }
 
-// Twitterの接続情報を作成
-$twitterAuthorization->createTwitterConnection();
 
 // リクエストトークンを取得
 $requestToken = $twitterAuthorization->getRequestToken();

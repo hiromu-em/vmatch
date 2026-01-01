@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Abraham\TwitterOAuth\TwitterOAuth;
 use Vmatch\Oauth\TwitterAuthorization;
 use Vmatch\Config;
 
@@ -35,8 +36,6 @@ if ($_SESSION['oauth_token'] !== $_GET['oauth_token']) {
     exit;
 }
 
-$twitterAuthorization = new TwitterAuthorization();
-
 $config = new Config();
 
 // 環境変数の読み込み（ローカル環境のみ）
@@ -44,8 +43,14 @@ $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $config->setHost($host);
 $config->loadDotenvIfLocal();
 
-// Twitterの接続情報を作成
-$twitterAuthorization->createTwitterConnection($_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+$twitterAutho = new TwitterOAuth(
+    $_ENV['TWITTER_API_KEY'] ?? getenv('TWITTER_API_KEY'),
+    $_ENV['TWITTER_API_KEY_SECRET'] ?? getenv('TWITTER_API_KEY_SECRET'),
+    $_SESSION['oauth_token'], 
+    $_SESSION['oauth_token_secret']
+);
+
+$twitterAuthorization = new TwitterAuthorization($twitterAutho);
 
 // アクセストークンを取得してセッションに保存
 $_SESSION['access_token'] = $twitterAuthorization->exchangeAccessToken();
