@@ -11,7 +11,7 @@ session_start(['use_strict_mode' => 1]);
 
 const DASHBOARD = '../dashboard.php';
 const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
-const CONFIGERROR = '../error/configError.php';
+const SYSTEMERROR = '../error/systemError.php';
 
 $config = new Config();
 
@@ -45,8 +45,15 @@ if (isset($_SESSION['access_token']) || !empty($_SESSION['access_token'])) {
         $databaseSettings['options']
     );
 
-    // ユーザー認証クラスのインスタンス化
     $userAuthentication = new UserAuthentication($databaseConnection);
+
+    if(empty($user) || !isset($user['id_str'])) {
+
+        // エラーページへリダイレクト
+        http_response_code(500);
+        header('Location:' . filter_var(SYSTEMERROR, FILTER_SANITIZE_URL));
+        exit;
+    }
 
     // プロバイダーIDの存在確認
     if ($userAuthentication->providerIdExists($user['id_str'])) {
@@ -70,7 +77,7 @@ if (isset($_SESSION['access_token']) || !empty($_SESSION['access_token'])) {
 
         // エラーページへリダイレクト
         http_response_code(500);
-        header('Location:' . filter_var(CONFIGERROR, FILTER_SANITIZE_URL));
+        header('Location:' . filter_var(SYSTEMERROR, FILTER_SANITIZE_URL));
         exit;
     }
 
