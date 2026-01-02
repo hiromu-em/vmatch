@@ -78,7 +78,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * 環境変数を取得（テスト時にオーバーライド可能）
+     * 環境変数を取得
      * @param string $key 環境変数のキー
      * @return string|false 環境変数の値
      */
@@ -92,7 +92,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * サーバー変数を取得（テスト時にオーバーライド可能）
+     * サーバー変数を取得
      * @param string $key サーバー変数のキー
      * @return string|null サーバー変数の値
      */
@@ -153,7 +153,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Dotenvインスタンスを作成（テスト時にオーバーライド可能）
+     * Dotenvインスタンスを作成
      * @return Dotenv Dotenvインスタンス
      */
     public function createDotenv(): Dotenv
