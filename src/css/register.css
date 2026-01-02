@@ -1,4 +1,3 @@
-/* register.php 用スタイル — index.css の変数・トーンに合わせる */
 
 .register-card {
     width: 480px;
@@ -109,7 +108,6 @@
     text-decoration: underline;
 }
 
-/* レスポンシブ */
 @media (max-width: 640px) {
     .register-card {
         padding: 18px;

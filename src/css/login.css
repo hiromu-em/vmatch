@@ -52,7 +52,6 @@ body {
     text-decoration: none;
 }
 
-/* メインコンテンツ */
 .login-container {
     display: flex;
     flex-direction: column;
@@ -174,7 +173,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* OAuth フォーム */
 .login-oauth-form {
     display: flex;
     justify-content: center;
@@ -293,7 +291,6 @@ body {
     opacity: 8%;
 }
 
-/* X ボタン専用カラー上書き（黒系） */
 .login-x-material-button {
     background-color: #0f1419;
     border-color: rgba(255, 255, 255, 0.08);
@@ -307,7 +304,6 @@ body {
     fill: currentColor;
 }
 
-/* エラーメッセージ */
 .error-messages-container {
     margin-bottom: 6px;
     display: flex;
@@ -331,7 +327,6 @@ body {
     margin: 0;
 }
 
-/* 認証リンク */
 .login-auth-link {
     margin-top: 20px;
 }
