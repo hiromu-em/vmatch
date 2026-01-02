@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Vmatch\Oauth;
 
-use Abraham\TwitterOAuth\TwitterOAuth;
-
 require_once __DIR__ . '/../../../vendor/autoload.php';
+
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 /**
  * Twitter認可クラス

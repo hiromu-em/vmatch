@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
-
 use Vmatch\UserAuthentication\UserAuthentication;
 use Vmatch\Config;
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 session_start([
     'use_strict_mode' => 1
@@ -17,8 +17,10 @@ if ($_SESSION['email'] === null || !isset($_SESSION['email'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // セッションからメールアドレスを取得
-    // セッションにメールアドレスが無ければトップページへリダイレクト
+    /*
+     * セッションからメールアドレスを取得
+     * セッションにメールアドレスが無ければトップページへリダイレクト
+     */
     $email = $_SESSION['email'] ?? header('Location: /');
 
     $password = $_POST['password'] ?? '';

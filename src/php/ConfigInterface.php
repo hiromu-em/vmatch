@@ -1,12 +1,10 @@
 <?php
 declare(strict_types=1);
+
 namespace Vmatch;
 
 use Dotenv\Dotenv;
 
-/**
- * 設定インターフェース
- */
 interface ConfigInterface
 {
 

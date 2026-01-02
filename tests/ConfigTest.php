@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use PHPUnit\Framework\TestCase;
 use Vmatch\Config;
 use Dotenv\Dotenv;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class ConfigTest extends TestCase
 {

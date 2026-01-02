@@ -15,15 +15,15 @@ class TwitterAuthorizationTest extends TestCase
     public function testSetApiVersion(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('setApiVersion')
             ->with('1.1');
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $twitterAuthorization->setApiVersion();
-        
+
         $this->assertTrue(true);
     }
 
@@ -33,15 +33,15 @@ class TwitterAuthorizationTest extends TestCase
     public function testSetOauthTokenWithoutParameters(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('setOauthToken')
             ->with("", "");
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $twitterAuthorization->setOauthToken("", "");
-        
+
         $this->assertTrue(true);
     }
 
@@ -51,18 +51,18 @@ class TwitterAuthorizationTest extends TestCase
     public function testSetOauthTokenWithParameters(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $oauthToken = 'test_oauth_token';
         $oauthTokenSecret = 'test_oauth_token_secret';
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('setOauthToken')
             ->with($oauthToken, $oauthTokenSecret);
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $twitterAuthorization->setOauthToken($oauthToken, $oauthTokenSecret);
-        
+
         $this->assertTrue(true);
     }
 
@@ -72,13 +72,13 @@ class TwitterAuthorizationTest extends TestCase
     public function testGetRequestToken(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $expectedToken = [
             'oauth_token' => 'test_request_token',
             'oauth_token_secret' => 'test_request_token_secret',
             'oauth_callback_confirmed' => true
         ];
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('oauth')
@@ -86,10 +86,10 @@ class TwitterAuthorizationTest extends TestCase
                 'oauth_callback' => 'http://localhost:8000/src/php/Oauth/twitterCallback.php'
             ])
             ->willReturn($expectedToken);
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $result = $twitterAuthorization->getRequestToken();
-        
+
         $this->assertSame($expectedToken, $result);
     }
 
@@ -99,7 +99,7 @@ class TwitterAuthorizationTest extends TestCase
     public function testExchangeAccessToken(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $oauthVerifier = 'test_oauth_verifier';
         $expectedToken = [
             'oauth_token' => 'test_access_token',
@@ -107,7 +107,7 @@ class TwitterAuthorizationTest extends TestCase
             'user_id' => '12345',
             'screen_name' => 'testuser'
         ];
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('oauth')
@@ -115,10 +115,10 @@ class TwitterAuthorizationTest extends TestCase
                 'oauth_verifier' => $oauthVerifier
             ])
             ->willReturn($expectedToken);
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $result = $twitterAuthorization->exchangeAccessToken($oauthVerifier);
-        
+
         $this->assertSame($expectedToken, $result);
     }
 
@@ -128,10 +128,10 @@ class TwitterAuthorizationTest extends TestCase
     public function testCreateAuthUrl(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $oauthToken = 'test_request_token';
         $expectedUrl = 'https://api.twitter.com/oauth/authorize?oauth_token=test_request_token';
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('url')
@@ -139,10 +139,10 @@ class TwitterAuthorizationTest extends TestCase
                 'oauth_token' => $oauthToken
             ])
             ->willReturn($expectedUrl);
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $result = $twitterAuthorization->createAuthUrl($oauthToken);
-        
+
         $this->assertSame($expectedUrl, $result);
     }
 
@@ -152,14 +152,14 @@ class TwitterAuthorizationTest extends TestCase
     public function testGetUserVerifyCredentials(): void
     {
         $twitterOAuthMock = $this->createMock(TwitterOAuth::class);
-        
+
         $userData = new \stdClass();
         $userData->id = 12345;
         $userData->screen_name = 'testuser';
         $userData->name = 'Test User';
         $userData->email = 'test@example.com';
         $userData->profile_image_url_https = 'https://example.com/profile.jpg';
-        
+
         $twitterOAuthMock
             ->expects($this->once())
             ->method('get')
@@ -169,10 +169,10 @@ class TwitterAuthorizationTest extends TestCase
                 'include_entities' => 'false'
             ])
             ->willReturn($userData);
-        
+
         $twitterAuthorization = new TwitterAuthorization($twitterOAuthMock);
         $result = $twitterAuthorization->getUserVerifyCredentials();
-        
+
         $this->assertIsArray($result);
         $this->assertEquals(12345, $result['id']);
         $this->assertEquals('testuser', $result['screen_name']);

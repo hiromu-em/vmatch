@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
 use Vmatch\Oauth\GoogleAuthorization;
 use Vmatch\UserAuthentication\UserAuthentication;
 use Vmatch\Config;
-
-
-require_once __DIR__ . '/../../../vendor/autoload.php';
 
 session_start(['use_strict_mode' => 1]);
 
