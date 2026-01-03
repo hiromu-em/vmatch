@@ -11,5 +11,5 @@ interface ProfileSettingInterface
 
     public function setSocialMediaUrls(array $snsUrls): void;
 
-
+    public function getUserProfile(): array;
 }

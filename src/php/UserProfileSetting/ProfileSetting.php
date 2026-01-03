@@ -16,7 +16,7 @@ class ProfileSetting implements ProfileSettingInterface
     }
 
     /**
-     * 活動場所を設定する
+     * 活動場所の媒体を設定する
      */
     public function setActivityPlaces(bool $youtube, bool $twitch): void
     {
@@ -29,8 +29,14 @@ class ProfileSetting implements ProfileSettingInterface
      */
     public function setSocialMediaUrls(array $snsUrls): void
     {
-        $this->userProfile['twitterUrl'] = $snsUrls['twitter'];
-        $this->userProfile['youtubeUrl'] = $snsUrls['youtube'];
-        $this->userProfile['twitchUrl'] = $snsUrls['twitch'];
+        $this->userProfile['snsUrls'] = $snsUrls;
+    }
+
+    /**
+     * ユーザーのプロフィールを取得する
+     */
+    public function getUserProfile(): array
+    {
+        return $this->userProfile;
     }
 }
