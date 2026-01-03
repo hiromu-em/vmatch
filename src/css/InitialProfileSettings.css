@@ -43,7 +43,7 @@ body::before {
 }
 
 header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(237deg, var(--primary-color), var(--secondary-color));
     padding: 20px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -78,6 +78,26 @@ main {
     font-weight: 600;
     color: var(--white-color);
     text-shadow: 0 0 15px var(--secondary-color), 0 0 5px var(--white-color);
+}
+
+.error-messages {
+    width: 100%;
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(233, 30, 99, 0.3);
+}
+
+.error-messages p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.error-messages p:last-child {
+    margin-bottom: 0;
 }
 
 form {
