@@ -1,6 +1,35 @@
 <?php
 declare(strict_types=1);
 
+use Vmatch\FormValidation;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $formValidation = new FormValidation();
+
+    // プロフィール画像の処理
+    if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === UPLOAD_ERR_OK) {
+
+
+    }
+
+    $name = trim($_POST['user-name'] ?? '');
+    $activityYoutube = isset($_POST['activity-youtube']) ? true : false;
+    $activityTwitch = isset($_POST['activity-twitch']) ? true : false;
+    $snsUrls['X(Twitter)'] = trim($_POST['twitter-url'] ?? '');
+    $snsUrls['YouTube'] = trim($_POST['youtube-url'] ?? '');
+    $snsUrls['Twitch'] = trim($_POST['twitch-url'] ?? '');
+
+    $formValidation->validationUserName($name);
+    $formValidation->validationUrls($snsUrls);
+    $formValidation->validationActivevity($activityYoutube, $activityTwitch);
+
+    $errorMessages = $formValidation->getErrorMessages();
+
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -20,13 +49,20 @@ declare(strict_types=1);
         <div class="page-title">
             <h2>プロフィール設定</h2>
         </div>
+        <?php if (!empty($errorMessages)): ?>
+            <div class="error-messages">
+                <?php foreach ($errorMessages as $message): ?>
+                    <p><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <form method="post" enctype="multipart/form-data">
             <div class="form-group profile-picture-group">
                 <input type="file" name="profilePicture" accept="image/*" required>
             </div>
             <div class="form-group">
-                <label for="user-name">名前:</label>
-                <input type="text" id="user-name" name="user-name" required>
+                <label for="user-name">ユーザー名:</label>
+                <input type="text" id="user-name" name="user-name" required autocomplete="off">
             </div>
             <div class="form-group activity-section">
                 <h4>活動場所:</h4>
@@ -43,15 +79,15 @@ declare(strict_types=1);
                 <h4>SNSリンク</h4>
                 <div class="sns-item">
                     <label for="twitter-url">X(Twitter):</label>
-                    <input type="url" id="twitter-url" name="twitter-url" placeholder="https://twitter.com/yourprofile">
+                    <input type="url" id="twitter-url" name="twitter-url" placeholder="https://twitter.com/yourprofile" autocomplete="off">
                 </div>
                 <div class="sns-item">
                     <label for="youtube-url">YouTube:</label>
-                    <input type="url" id="youtube-url" name="youtube-url" placeholder="https://youtube.com/yourprofile">
+                    <input type="url" id="youtube-url" name="youtube-url" placeholder="https://youtube.com/yourprofile" autocomplete="off">
                 </div>
                 <div class="sns-item">
                     <label for="twitch-url">Twitch:</label>
-                    <input type="url" id="twitch-url" name="twitch-url" placeholder="https://twitch.tv/yourprofile">
+                    <input type="url" id="twitch-url" name="twitch-url" placeholder="https://twitch.tv/yourprofile" autocomplete="off">
                 </div>
             </div>
             <div class="form-group button-group">
