@@ -9,12 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $formValidation = new FormValidation();
 
-    // プロフィール画像の処理
-    if (isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] === UPLOAD_ERR_OK) {
-
-
-    }
-
     $name = trim($_POST['user-name'] ?? '');
     $activityYoutube = isset($_POST['activity-youtube']) ? true : false;
     $activityTwitch = isset($_POST['activity-twitch']) ? true : false;
@@ -22,9 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $snsUrls['YouTube'] = trim($_POST['youtube-url'] ?? '');
     $snsUrls['Twitch'] = trim($_POST['twitch-url'] ?? '');
 
-    $formValidation->validationUserName($name);
-    $formValidation->validationUrls($snsUrls);
-    $formValidation->validationActivevity($activityYoutube, $activityTwitch);
+    if (isset($_FILES['profilePicture']) && !empty($_FILES['profilePicture'])) {
+
+        // プロフィール画像の検証
+        $isvalidationImage = $formValidation->validationImage($_FILES['profilePicture']);
+    }
+
+    // 他のフォームフィールドの検証は、画像検証が成功した場合にのみ実行
+    if (!$isvalidationImage) {
+
+        $formValidation->validationUserName($name);
+        $formValidation->validationUrls($snsUrls);
+        $formValidation->validationActivevity($activityYoutube, $activityTwitch);
+    }
+
 
     $errorMessages = $formValidation->getErrorMessages();
 
@@ -79,15 +84,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h4>SNSリンク</h4>
                 <div class="sns-item">
                     <label for="twitter-url">X(Twitter):</label>
-                    <input type="url" id="twitter-url" name="twitter-url" placeholder="https://twitter.com/yourprofile" autocomplete="off">
+                    <input type="url" id="twitter-url" name="twitter-url" placeholder="https://twitter.com/yourprofile"
+                        autocomplete="off">
                 </div>
                 <div class="sns-item">
                     <label for="youtube-url">YouTube:</label>
-                    <input type="url" id="youtube-url" name="youtube-url" placeholder="https://youtube.com/yourprofile" autocomplete="off">
+                    <input type="url" id="youtube-url" name="youtube-url" placeholder="https://youtube.com/yourprofile"
+                        autocomplete="off">
                 </div>
                 <div class="sns-item">
                     <label for="twitch-url">Twitch:</label>
-                    <input type="url" id="twitch-url" name="twitch-url" placeholder="https://twitch.tv/yourprofile" autocomplete="off">
+                    <input type="url" id="twitch-url" name="twitch-url" placeholder="https://twitch.tv/yourprofile"
+                        autocomplete="off">
                 </div>
             </div>
             <div class="form-group button-group">

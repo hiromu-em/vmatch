@@ -9,6 +9,40 @@ class FormValidation
     private array $errorMessages = [];
 
     /**
+     * プロフィール写真を検証する。
+     * @param array $profilePicture アップロードされたプロフィール画像の情報
+     * @return bool エラーがある場合はtrue、ない場合はfalse
+     */
+    public function validationImage(array $profilePicture): bool
+    {
+        $allowedTypes = ['image/jpeg', 'image/png'];
+        $maxFileSize = 3 * 1024 * 1024;
+
+        if ($profilePicture['error'] !== UPLOAD_ERR_OK) {
+            $this->errorMessages[] = "プロフィール画像のアップロードに失敗しました。";
+            return true;
+        } elseif (strpos($profilePicture['name'], 'jpeg') === false) {
+            $this->errorMessages[] = "プロフィール画像はJPEG、PNG形式のみ対応しています。";
+            return true;
+        } elseif (strpos($profilePicture['name'], 'png') === false) {
+            $this->errorMessages[] = "プロフィール画像はJPEG、PNG形式のみ対応しています。";
+            return true;
+        }
+
+        if (!\in_array($profilePicture['type'], $allowedTypes, true)) {
+            $this->errorMessages[] = "プロフィール画像はJPEG、PNG形式のみ対応しています。";
+            return true;
+        }
+
+        if ($profilePicture['size'] > $maxFileSize) {
+            $this->errorMessages[] = "プロフィール画像のサイズは3MB以下にしてください。";
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * ユーザー名を検証する。
      */
     public function validationUserName(string $name): void
