@@ -30,8 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $formValidation->validationActivevity($activityYoutube, $activityTwitch);
     }
 
+    // エラーが存在する場合、メッセージを取得
+    if ($formValidation->hasErrorMessages()) {
+        $errorMessages = $formValidation->getErrorMessages();
+    }
 
-    $errorMessages = $formValidation->getErrorMessages();
+    if (empty($errorMessages)) {
+
+    }
 
 }
 

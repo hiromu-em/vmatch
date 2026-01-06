@@ -105,6 +105,14 @@ class FormValidation
     }
 
     /**
+     * エラーが存在するか確認する。
+     */
+    public function hasErrorMessages(): bool
+    {
+        return !empty($this->errorMessages);
+    }
+
+    /**
      * エラーメッセージを取得する。
      */
     public function getErrorMessages(): array
