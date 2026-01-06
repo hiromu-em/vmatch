@@ -15,22 +15,28 @@ class FormValidation
      */
     public function validationImage(array $profilePicture): bool
     {
-        $allowedTypes = ['image/jpeg', 'image/png'];
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         $maxFileSize = 3 * 1024 * 1024;
 
+        // アップロードエラーを確認
         if ($profilePicture['error'] !== UPLOAD_ERR_OK) {
             $this->errorMessages[] = "プロフィール画像のアップロードに失敗しました。";
             return true;
-        } elseif (strpos($profilePicture['name'], 'jpeg') === false) {
-            $this->errorMessages[] = "プロフィール画像はJPEG、PNG形式のみ対応しています。";
-            return true;
-        } elseif (strpos($profilePicture['name'], 'png') === false) {
-            $this->errorMessages[] = "プロフィール画像はJPEG、PNG形式のみ対応しています。";
+        }
+
+        // ファイル名の拡張子を確認
+        if (
+            strpos($profilePicture['name'], 'jpeg') === false &&
+            strpos($profilePicture['name'], 'png') === false &&
+            strpos($profilePicture['name'], 'jpg') === false
+        ) {
+            $this->errorMessages[] = "プロフィール画像はJPEG、PNG、JPG形式のみ対応しています。";
             return true;
         }
 
+        // MIMEタイプを確認
         if (!\in_array($profilePicture['type'], $allowedTypes, true)) {
-            $this->errorMessages[] = "プロフィール画像はJPEG、PNG形式のみ対応しています。";
+            $this->errorMessages[] = "プロフィール画像はJPEG、PNG、JPG形式のみ対応しています。";
             return true;
         }
 
