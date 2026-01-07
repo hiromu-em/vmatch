@@ -73,13 +73,13 @@ class FormValidation
         // 各URLの形式を検証
         foreach ($urls as $platform => $url) {
             if (!empty($url)) {
-                filter_var($url, FILTER_VALIDATE_URL) === false ||
-                    !preg_match('/^https?:\/\//', $url) ? $this->errorMessages[] = "{$platform}のURLが正しくありません。" : "";
+                if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                    $this->errorMessages[] = "{$platform}のURLが正しくありません。";
+                } elseif (!preg_match('/^https?:\/\//', $url)) {
+                    $this->errorMessages[] = "{$platform}のURLが正しくありません。";
+                }
             }
         }
-
-        // 空のエラーメッセージを削除
-        $this->errorMessages = array_filter($this->errorMessages, fn($message) => !empty($message));
 
         // 各プラットフォームのURLに特有のドメインが含まれているか確認
         if (strpos($urls['X(Twitter)'], 'x.com') === false && !empty($urls['X(Twitter)'])) {
