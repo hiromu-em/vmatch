@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\FormValidation;
 use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -29,12 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     $userAuthentication = new UserAuthentication($databaseConnection);
+    $formValidation = new FormValidation();
 
     // メールアドレス形式確認
-    $isValidEmail = $userAuthentication->validateEmail($email);
+    $isValidEmail = $formValidation->validateEmail($email);
 
     // 既登録ユーザー確認
-    $isRegisteredUsers = $userAuthentication->emailExists($userAuthentication->getEmail());
+    $isRegisteredUsers = $userAuthentication->emailExists($email);
 
     // サインインコード設定
     $userAuthentication->setSignInCodes($isRegisteredUsers, false);
