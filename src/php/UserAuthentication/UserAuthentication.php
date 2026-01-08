@@ -11,12 +11,6 @@ class UserAuthentication
     // ユーザーメールアドレス
     private string $userEmail = '';
 
-    // エラーコード配列
-    private array $errorCodes = [];
-
-    // エラーメッセージ配列
-    private array $errorMessages = [];
-
     // エラーメッセージ
     private string $errorMessage = '';
 
@@ -73,20 +67,6 @@ class UserAuthentication
         }
 
         return false;
-    }
-
-    /**
-     * サインインコード設定
-     * @param bool $emailExists メールアドレス存在フラグ
-     * @param bool $signIn サインインフラグ
-     * @return array エラーコード配列
-     */
-    public function setSignInCodes(bool $emailExists, bool $signIn): void
-    {
-        if ($emailExists && !$signIn) {
-            $this->setErrorCodes(1);
-            return;
-        }
     }
 
     /**
@@ -194,47 +174,5 @@ class UserAuthentication
     public function getErrorMessage(): string
     {
         return $this->errorMessage;
-    }
-
-    /**
-     * エラーコードを設定する
-     * @param array $errorCodes エラーコード配列
-     */
-    public function setErrorCodes(int $errorCode): void
-    {
-        $this->errorCodes[] = $errorCode;
-    }
-
-    /**
-     * エラーコードを取得する
-     * @return array エラーコード配列
-     */
-    public function getErrorCodes(): array
-    {
-        return $this->errorCodes;
-    }
-
-    /**
-     * エラーメッセージを取得する
-     * @return array エラーメッセージ情報
-     */
-    public function errorMessages(): array
-    {
-        $errorCodes = array_unique($this->getErrorCodes());
-        foreach ($errorCodes as $errorCode) {
-            $errorMessages[] = match ($errorCode) {
-                1 => "登録済みユーザーです。ログインしてください。",
-                2 => "メールアドレスの形式が正しくありません。",
-                3 => "メールアドレスを入力してください。",
-                4 => "パスワードを入力してください。",
-                5 => "8文字以上入力してください。",
-                6 => "英字を1文字含めてください。",
-                7 => "数字を1文字含めてください。",
-                8 => "記号(@ # $ % ^ & *) を1文字含めてください。",
-                9 => "メールアドレス\nまたはパスワードが正しくありません。",
-            };
-        }
-
-        return $errorMessages;
     }
 }
