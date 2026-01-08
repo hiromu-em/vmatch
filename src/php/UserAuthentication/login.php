@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // メールアドレス・パスワード形式確認
     if ($formValidation->isErrorMessages()) {
-        $errorMessage = $formValidation->getLoginErrorMessage();
+        $errorMessage = $formValidation->getErrorMessage();
     }
 
     if (empty($errorMessage)) {
