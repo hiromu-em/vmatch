@@ -192,4 +192,12 @@ class FormValidation
         return $this->arrayErrorMessage;
     }
 
+    /**
+     * ログインエラーメッセージを取得する。
+     */
+    public function getLoginErrorMessage()
+    {
+        return "メールアドレス\nまたはパスワードが正しくありません。";
+    }
+
 }

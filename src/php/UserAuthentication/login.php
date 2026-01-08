@@ -21,8 +21,8 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $email = $_POST['email'] ?? null;
-    $password = $_POST['password'] ?? null;
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
 
     $config = new Config();
 
@@ -41,19 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userAuthentication = new UserAuthentication($databaseConnection);
     $formValidation = new FormValidation();
 
-    $validEmail = $formValidation->validateEmail($email, $userAuthentication);
-    $validPassword = $userAuthentication->validatePassword($password);
+    // フォーム入力検証
+    $formValidation->validateEmail($email);
+    $formValidation->validatePassword($password);
 
     // メールアドレス・パスワード形式確認
-    if (!$validEmail || !$validPassword) {
-        $userAuthentication->setErrorCodes(9);
-
-        // エラーメッセージ取得
-        $errorMessage = array_filter($userAuthentication->errorMessages(), function ($message) {
-            return $message === "メールアドレス\nまたはパスワードが正しくありません。";
-        });
+    if ($formValidation->hasErrorMessages()) {
+        $errorMessage = $formValidation->getLoginErrorMessage();
     }
-
 
     if (empty($errorMessage)) {
 
