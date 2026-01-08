@@ -175,7 +175,6 @@ class FormValidation
     }
 
     /**
-     * エラーメッセージを取得する。
      * @return string エラーメッセージ
      */
     public function getErrorMessage(): string
@@ -184,20 +183,11 @@ class FormValidation
     }
 
     /**
-     * エラーメッセージを取得する。
      * @return array エラーメッセージ配列
      */
     public function getErrorMessages(): array
     {
         return $this->arrayErrorMessage;
-    }
-
-    /**
-     * ログインエラーメッセージを取得する。
-     */
-    public function getLoginErrorMessage()
-    {
-        return "メールアドレス\nまたはパスワードが正しくありません。";
     }
 
 }
