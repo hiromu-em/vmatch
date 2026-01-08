@@ -37,19 +37,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $databaseSettings['options']
     );
 
-    $userAuthentication = new UserAuthentication($databaseConnection);
     $formValidation = new FormValidation();
     $formValidation->validateEmail($email, 'login');
     $formValidation->validatePassword($password, 'login');
 
-    // メールアドレス・パスワード形式確認
     if ($formValidation->isErrorMessages()) {
         $errorMessage = $formValidation->getErrorMessage();
     }
 
     if (empty($errorMessage)) {
 
-        // DBにメールアドレス・パスワードが存在するか確認
+        $userAuthentication = new UserAuthentication($databaseConnection);
+
         $existingUsersEmail = $userAuthentication->existsByEmail($email, 'login');
         $existingUsersPassword = $userAuthentication->verifyPassword($email, $password);
 
