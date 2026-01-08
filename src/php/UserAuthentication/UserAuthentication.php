@@ -14,6 +14,12 @@ class UserAuthentication
     // エラーコード配列
     private array $errorCodes = [];
 
+    // エラーメッセージ配列
+    private array $errorMessages = [];
+
+    // エラーメッセージ
+    private string $errorMessage = '';
+
     // 認証済みユーザー情報
     private array $authenticatedUser = [];
 
