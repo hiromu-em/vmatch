@@ -90,39 +90,6 @@ class UserAuthentication
     }
 
     /**
-     * メールアドレス検証
-     * @param string|null $email
-     * @return bool メールアドレス形式結果
-     */
-    public function validateEmail(?string $email): bool
-    {
-        //NULLチェック or 空文字チェック
-        if (empty($email)) {
-            $this->setErrorCodes(3);
-            return false;
-        }
-
-        $email = trim($email);
-
-        // メールアドレスの形式チェック
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->setErrorCodes(2);
-            return false;
-        }
-
-        //ドメイン存在チェック
-        if (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
-            $this->setErrorCodes(2);
-            return false;
-        }
-
-        // ユーザーメールアドレスを設定
-        $this->setEmail($email);
-
-        return true;
-    }
-
-    /**
      * ユーザーメールアドレスを設定する
      * @param string $email ユーザーメールアドレス
      */
@@ -138,46 +105,6 @@ class UserAuthentication
     public function getEmail(): string
     {
         return $this->userEmail;
-    }
-
-    /**
-     * パスワードの形式を検証
-     * @param string|null $password
-     * @return bool パスワード形式結果
-     */
-    public function validatePassword(?string $password): bool
-    {
-        //NULLチェック or 空文字チェック
-        if (empty($password)) {
-            $this->setErrorCodes(4);
-            return false;
-        }
-
-        // 文字列の長さチェック
-        if (mb_strlen($password) < 8) {
-            $this->setErrorCodes(5);
-        }
-
-        // 英字の有無チェック
-        if (!preg_match('/[A-Za-z]/', $password)) {
-            $this->setErrorCodes(6);
-        }
-
-        // 数字の有無チェック
-        if (!preg_match('/\d/', $password)) {
-            $this->setErrorCodes(7);
-        }
-
-        // 記号の有無チェック
-        if (!preg_match('/[@#\$%\^&\*]/', $password)) {
-            $this->setErrorCodes(8);
-        }
-
-        if (!empty($this->errorCodes)) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
