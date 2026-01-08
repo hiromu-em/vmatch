@@ -39,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $userAuthentication = new UserAuthentication($databaseConnection);
     $formValidation = new FormValidation();
-
-    $formValidation->validateEmail($email);
-    $formValidation->validatePassword($password);
+    $formValidation->validateEmail($email, 'login');
+    $formValidation->validatePassword($password, 'login');
 
     // メールアドレス・パスワード形式確認
     if ($formValidation->isErrorMessages()) {
