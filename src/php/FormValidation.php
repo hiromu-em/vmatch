@@ -6,7 +6,7 @@ namespace Vmatch;
 class FormValidation
 {
 
-    private array $errorMessages = [];
+    private array $arrayErrorMessage = [];
 
     private string $errorMessage = '';
 
@@ -22,7 +22,7 @@ class FormValidation
 
         // アップロードエラーを確認
         if ($profilePicture['error'] !== UPLOAD_ERR_OK) {
-            $this->errorMessages[] = "プロフィール画像のアップロードに失敗しました。";
+            $this->arrayErrorMessage[] = "プロフィール画像のアップロードに失敗しました。";
             return true;
         }
 
@@ -32,18 +32,18 @@ class FormValidation
             strpos($profilePicture['name'], 'png') === false &&
             strpos($profilePicture['name'], 'jpg') === false
         ) {
-            $this->errorMessages[] = "プロフィール画像はJPEG、PNG、JPG形式のみ対応しています。";
+            $this->arrayErrorMessage[] = "プロフィール画像はJPEG、PNG、JPG形式のみ対応しています。";
             return true;
         }
 
         // MIMEタイプを確認
         if (!\in_array($profilePicture['type'], $allowedTypes, true)) {
-            $this->errorMessages[] = "プロフィール画像はJPEG、PNG、JPG形式のみ対応しています。";
+            $this->arrayErrorMessage[] = "プロフィール画像はJPEG、PNG、JPG形式のみ対応しています。";
             return true;
         }
 
         if ($profilePicture['size'] > $maxFileSize) {
-            $this->errorMessages[] = "プロフィール画像のサイズは3MB以下にしてください。";
+            $this->arrayErrorMessage[] = "プロフィール画像のサイズは3MB以下にしてください。";
             return true;
         }
 
@@ -56,9 +56,9 @@ class FormValidation
     public function validationUserName(string $name): void
     {
         if (empty($name)) {
-            $this->errorMessages[] = "名前を入力してください。";
+            $this->arrayErrorMessage[] = "名前を入力してください。";
         } elseif (preg_match('/[^\p{L}\p{N}]/u', $name)) {
-            $this->errorMessages[] = "名前に記号を含めないでください。";
+            $this->arrayErrorMessage[] = "名前に記号を含めないでください。";
         }
     }
 
@@ -69,31 +69,31 @@ class FormValidation
     {
         // 少なくとも1つのURLが入力されているか確認
         if (empty($urls['X(Twitter)']) && empty($urls['YouTube']) && empty($urls['Twitch'])) {
-            $this->errorMessages[] = "SNSリンクを1つ以上設定してください。";
+            $this->arrayErrorMessage[] = "SNSリンクを1つ以上設定してください。";
         }
 
         // 各URLの形式を検証
         foreach ($urls as $platform => $url) {
             if (!empty($url)) {
                 if (!filter_var($url, FILTER_VALIDATE_URL)) {
-                    $this->errorMessages[] = "{$platform}のURLが正しくありません。";
+                    $this->arrayErrorMessage[] = "{$platform}のURLが正しくありません。";
                 } elseif (!preg_match('/^https?:\/\//', $url)) {
-                    $this->errorMessages[] = "{$platform}のURLが正しくありません。";
+                    $this->arrayErrorMessage[] = "{$platform}のURLが正しくありません。";
                 }
             }
         }
 
         // 各プラットフォームのURLに特有のドメインが含まれているか確認
         if (strpos($urls['X(Twitter)'], 'x.com') === false && !empty($urls['X(Twitter)'])) {
-            $this->errorMessages[] = "X(Twitter)のURLが正しくありません。";
+            $this->arrayErrorMessage[] = "X(Twitter)のURLが正しくありません。";
         } elseif (strpos($urls['YouTube'], 'youtube.com') === false && !empty($urls['YouTube'])) {
-            $this->errorMessages[] = "YouTubeのURLが正しくありません。";
+            $this->arrayErrorMessage[] = "YouTubeのURLが正しくありません。";
         } elseif (strpos($urls['Twitch'], 'twitch.tv') === false && !empty($urls['Twitch'])) {
-            $this->errorMessages[] = "TwitchのURLが正しくありません。";
+            $this->arrayErrorMessage[] = "TwitchのURLが正しくありません。";
         }
 
         // 重複するエラーメッセージを削除
-        $this->errorMessages = array_unique($this->errorMessages);
+        $this->arrayErrorMessage = array_unique($this->arrayErrorMessage);
     }
 
     /**
@@ -102,7 +102,7 @@ class FormValidation
     public function validationActivevity(bool $activityYoutube, bool $activityTwitch): void
     {
         if (!$activityYoutube && !$activityTwitch) {
-            $this->errorMessages[] = "1つ以上の活動プラットフォームを選択してください。";
+            $this->arrayErrorMessage[] = "1つ以上の活動プラットフォームを選択してください。";
         }
     }
 
@@ -133,7 +133,7 @@ class FormValidation
      */
     public function hasErrorMessages(): bool
     {
-        if (!empty($this->errorMessage) || !empty($this->errorMessages)) {
+        if (!empty($this->errorMessage) || !empty($this->arrayErrorMessage)) {
             return true;
         }
         return false;
@@ -154,7 +154,7 @@ class FormValidation
      */
     public function getErrorMessages(): array
     {
-        return $this->errorMessages;
+        return $this->arrayErrorMessage;
     }
 
 }
