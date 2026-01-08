@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Vmatch\UserAuthentication\UserAuthentication;
+use Vmatch\FormValidation;
 use Vmatch\Config;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -39,16 +40,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $databaseSettings['options']
     );
 
-    $userAuthentication = new UserAuthentication($databaseConnection);
-    $isValidPassword = $userAuthentication->validatePassword($password);
 
-    // パスワード形式確認
-    if (!$isValidPassword) {
-        $errorMessages = $userAuthentication->errorMessages();
+    $formValidation = new FormValidation();
+
+    // パスワード形式を確認
+    $formValidation->validatePassword($password);
+
+    // エラーメッセージの有無を確認
+    if ($formValidation->hasErrorMessages()) {
+        $errorMessages = $formValidation->getErrorMessages();
     } else {
+
+        $userAuthentication = new UserAuthentication($databaseConnection);
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $userAuthentication->userRegistration($email, $passwordHash);
+
         header('Location: ../InitialProfileSettings.php');
         exit;
     }
