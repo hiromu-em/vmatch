@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formValidation->validateEmail($email);
 
     // エラーメッセージがある場合取得
-    if ($formValidation->isErrorMessages()) {
+    if ($formValidation->hasErrorMessages()) {
         $errorMessage = $formValidation->getErrorMessage();
     }
 

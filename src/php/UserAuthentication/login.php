@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formValidation->validateEmail($email, 'login');
     $formValidation->validatePassword($password, 'login');
 
-    if ($formValidation->isErrorMessages()) {
+    if ($formValidation->hasErrorMessages()) {
         $errorMessage = $formValidation->getErrorMessage();
     }
 

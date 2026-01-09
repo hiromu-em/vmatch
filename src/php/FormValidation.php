@@ -164,9 +164,9 @@ class FormValidation
     }
 
     /**
-     * エラーが存在するか確認する。
+     * エラーが含まれているか確認する。
      */
-    public function isErrorMessages(): bool
+    public function hasErrorMessages(): bool
     {
         if (!empty($this->errorMessage) || !empty($this->arrayErrorMessage)) {
             return true;

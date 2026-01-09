@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formValidation->validatePassword($password);
 
     // エラーメッセージの有無を確認
-    if ($formValidation->isErrorMessages()) {
+    if ($formValidation->hasErrorMessages()) {
         $errorMessages = $formValidation->getErrorMessages();
     } else {
 
