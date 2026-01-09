@@ -14,9 +14,6 @@ class UserAuthentication
     // エラーメッセージ
     private string $errorMessage = '';
 
-    // 認証済みユーザー情報
-    private array $authenticatedUser = [];
-
     /**
      * @param \PDO $databaseConnection データベース接続
      */
