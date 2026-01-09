@@ -105,7 +105,7 @@ class UserAuthentication
     }
 
     /**
-     * パスワードの照合を行う
+     * DBで管理するハッシュとパスワードの照合を行う
      * @return bool 照合結果
      */
     public function verifyPassword(string $email, string $password): bool
@@ -114,9 +114,10 @@ class UserAuthentication
         $statement->execute([$email]);
         $result = $statement->fetch();
 
-        if ($result && password_verify($password, $result['password_hash'])) {
+        if (!empty($result['password_hash']) && password_verify($password, $result['password_hash'])) {
             return true;
         } else {
+            $this->setErrorMessage("メールアドレスもしくは、パスワードが正しくありません。");
             return false;
         }
     }
