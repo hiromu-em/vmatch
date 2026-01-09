@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userAuthentication = new UserAuthentication($databaseConnection);
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        $userAuthentication->userRegistration($email, $passwordHash);
+        $userAuthentication->registerNewUser($email, $passwordHash);
 
         header('Location: ../InitialProfileSettings.php');
         exit;

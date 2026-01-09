@@ -70,12 +70,12 @@ class UserAuthentication
     }
 
     /**
-     * 新規ユーザー登録処理
+     * 新規ユーザーをDBに登録する
      * @param string $email 
      * @param string $passwordHash
      * @return void
      */
-    public function userRegistration($email, $passwordHash): void
+    public function registerNewUser($email, $passwordHash): void
     {
         $stetement = $this->databaseConnection->prepare("INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?)");
         $stetement->execute([$email, $passwordHash]);
@@ -112,7 +112,6 @@ class UserAuthentication
         $result = $statement->fetch();
 
         return $result['status'] ? true : false;
-
     }
 
     /**
