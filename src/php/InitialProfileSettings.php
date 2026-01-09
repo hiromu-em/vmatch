@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // エラーが存在する場合、メッセージを取得
-    if ($formValidation->hasErrorMessages()) {
+    if ($formValidation->isErrorMessages()) {
         $errorMessages = $formValidation->getErrorMessages();
     }
 
