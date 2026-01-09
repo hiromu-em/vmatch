@@ -62,12 +62,16 @@ class UserAuthentication
 
         $result = $statement->fetch();
 
-        if ($result['status'] && $authType === 'register') {
+        if ($result['status'] === true && $authType === 'register') {
             $this->setErrorMessage("登録済みユーザーです。ログインしてください。");
             return true;
+
+        } elseif ($result['status'] === false && $authType === 'login') {
+            $this->setErrorMessage("メールアドレスもしくは、パスワードが正しくありません。");
+            return false;
         }
 
-        return false;
+        return $result['status'] ? true : false;
     }
 
     /**
