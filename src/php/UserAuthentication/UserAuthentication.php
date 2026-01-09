@@ -123,26 +123,6 @@ class UserAuthentication
     }
 
     /**
-     * 認証済みユーザーを設定する
-     * @param string $email メールアドレス
-     * @param string $password パスワード
-     */
-    public function setAuthenticatedUser($email, $password)
-    {
-        $this->authenticatedUser['email'] = $email;
-        $this->authenticatedUser['password'] = $password;
-    }
-
-    /**
-     * 認証済みユーザー情報を取得する
-     * @return array 認証済みユーザー情報
-     */
-    public function getAuthenticatedUser(): array
-    {
-        return $this->authenticatedUser;
-    }
-
-    /**
      * プロバイダーIDの存在確認
      * @param string $providerId プロバイダーID
      * @return bool プロバイダーID存在結果
@@ -169,7 +149,7 @@ class UserAuthentication
         $statement = $this->databaseConnection->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $provider, $providerId]);
     }
-    
+
     public function setErrorMessage(string $errorMessage): void
     {
         $this->errorMessage = $errorMessage;
