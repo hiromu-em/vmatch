@@ -23,7 +23,6 @@ class UserAuthentication
 
     /**
      * メールアドレスをDBに登録する
-     * @param string $newEmail 新規ユーザーメールアドレス
      */
     public function registerEmail(string $newEmail): void
     {
@@ -33,7 +32,6 @@ class UserAuthentication
 
     /**
      * ユーザーIDを取得する
-     * @param string $newEmail 新規ユーザーメールアドレス
      * @return string ユーザーID情報
      */
     public function getSearchUserId(string $newEmail): string
@@ -47,7 +45,7 @@ class UserAuthentication
 
     /**
      * メールアドレスの存在を確認する<br>
-     * @param string $email メールアドレス
+     * @param string $email
      * @param string $authType 認証タイプ（login/register）
      * @return bool メールアドレス存在結果
      */
@@ -72,27 +70,9 @@ class UserAuthentication
     }
 
     /**
-     * ユーザーメールアドレスを設定する
-     * @param string $email ユーザーメールアドレス
-     */
-    public function setEmail(string $email): void
-    {
-        $this->userEmail = $email;
-    }
-
-    /**
-     * ユーザーメールアドレスを取得する
-     * @return string ユーザーメールアドレス
-     */
-    public function getEmail(): string
-    {
-        return $this->userEmail;
-    }
-
-    /**
      * 新規ユーザー登録処理
-     * @param string $email ユーザーメールアドレス
-     * @param string $passwordHash ハッシュ化パスワード
+     * @param string $email 
+     * @param string $passwordHash
      * @return void
      */
     public function userRegistration($email, $passwordHash): void
@@ -121,7 +101,7 @@ class UserAuthentication
 
     /**
      * プロバイダーIDの存在確認
-     * @param string $providerId プロバイダーID
+     * @param string $providerId
      * @return bool プロバイダーID存在結果
      */
     public function providerIdExists(string $providerId): bool
