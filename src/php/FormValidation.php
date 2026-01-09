@@ -125,7 +125,7 @@ class FormValidation
             return;
         }
 
-        if ($authAction === 'login') {
+        if (!empty($this->errorMessage) && $authAction === 'login') {
             $this->errorMessage = "メールアドレス\nまたはパスワードが正しくありません。";
             return;
         }
