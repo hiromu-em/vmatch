@@ -50,12 +50,11 @@ class UserAuthentication
 
     /**
      * メールアドレスの存在を確認する<br>
-     * `$authAction`が `register` かつ、既存ユーザーであればエラーメッセージを設定する
      * @param string $email メールアドレス
-     * @param string $authAction 認証アクション
+     * @param string $authType 認証タイプ（login/register）
      * @return bool メールアドレス存在結果
      */
-    public function existsByEmail(string $email, string $authAction): bool
+    public function existsByEmail(string $email, string $authType): bool
     {
         $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) as status";
         $statement = $this->databaseConnection->prepare($query);
@@ -63,7 +62,7 @@ class UserAuthentication
 
         $result = $statement->fetch();
 
-        if ($result['status'] && $authAction === 'register') {
+        if ($result['status'] && $authType === 'register') {
             $this->setErrorMessage("登録済みユーザーです。ログインしてください。");
             return true;
         }
