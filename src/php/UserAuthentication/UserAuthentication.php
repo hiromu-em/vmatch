@@ -117,14 +117,14 @@ class UserAuthentication
 
     /**
      * プロバイダーIDとユーザーIDを紐付ける
-     * @param array $userId ユーザーID
-     * @param string $providerId プロバイダーID
-     * @param string $provider プロパイダ―名
+     * @param array $userId 
+     * @param string $providerId 
+     * @param string $providerName
      */
-    public function linkProviderUserId(string $userId, string $providerId, string $provider): void
+    public function linkProviderUserId(string $userId, string $providerId, string $providerName): void
     {
         $statement = $this->databaseConnection->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
-        $statement->execute([$userId, $provider, $providerId]);
+        $statement->execute([$userId, $providerName, $providerId]);
     }
 
     public function setErrorMessage(string $errorMessage): void
