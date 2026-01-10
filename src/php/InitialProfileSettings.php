@@ -19,12 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['profilePicture']) && !empty($_FILES['profilePicture'])) {
 
         // プロフィール画像の検証
-        $isvalidationImage = $formValidation->validateImage($_FILES['profilePicture']);
+        $isvalidateImage = $formValidation->validateImage($_FILES['profilePicture']);
     }
 
     // 他のフォームフィールドの検証は、画像検証が成功した場合にのみ実行
-    if (!$isvalidationImage) {
-
+    if (!$isvalidateImage) {
         $formValidation->validateUserName($name);
         $formValidation->validateUrls($snsUrls);
         $formValidation->validateActivity($activityYoutube, $activityTwitch);
