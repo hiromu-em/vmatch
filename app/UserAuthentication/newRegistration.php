@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $userAuthentication->registerNewUser($email, $passwordHash);
 
-        header('Location: ../InitialProfileSettings.php');
+        header('Location: ../lnitialProfileSettings.php');
         exit;
     }
 }
