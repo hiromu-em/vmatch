@@ -9,7 +9,7 @@ use Vmatch\Config;
 
 session_start(['use_strict_mode' => 1]);
 
-const PROFILESETTNG = '../UserAuthentication/profileSetting.php';
+const PROFILESETTNG = '../lnitialProfileSettings.php';
 const DASHBOARD = '../dashboard.php';
 const SYSTEMERROR = '../error/systemError.php';
 
