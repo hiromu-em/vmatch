@@ -5,7 +5,7 @@ use Vmatch\UserAuthentication\UserAuthentication;
 use Vmatch\FormValidation;
 use Vmatch\Config;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 session_start([
     'use_strict_mode' => 1
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/userSetting.css">
+    <link rel="stylesheet" href="../../public/css/userSetting.css">
     <title>Vmatch-パスワード設定-</title>
 </head>
 
