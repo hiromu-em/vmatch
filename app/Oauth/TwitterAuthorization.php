@@ -12,7 +12,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
  */
 class TwitterAuthorization
 {
-    private const string Twitter_CALLBACK__LOCAL_URL = 'http://localhost:8000/src/php/Oauth/twitterCallback.php';
+    private const string Twitter_CALLBACK__LOCAL_URL = 'http://localhost/app/Oauth/twitterCallback.php';
 
     public function __construct(private ?TwitterOAuth $twitterOAuth = null)
     {

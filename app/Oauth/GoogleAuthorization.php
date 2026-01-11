@@ -17,7 +17,7 @@ class GoogleAuthorization
     private string $state = '';
 
     /** @var string GOOGLE_CALLBACK コールバックURL */
-    private const string GOOGLE_CALLBACK = '/src/php/Oauth/googleCallback.php';
+    private const string GOOGLE_CALLBACK = '/app/Oauth/googleCallback.php';
 
     /**
      * @param ConfigInterface|null $config 設定オブジェクト
