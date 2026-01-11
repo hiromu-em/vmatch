@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vmatch\Oauth;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Google\Client;
 use Vmatch\ConfigInterface;

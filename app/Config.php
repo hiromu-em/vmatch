@@ -158,7 +158,7 @@ class Config implements ConfigInterface
      */
     public function createDotenv(): Dotenv
     {
-        return Dotenv::createImmutable(__DIR__ . '/../..');
+        return Dotenv::createImmutable(__DIR__ . '/..');
     }
 
     /**
