@@ -8,10 +8,6 @@ namespace Vmatch\UserAuthentication;
  */
 class UserAuthentication
 {
-    // ユーザーメールアドレス
-    private string $userEmail = '';
-
-    // エラーメッセージ
     private string $errorMessage = '';
 
     /**
@@ -32,7 +28,6 @@ class UserAuthentication
 
     /**
      * ユーザーIDを取得する
-     * @return string ユーザーID情報
      */
     public function getSearchUserId(string $newEmail): string
     {
@@ -73,7 +68,6 @@ class UserAuthentication
      * 新規ユーザーをDBに登録する
      * @param string $email 
      * @param string $passwordHash
-     * @return void
      */
     public function registerNewUser($email, $passwordHash): void
     {
