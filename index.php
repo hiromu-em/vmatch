@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
-    header('Location: src/php/Oauth/googleOauth.php');
+    header('Location: app/Oauth/googleOauth.php');
     exit;
 } else if (isset($_GET['oauth']) && $_GET['oauth'] === 'twitter') {
-    header('Location: src/php/Oauth/twitterOauth.php');
+    header('Location: app/Oauth/twitterOauth.php');
     exit;
 }
 
@@ -16,7 +16,7 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="src/css/index.css">
+    <link rel="stylesheet" href="public/css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@600&display=swap"
@@ -33,8 +33,8 @@ if (isset($_GET['oauth']) && $_GET['oauth'] === 'google') {
         <div class="hero-content">
             <h1 class="main-title">仲間と一緒にVの世界へ</h1>
             <div class="auth-buttons">
-                <a href="src/php/UserAuthentication/register.php" class="btn btn-primary">新規登録</a>
-                <a href="src/php/UserAuthentication/login.php" class="btn btn-secondary">ログイン</a>
+                <a href="app/UserAuthentication/register.php" class="btn btn-primary">新規登録</a>
+                <a href="app/UserAuthentication/login.php" class="btn btn-secondary">ログイン</a>
             </div>
         </div>
         <form method="get">
