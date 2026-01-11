@@ -11,8 +11,6 @@ use Vmatch\ConfigInterface;
  */
 class GoogleAuthorization
 {
-    private string $state = '';
-
     private const string GOOGLE_CALLBACK = '/app/Oauth/googleCallback.php';
 
     /**
@@ -59,14 +57,6 @@ class GoogleAuthorization
     }
 
     /**
-     * stateの生成
-     */
-    public function createState(): string
-    {
-        return bin2hex(random_bytes(128 / 8));
-    }
-
-    /**
      * Clientにstateを設定
      */
     public function setClientState(string $state): void
@@ -75,38 +65,11 @@ class GoogleAuthorization
     }
 
     /**
-     * stateの設定
-     */
-    public function setState(string $state): void
-    {
-        $this->state = $state;
-    }
-
-    /**
-     * stateの取得
-     */
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    /**
      * コード検証者の取得
      */
     public function generateCodeVerifier(): string
     {
         return $this->client->getOAuth2Service()->generateCodeVerifier();
-    }
-
-    /**
-     * stateの検証
-     * @return bool 検証結果
-     */
-    public function verifyState(string $state): void
-    {
-        if ($state !== $this->getState()) {
-            throw new \InvalidArgumentException();
-        }
     }
 
     /**
