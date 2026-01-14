@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Controller;
 
-use Requests\Requests;
+use Request\Request;
 
 class TopController
 {
-    public function __construct(private Requests $request)
+    public function __construct(private Request $request)
     {
     }
 
