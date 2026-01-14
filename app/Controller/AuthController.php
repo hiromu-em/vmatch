@@ -20,4 +20,9 @@ class AuthController
     {
         include __DIR__ . '/../../public/resources/views/register.php';
     }
+
+    public function registerHandle(): void
+    {
+        $email = $this->request->input('email');
+    }
 }
