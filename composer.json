@@ -3,9 +3,9 @@
     "autoload": {
         "psr-4": {
             "Vmatch\\": "app/",
-            "Routers\\": "routers/",
-            "Controller\\": "app/Controller",
-            "Request\\": "app/Requests"
+            "Router\\": "core/",
+            "Controller\\": "app/Controller/",
+            "Request\\": "core/"
         }
     },
     "require": {
