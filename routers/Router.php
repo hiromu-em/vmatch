@@ -11,12 +11,13 @@ class Router
     {
     }
 
-    public function add(string $method, string $path, array $handler)
+    public function add(string $method, string $path, array $handler, ?array $parameters = null): void
     {
         $this->routes[] = [
             'method' => strtoupper($method),
             'path' => $path,
-            'handler' => $handler
+            'handler' => $handler,
+            'parameters' => $parameters
         ];
     }
 
