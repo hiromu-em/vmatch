@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Controller;
 
 use Request\Request;
+use Vmatch\FormValidation;
 
 class AuthController
 {
@@ -21,7 +22,7 @@ class AuthController
         include __DIR__ . '/../../public/resources/views/register.php';
     }
 
-    public function registerHandle(): void
+    public function registerHandle(FormValidation $formValidation): void
     {
         $email = $this->request->input('email');
     }
