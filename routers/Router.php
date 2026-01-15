@@ -21,7 +21,7 @@ class Router
         ];
     }
 
-    public function dispatch($method, $path)
+    public function dispatch($method, $path): void
     {
         foreach ($this->routes as $route) {
             if ($route['method'] === strtoupper($method) && $route['path'] === $path) {
@@ -31,10 +31,12 @@ class Router
                 $controller = new $handler[0]($this->request);
                 $action = $handler[1];
 
-                if(!empty($route['parameters'])){
-                    return $controller->$action($route['parameters']);
+                if (!empty($route['parameters'])) {
+                    $controller->$action($route['parameters']);
+                    return;
                 }
-                return $controller->$action();
+                $controller->$action();
+                return;
             }
         }
     }
