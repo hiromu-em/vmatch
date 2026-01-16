@@ -11,24 +11,24 @@ $router->add(
     'get',
     '/',
     [Controller\TopController::class, 'showTop'],
-    [new ViewRenderer('UserAuthentication')]
+    ['obj' => new ViewRenderer('UserAuthentication')]
 );
 $router->add(
     'get',
     '/login',
     [Controller\AuthController::class, 'showLoginForm'],
-    [new ViewRenderer('UserAuthentication')]
+    ['obj' => new ViewRenderer('UserAuthentication')]
 );
 $router->add(
     'get',
     '/register',
     [Controller\AuthController::class, 'showRegisterForm'],
-    [new ViewRenderer('UserAuthentication')]
+    ['obj' => new ViewRenderer('UserAuthentication')]
 );
 $router->add(
     'post',
     '/register',
     [Controller\AuthController::class, 'registerHandle'],
-    [new FormValidation()]
+    ['obj' => new FormValidation()]
 );
 
