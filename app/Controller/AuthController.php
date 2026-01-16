@@ -13,14 +13,14 @@ class AuthController
     {
     }
 
-    public function showLoginForm(): void
+    public function showLoginForm(ViewRenderer $viewRenderer): void
     {
-        include __DIR__ . '/../../public/resources/views/login.php';
+        $viewRenderer->render('login');
     }
 
-    public function showRegisterForm(): void
+    public function showRegisterForm(ViewRenderer $viewRenderer): void
     {
-        include __DIR__ . '/../../public/resources/views/register.php';
+        $viewRenderer->render('register');
     }
 
     public function registerHandle(FormValidation $formValidation): void
