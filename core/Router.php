@@ -1,7 +1,9 @@
 <?php
-namespace Router;
+declare(strict_types=1);
 
-use Request\Request;
+namespace Core;
+
+use Core\Request;
 
 class Router
 {
@@ -31,10 +33,17 @@ class Router
                 $controller = new $handler[0]($this->request);
                 $action = $handler[1];
 
-                if (!empty($route['parameters'])) {
+                if (!empty($route['parameters']['obj'])) {
+
+                    $obj = $route['parameters']['obj'];
+                    $controller->$action($obj);
+                    return;
+
+                } elseif (!empty($route['parameters'])) {
                     $controller->$action($route['parameters']);
                     return;
                 }
+
                 $controller->$action();
                 return;
             }

@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Controller;
 
-use Request\Request;
+use Core\Request;
+use Core\ViewRenderer;
 use Vmatch\FormValidation;
 
 class AuthController

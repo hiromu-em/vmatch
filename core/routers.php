@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Router\Router;
+use Core\Router;
+use Core\Request;
+use Core\ViewRenderer;
 use Vmatch\FormValidation;
 
-$router = new Router(new Request\Request());
+$router = new Router(new Request());
 $router->add(
     'get',
     '/',
