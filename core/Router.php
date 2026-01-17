@@ -34,14 +34,16 @@ class Router
                 $action = $handler[1];
 
                 if (!empty($route['parameters']['obj']) && \is_array($route['parameters']['obj'])) {
-                    return $controller->$action(...$route['parameters']['obj']);
+                    $controller->$action(...$route['parameters']['obj']);
+                    return;
 
                 } elseif (!empty($route['parameters']['obj'])) {
-                    return $controller->$action($route['parameters']['obj']);
-
+                    $controller->$action($route['parameters']['obj']);
+                    return;
                 }
 
-                return $controller->$action();
+                $controller->$action();
+                return;
             }
         }
     }
