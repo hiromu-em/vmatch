@@ -7,7 +7,10 @@ use Dotenv\Dotenv;
 
 class Config
 {
-    private string $host = '';
+
+    public function __construct(private string $httpHost = '')
+    {
+    }
 
     /**
      * 環境に応じたデータベース接続の設定を取得
