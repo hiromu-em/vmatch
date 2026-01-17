@@ -29,6 +29,6 @@ $router->add(
     'post',
     '/register',
     [Controller\AuthController::class, 'registerHandle'],
-    ['obj' => [new FormValidation(), new ViewRenderer()]]
+    ['obj' => [new FormValidation(), new ViewRenderer('views/UserAuthentication/')]]
 );
 
