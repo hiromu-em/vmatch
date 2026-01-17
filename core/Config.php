@@ -93,31 +93,11 @@ class Config
     }
 
     /**
-     * ホスト名を取得
-     * @return string ホスト名
-     */
-    public function getHost(): string
-    {
-        return $this->host;
-    }
-
-    /**
-     * ホスト名を取得
-     * @param string $host ホスト名
-     * @return string ホスト名
-     */
-    public function setHost(string $host): string
-    {
-        return $this->host = $host;
-    }
-
-    /**
-     * ローカル環境かどうかを判定
-     * @return bool ローカル環境の場合はtrue
+     * ローカル環境判定
      */
     public function isLocalEnvironment(): bool
     {
-        return strpos($this->getHost(), 'localhost') !== false;
+        return strpos($this->httpHost, 'localhost') !== false;
     }
 
     /**
