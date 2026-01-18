@@ -5,8 +5,8 @@ use Core\Router;
 use Core\Request;
 use Core\ViewRenderer;
 use Vmatch\FormValidation;
-use Service\UserRegister;
 use Model\UserAuthentication;
+use Service\UserAuthenticationService;
 
 $router = new Router(new Request());
 $router->add(
@@ -29,13 +29,15 @@ $router->add(
 );
 $router->add(
     'post',
-    '/register',
-    [Controller\AuthController::class, 'registerHandle'],
+    '/validation/email',
+    [Controller\AuthController::class, 'validateEmailHandle'],
     [
         'obj' => [
-            new FormValidation(),
             new ViewRenderer('views/UserAuthentication/'),
-            new UserRegister(new UserAuthentication(generatePdo()))
+            new UserAuthenticationService(
+                new UserAuthentication(generatePdo()),
+                new FormValidation()
+            )
         ]
     ]
 );
