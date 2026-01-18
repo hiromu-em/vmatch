@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Vmatch\UserAuthentication;
+namespace Model;
 
 /**
  * ユーザー認証に関わるクラス
