@@ -28,7 +28,7 @@
                 </div>
             <?php endif; ?>
 
-            <form method="post" action="/register" class="auth-form" novalidate>
+            <form method="post" action="/validation/email" class="auth-form" novalidate>
                 <div class="register-form-group">
                     <label for="email" class="input-label">メールアドレス</label>
                 </div>
