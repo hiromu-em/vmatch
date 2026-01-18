@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace Model;
 
-/**
- * ユーザー認証に関わるクラス
- */
-class UserAuthentication
+class UserAuthenticationManager
 {
     private string $errorMessage = '';
 
