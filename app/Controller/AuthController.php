@@ -5,8 +5,7 @@ namespace Controller;
 
 use Core\Request;
 use Core\ViewRenderer;
-use Vmatch\FormValidation;
-use Service\UserRegister;
+use Service\UserAuthenticationService;
 
 class AuthController
 {
@@ -25,23 +24,16 @@ class AuthController
     }
 
     /**
-     * ユーザーの新規登録を行う
+     * メールアドレスの検証を行う
      */
-    public function registerHandle(FormValidation $formValidation, ViewRenderer $viewRenderer, UserRegister $userRegister): void
-    {
+    public function validateEmailHandle(
+        ViewRenderer $viewRenderer,
+        UserAuthenticationService $userAuthenticationService
+    ): void {
+
         $email = $this->request->input('email');
-        $formValidation->validateEmail($email);
+        $enabledEmail = $userAuthenticationService->executeEmailValidation($email, 'register');
 
-        if ($formValidation->hasErrorMessages()) {
-            $viewRenderer->render('register', [
-                'error' => $formValidation->getErrorMessage()
-            ]);
-        }
 
-        if ($userRegister->isEmailRegistered($email)) {
-            $viewRenderer->render('register', [
-                'error' => $userRegister->getErrorMessage()
-            ]);
-        }
     }
 }
