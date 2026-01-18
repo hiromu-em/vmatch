@@ -6,21 +6,26 @@ require_once __DIR__ . '/../core/routers.php';
 
 use Core\Config;
 
-$config = new Config($_SERVER['HTTP_HOST']);
+function loadenv()
+{
+    $config = new Config($_SERVER['HTTP_HOST']);
 
-if ($config->isLocalEnvironment()) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
+    if ($config->isLocalEnvironment()) {
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+        $dotenv->load();
+    }
 }
 
 function generatePdo(): PDO
 {
-    $host = getenv('PG_LOCAL_HOST');
-    $database = getenv('PG_LOCAL_DATABASE');
+    loadenv();
+
+    $host = $_ENV['PG_LOCAL_HOST'];
+    $database = $_ENV['PG_LOCAL_DATABASE'];
 
     $dsn = "pgsql:host={$host};port=5432;dbname={$database}";
-    $user = getenv('PG_LOCAL_USER');
-    $password = getenv('PG_LOCAL_PASSWORD');
+    $user = $_ENV['PG_LOCAL_USER'];
+    $password = $_ENV['PG_LOCAL_PASSWORD'];
 
     $pdo = new PDO($dsn, $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
