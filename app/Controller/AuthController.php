@@ -24,9 +24,9 @@ class AuthController
     }
 
     /**
-     * ユーザーの新規登録を行う
+     * ユーザーのメールアドレスを検証する
      */
-    public function registerHandle(FormValidation $formValidation, ViewRenderer $viewRenderer): void
+    public function validateEmailHandle(FormValidation $formValidation, ViewRenderer $viewRenderer, UserRegister $userRegister): void
     {
         $email = $this->request->input('email');
         $formValidation->validateEmail($email);
