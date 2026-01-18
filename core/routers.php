@@ -6,6 +6,7 @@ use Core\Request;
 use Core\ViewRenderer;
 use Vmatch\FormValidation;
 use Service\UserRegister;
+use Model\UserAuthentication;
 
 $router = new Router(new Request());
 $router->add(
@@ -34,7 +35,7 @@ $router->add(
         'obj' => [
             new FormValidation(),
             new ViewRenderer('views/UserAuthentication/'),
-            new UserRegister(generatePdo())
+            new UserRegister(new UserAuthentication(generatePdo()))
         ]
     ]
 );
