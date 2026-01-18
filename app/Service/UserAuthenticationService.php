@@ -3,16 +3,12 @@ declare(strict_types=1);
 
 namespace Service;
 
-use Model\UserAuthentication;
+use Model\UserAuthenticationManager;
 use Vmatch\FormValidation;
 
-/**
- * ユーザー認証に関わるクラス
- */
 class UserAuthenticationService
 {
-
-    public function __construct(private UserAuthentication $userAuthentication, private FormValidation $formValidation)
+    public function __construct(private UserAuthenticationManager $userAuthManager, private FormValidation $formValidation)
     {
     }
 
