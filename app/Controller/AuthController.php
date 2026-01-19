@@ -5,7 +5,7 @@ namespace Controller;
 
 use Core\Request;
 use Core\ViewRenderer;
-use Service\UserAuthenticationService;
+use Service\UserAuthentication;
 
 class AuthController
 {
@@ -28,7 +28,7 @@ class AuthController
      */
     public function validateEmailHandle(
         ViewRenderer $viewRenderer,
-        UserAuthenticationService $userAuthenticationService
+        UserAuthentication $userAuthentication
     ): void {
 
         $email = $this->request->input('email');
