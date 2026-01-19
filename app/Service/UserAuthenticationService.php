@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Service;
 
-use Model\UserAuthenticationManager;
+use Repository\UserAuthRepository;
 use Vmatch\FormValidation;
 
 class UserAuthenticationService
 {
-    public function __construct(private UserAuthenticationManager $userAuthManager, private FormValidation $formValidation)
+    public function __construct(private UserAuthRepository $userAuthRepository, private FormValidation $formValidation)
     {
     }
 
