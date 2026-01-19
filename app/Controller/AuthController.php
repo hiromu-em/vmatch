@@ -29,11 +29,11 @@ class AuthController
      */
     public function validateEmailHandle(
         ViewRenderer $viewRenderer,
-        UserAuthentication $userAuthentication
+        UserAuthentication $userAuthentication,
+        FormValidation $formValidation
     ): void {
 
         $email = $this->request->input('email');
-        $enabledEmail = $userAuthenticationService->executeEmailValidation($email, 'register');
 
 
     }
