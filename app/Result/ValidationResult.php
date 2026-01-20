@@ -8,9 +8,10 @@ use Result\Result;
 class ValidationResult extends Result
 {
 
-    public function __construct(bool $success, string $authType, ?array $errors, ?string $error)
+    public function __construct(bool $success, string $message = "")
     {
         $this->success = $success;
+        $this->error = $message;
     }
 
     public static function success(): ValidationResult
