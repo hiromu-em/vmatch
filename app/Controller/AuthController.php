@@ -5,7 +5,7 @@ namespace Controller;
 
 use Core\Request;
 use Core\ViewRenderer;
-use Service\UserAuthentication;
+use Service\RegisterService;
 use Vmatch\FormValidation;
 
 class AuthController
@@ -29,7 +29,7 @@ class AuthController
      */
     public function validateEmailHandle(
         ViewRenderer $viewRenderer,
-        UserAuthentication $userAuthentication,
+        RegisterService $registerService,
         FormValidation $formValidation
     ): void {
 
