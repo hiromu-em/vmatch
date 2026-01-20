@@ -7,14 +7,10 @@ use Result\Result;
 
 class ValidationResult extends Result
 {
-    private string $authType;
 
     public function __construct(bool $success, string $authType, ?array $errors, ?string $error)
     {
         $this->success = $success;
-        $this->authType = $authType;
-        $this->$errors = $errors;
-        $this->error = $error;
     }
 
     public static function success(): ValidationResult
