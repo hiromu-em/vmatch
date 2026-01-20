@@ -30,7 +30,7 @@ $router->add(
 $router->add(
     'post',
     '/validation/email',
-    [Controller\AuthController::class, 'validateEmailHandle'],
+    [Controller\AuthController::class, 'validateNewRegisterEmail'],
     [
         'obj' => [
             new ViewRenderer('views/UserAuthentication/'),
