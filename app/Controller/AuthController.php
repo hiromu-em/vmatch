@@ -25,16 +25,22 @@ class AuthController
     }
 
     /**
-     * メールアドレスの検証を行う
+     * 新規登録用のメールアドレス検証を行う
      */
-    public function validateEmailHandle(
+    public function validateNewRegisterEmail(
         ViewRenderer $viewRenderer,
         RegisterService $registerService,
         FormValidation $formValidation
     ): void {
-
         $email = $this->request->input('email');
 
-
+        $validationResult = $formValidation->validateEmail($email);
+        if (!$validationResult->isSuccess()) {
+            $viewRenderer->render(
+                'register',
+                ['error' => $validationResult->errorMessage()]
+            );
+            return;
+        }
     }
 }
