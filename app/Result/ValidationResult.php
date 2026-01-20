@@ -16,7 +16,7 @@ class ValidationResult extends Result
 
     public static function success(): ValidationResult
     {
-        return new self(true, '', [], "");
+        return new self(true);
     }
 
     public static function failure(?array $errors, ?string $error)
