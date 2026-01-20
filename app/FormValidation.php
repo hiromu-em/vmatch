@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Vmatch;
 
+use Result\ValidationResult;
+
 class FormValidation
 {
 
@@ -109,26 +111,26 @@ class FormValidation
     /**
      * メールアドレス形式を検証する。
      * @param string|null $email
+     * @return ValidationResult 検証結果
      */
-    public function validateEmail(?string $email, string $authAction = ''): void
+    public function validateEmail(?string $email): ValidationResult
     {
         if (empty($email)) {
-            $this->errorMessage = "メールアドレスを入力してください。";
-            return;
+            return ValidationResult::failure('メールアドレスを入力してください。');
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->errorMessage = "メールアドレスの形式が正しくありません。";
-            return;
+            return ValidationResult::failure('メールアドレスの形式が間違っています。');
+
         } elseif (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
-            $this->errorMessage = "メールアドレスの形式が正しくありません。";
-            return;
-        }
+            return ValidationResult::failure('メールアドレスの形式が間違っています。');
 
         if (!empty($this->errorMessage) && $authAction === 'login') {
             $this->errorMessage = "メールアドレス\nまたはパスワードが正しくありません。";
             return;
         }
+
+        return ValidationResult::success();
     }
 
     /**
