@@ -23,5 +23,9 @@ class ValidationResult extends Result
     {
         return new self(false, $errorMessage);
     }
+
+    public function isSuccess(): bool
+    {
+        return $this->success;
     }
 }
