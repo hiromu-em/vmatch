@@ -34,15 +34,15 @@ class AuthController
     ): void {
         $email = $this->request->input('email');
 
-        $validationResult = $formValidation->validateEmail($email);
-        if (!$validationResult->isSuccess()) {
+        $emailFormatResult = $formValidation->validateEmailFormat($email);
+        if (!$emailFormatResult->isSuccess()) {
             $viewRenderer->render(
                 'register',
-                ['error' => $validationResult->errorMessage()]
+                ['error' => $emailFormatResult->errorMessage()]
             );
             return;
         }
-        
+
         $registerService->searchEmail($email);
     }
 }

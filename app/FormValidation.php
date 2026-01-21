@@ -113,7 +113,7 @@ class FormValidation
      * @param string|null $email
      * @return ValidationResult 検証結果
      */
-    public function validateEmail(?string $email): ValidationResult
+    public function validateEmailFormat(?string $email): ValidationResult
     {
         if (empty($email)) {
             return ValidationResult::failure('メールアドレスを入力してください。');
