@@ -11,10 +11,6 @@ abstract class Result
 
     protected string $error;
 
-    abstract public static function success();
-
-    abstract public static function failure(string $errorMessage);
-
     public function errorMessage(): string
     {
         return $this->error;
