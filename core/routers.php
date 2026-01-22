@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 use Core\Router;
 use Core\Request;
+use Core\Response;
 use Core\ViewRenderer;
 use Vmatch\FormValidation;
 use Service\RegisterService;
 use Repository\UserAuthRepository;
 
-$router = new Router(new Request());
+$router = new Router(new Request(), new Response());
 $router->add(
     'get',
     '/',
