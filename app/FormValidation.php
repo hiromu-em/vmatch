@@ -116,14 +116,14 @@ class FormValidation
     public function validateEmailFormat(?string $email): Result
     {
         if (empty($email)) {
-            return Result::failure(['メールアドレスを入力してください。']);
+            return Result::failure(['error' =>'メールアドレスを入力してください。']);
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return Result::failure(['メールアドレスの形式が間違っています。']);
+            return Result::failure(['error' => 'メールアドレスの形式が間違っています。']);
 
         } elseif (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
-            return Result::failure(['メールアドレスの形式が間違っています。']);
+            return Result::failure(['error' => 'メールアドレスの形式が間違っています。']);
 
         }
 

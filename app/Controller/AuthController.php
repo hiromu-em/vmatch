@@ -36,10 +36,12 @@ class AuthController
 
         $emailFormatResult = $formValidation->validateEmailFormat($email);
         if (!$emailFormatResult->isSuccess()) {
+
             $viewRenderer->render(
                 'register',
-                ['error' => $emailFormatResult->errorMessage()]
+                $emailFormatResult->errorMessages()
             );
+            
             return;
         }
 
