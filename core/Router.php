@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace Core;
 
 use Core\Request;
+use Core\Response;
 
 class Router
 {
     private $routes = [];
 
-    public function __construct(private Request $request)
+    public function __construct(private Request $request, private Response $response)
     {
     }
 
@@ -30,7 +31,7 @@ class Router
 
                 $handler = $route['handler'];
 
-                $controller = new $handler[0]($this->request);
+                $controller = new $handler[0]($this->request, $this->response);
                 $action = $handler[1];
 
                 if (!empty($route['parameters']['obj']) && \is_array($route['parameters']['obj'])) {

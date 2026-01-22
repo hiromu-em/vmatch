@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace Controller;
 
 use Core\Request;
+use Core\Response;
 use Core\ViewRenderer;
 use Service\RegisterService;
 use Vmatch\FormValidation;
 
 class AuthController
 {
-    public function __construct(private Request $request)
+    public function __construct(private Request $request, private Response $response)
     {
     }
 
@@ -45,6 +46,9 @@ class AuthController
             return;
         }
 
-        $registerService->searchEmail($email);
+        $canRegisterResult = $registerService->canRegisterByEmail($email);
+        if ($canRegisterResult->isSuccess()) {
+
+        }
     }
 }
