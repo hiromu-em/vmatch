@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Vmatch;
 
-use Result\ValidationResult;
+use Vmatch\Result;
 
 class FormValidation
 {
@@ -111,23 +111,23 @@ class FormValidation
     /**
      * メールアドレス形式を検証する。
      * @param string|null $email
-     * @return ValidationResult 検証結果
+     * @return Result 検証結果
      */
-    public function validateEmailFormat(?string $email): ValidationResult
+    public function validateEmailFormat(?string $email): Result
     {
         if (empty($email)) {
-            return ValidationResult::failure('メールアドレスを入力してください。');
+            return Result::failure(['メールアドレスを入力してください。']);
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ValidationResult::failure('メールアドレスの形式が間違っています。');
+            return Result::failure(['メールアドレスの形式が間違っています。']);
 
         } elseif (!checkdnsrr(substr(strrchr($email, "@"), 1), "MX")) {
-            return ValidationResult::failure('メールアドレスの形式が間違っています。');
+            return Result::failure(['メールアドレスの形式が間違っています。']);
 
         }
 
-        return ValidationResult::success();
+        return Result::success();
     }
 
     /**
