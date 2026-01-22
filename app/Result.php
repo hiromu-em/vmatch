@@ -7,8 +7,6 @@ final class Result
 {
     public function __construct(private bool $success, private array $messages = [])
     {
-        $this->success = $success;
-        $this->errors = $messages;
     }
 
     public static function success(): Result
