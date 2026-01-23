@@ -5,7 +5,7 @@ namespace Core;
 
 class Response
 {
-    public function redirect(string $uri, int $status = 302): never
+    public function redirect(string $uri, int $status = 303): never
     {
         header("Location: $uri", true, $status);
         exit;
