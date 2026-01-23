@@ -5,7 +5,7 @@ namespace Vmatch;
 
 final class Result
 {
-    public function __construct(private bool $success, private array $messages = [])
+    public function __construct(private bool $success, private string|array|null $error = null)
     {
     }
 
@@ -14,9 +14,9 @@ final class Result
         return new self(true);
     }
 
-    public static function failure(array $errorMessages): Result
+    public static function failure(string|array $error): Result
     {
-        return new self(false, $errorMessages);
+        return new self(false, $error);
     }
 
     public function isSuccess(): bool
@@ -24,8 +24,8 @@ final class Result
         return $this->success;
     }
 
-    public function errorMessages(): array
+    public function error(): string|array
     {
-        return $this->messages;
+        return $this->error;
     }
 }
