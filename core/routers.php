@@ -5,6 +5,7 @@ use Core\Router;
 use Core\Request;
 use Core\Response;
 use Core\ViewRenderer;
+use Core\Session;
 use Vmatch\FormValidation;
 use Service\RegisterService;
 use Repository\UserAuthRepository;
@@ -34,7 +35,7 @@ $router->add(
     [Controller\AuthController::class, 'validateNewRegisterEmail'],
     [
         'obj' => [
-            new ViewRenderer('views/UserAuthentication/'),
+            new Session(),
             new RegisterService(new UserAuthRepository(generatePdo())),
             new FormValidation()
         ]
