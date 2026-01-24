@@ -12,8 +12,11 @@ use Vmatch\FormValidation;
 
 class AuthController
 {
-    public function __construct(private Request $request, private Response $response)
-    {
+    public function __construct(
+        private Request $request,
+        private Response $response,
+        private Session $session
+    ) {
     }
 
     public function showLoginForm(ViewRenderer $viewRenderer): void
@@ -30,7 +33,6 @@ class AuthController
      * 新規登録用のメールアドレス検証を行う
      */
     public function validateNewRegisterEmail(
-        Session $session,
         RegisterService $registerService,
         FormValidation $formValidation
     ): void {

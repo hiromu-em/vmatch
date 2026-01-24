@@ -10,7 +10,12 @@ use Vmatch\FormValidation;
 use Service\RegisterService;
 use Repository\UserAuthRepository;
 
-$router = new Router(new Request(), new Response());
+$router = new Router(
+    new Request(),
+    new Response(),
+    new Session()
+);
+
 $router->add(
     'get',
     '/',
@@ -35,7 +40,6 @@ $router->add(
     [Controller\AuthController::class, 'validateNewRegisterEmail'],
     [
         'obj' => [
-            new Session(),
             new RegisterService(new UserAuthRepository(generatePdo())),
             new FormValidation()
         ]
