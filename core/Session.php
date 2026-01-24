@@ -38,10 +38,10 @@ class Session
         unset($_SESSION[$key]);
     }
 
-    public function getOnce(string $key): mixed
+    public function getOnce(string $key): string|array|null
     {
         $this->start();
-        $value = $_SESSION[$key];
+        $value = $_SESSION[$key] ?? null;
         unset($_SESSION[$key]);
 
         return $value;
