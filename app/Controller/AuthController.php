@@ -6,6 +6,7 @@ namespace Controller;
 use Core\Request;
 use Core\Response;
 use Core\ViewRenderer;
+use Core\Session;
 use Service\RegisterService;
 use Vmatch\FormValidation;
 
@@ -29,7 +30,7 @@ class AuthController
      * 新規登録用のメールアドレス検証を行う
      */
     public function validateNewRegisterEmail(
-        ViewRenderer $viewRenderer,
+        Session $session,
         RegisterService $registerService,
         FormValidation $formValidation
     ): void {
