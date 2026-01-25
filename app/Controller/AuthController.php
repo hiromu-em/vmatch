@@ -32,7 +32,7 @@ class AuthController
         );
     }
 
-    public function showNewPasswordSetting(ViewRenderer $viewRenderer)
+    public function showNewPasswordSetting(ViewRenderer $viewRenderer): void
     {
         $viewRenderer->render(
             'signUp',
@@ -63,7 +63,11 @@ class AuthController
             $this->response->redirect('/register');
         }
 
+        $token = $registerService->generateCertificationToken();
+
+        $this->session->set('token', $token);
         $this->session->set('email', $email);
-        $this->response->redirect('/newPasswordSetting');
+
+        $this->response->redirect("/newPasswordSetting?token=$token");
     }
 }
