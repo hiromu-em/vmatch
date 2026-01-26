@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# favicon.ico はそのまま返す
+RewriteRule ^favicon\.ico$ - [L]
+
+RewriteRule ^\.well-known/ - [L]
+
 # 既存ファイル・ディレクトリはそのまま
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
