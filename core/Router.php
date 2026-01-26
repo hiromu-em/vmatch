@@ -26,33 +26,20 @@ class Router
         ];
     }
 
-    public function dispatch($method, $path): void
+    public function dispatch($requestMethod, $path): void
     {
-        foreach ($this->routes as $route) {
-            if ($route['method'] === strtoupper($method) && $route['path'] === $path) {
+        $path = $this->routes[$requestMethod][$path];
+        $requestHandler = $path['handler'];
+        $parameters = $path['parameters'];
 
-                $handler = $route['handler'];
+        $controller = new $requestHandler['class'](
+            $this->request,
+            $this->response,
+            $this->session
+        );
 
-                $controller = new $handler[0](
-                    $this->request,
-                    $this->response,
-                    $this->session
-                );
+        $action = $requestHandler['method'];
 
-                $action = $handler[1];
-
-                if (!empty($route['parameters']['obj']) && \is_array($route['parameters']['obj'])) {
-                    $controller->$action(...$route['parameters']['obj']);
-                    return;
-
-                } elseif (!empty($route['parameters']['obj'])) {
-                    $controller->$action($route['parameters']['obj']);
-                    return;
-                }
-
-                $controller->$action();
-                return;
-            }
-        }
+        $controller->$action(...$parameters['obj']);
     }
 }
