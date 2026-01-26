@@ -18,7 +18,7 @@ class Router
     ) {
     }
 
-    public function add(string $requestMethod, string $path, array $handler, ?array $parameters = null): void
+    public function add(string $requestMethod, string $path, array $handler, array $parameters = []): void
     {
         $this->routes[$requestMethod][$path] = [
             'handler' => $handler,
@@ -40,6 +40,6 @@ class Router
 
         $action = $requestHandler['method'];
 
-        $controller->$action(...$arguments['obj']);
+        $controller->$action(...$arguments);
     }
 }
