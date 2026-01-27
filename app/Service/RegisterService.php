@@ -23,4 +23,12 @@ class RegisterService
 
         return Result::success();
     }
+
+    /**
+     * 認証トークンを生成する
+     */
+    public function generateCertificationToken(): string
+    {
+        return bin2hex(random_bytes(12));
+    }
 }
