@@ -47,6 +47,7 @@ class AuthController
         RegisterService $registerService,
         FormValidation $formValidation
     ): void {
+
         $email = $this->request->input('email');
 
         $emailFormatResult = $formValidation->validateEmailFormat($email);
@@ -63,11 +64,12 @@ class AuthController
             $this->response->redirect('/register');
         }
 
-        $token = $registerService->generateCertificationToken();
-
-        $this->session->set('token', $token);
         $this->session->set('email', $email);
 
+        $token = $registerService->generateCertificationToken();
+  
+        // リダイレクト先でトークンの検証を行う
+        $this->session->set('token', $token);
         $this->response->redirect("/newPasswordSetting?token=$token");
     }
 }
