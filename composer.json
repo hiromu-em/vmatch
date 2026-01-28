@@ -1,5 +1,5 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
+    "$schema": "https://json-schema.org/draft-04/schema#",
     "autoload": {
         "psr-4": {
             "Vmatch\\": "app/",
