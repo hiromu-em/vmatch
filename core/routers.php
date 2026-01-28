@@ -39,7 +39,7 @@ $router->add(
 
 $router->add(
     'POST',
-    '/validation/email',
+    '/verification-email',
     ['class' => Controller\AuthController::class, 'method' => 'validateNewRegisterEmail'],
     [
         new RegisterService(new UserAuthRepository(generatePdo())),
@@ -49,7 +49,9 @@ $router->add(
 
 $router->add(
     'GET',
-    '/newPasswordSetting',
+$router->add(
+    'GET',
+    '/new-password-setting',
     ['class' => Controller\AuthController::class, 'method' => 'showNewPasswordSetting'],
     [new ViewRenderer('views/UserAuthentication/')]
 );
