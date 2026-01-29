@@ -6,26 +6,26 @@ namespace Core;
 class Request
 {
     private array $get;
+
     private array $post;
+    
+    /**
+     * サーバー情報および実行時の環境情報
+     */
     private array $server;
 
-    /**
-     * @param array|null $get
-     * @param array|null $post
-     * @param array|null $server
-     */
     public function __construct(
         ?array $get = null,
         ?array $post = null,
         ?array $server = null
     ) {
-        $this->get = $get ?? $_GET;
-        $this->post = $post ?? $_POST;
-        $this->server = $server ?? $_SERVER;
+        $this->get = $get ?? [];
+        $this->post = $post ?? [];
+        $this->server = $server ?? [];
     }
 
     /**
-     * 指定されたキーの入力値を取得(GET, POST)
+     * 入力値を取得(GET, POST)
      */
     public function input(string $key): string
     {

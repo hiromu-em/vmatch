@@ -11,7 +11,7 @@ use Service\RegisterService;
 use Repository\UserAuthRepository;
 
 $router = new Router(
-    new Request(),
+    new Request($_GET, $_POST, $_SERVER),
     new Response(),
     new Session()
 );
