@@ -39,23 +39,4 @@ class Request
 
         return '';
     }
-
-    /**
-     * HTTP メソッドを取得
-     * @return string
-     */
-    public function method(): string
-    {
-        return strtoupper($this->server['REQUEST_METHOD'] ?? 'GET');
-    }
-
-    public function isGet(): bool
-    {
-        return $this->method() === 'GET';
-    }
-
-    public function isPost(): bool
-    {
-        return $this->method() === 'POST';
-    }
 }
