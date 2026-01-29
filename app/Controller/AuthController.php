@@ -50,11 +50,11 @@ class AuthController
         $verificationToken = $this->request->fetchInputStr('token');
         $token = $this->session->get('token');
 
-        $verificationResult = $registerService->verifyToen($verificationToken, $token);
+        $verificationTokenResult = $registerService->validateCertificationToken($verificationToken, $token);
         
-        if (!$verificationResult->isSuccess()) {
+        if (!$verificationTokenResult->isSuccess()) {
 
-            $this->session->set('errorMessage', $verificationResult->error());
+            $this->session->set('errorMessage', $verificationTokenResult->error());
             $this->response->redirect('/register', 301);
         }
 
