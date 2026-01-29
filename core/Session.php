@@ -20,13 +20,13 @@ class Session
         $this->started = true;
     }
 
-    public function set(string $key, mixed $value): void
+    public function set(string $key, string $value): void
     {
         $this->start();
         $_SESSION[$key] = $value;
     }
 
-    public function get(string $key): mixed
+    public function get(string $key): string
     {
         $this->start();
         return $_SESSION[$key] ?? '';
@@ -38,7 +38,7 @@ class Session
         unset($_SESSION[$key]);
     }
 
-    public function getOnce(string $key): string|array|null
+    public function getOnce(string $key): string
     {
         $this->start();
         $value = $_SESSION[$key] ?? null;
