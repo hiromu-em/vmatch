@@ -28,9 +28,8 @@ class Router
 
     public function dispatch($requestMethod, $path): void
     {
-        $path = $this->routes[$requestMethod][$path];
-        $requestHandler = $path['handler'];
-        $arguments = $path['arguments'];
+        $requestHandler = $this->routes[$requestMethod][$path]['handler'];
+        $arguments = $this->routes[$requestMethod][$path]['arguments'];
 
         $controller = new $requestHandler['class'](
             $this->request,
