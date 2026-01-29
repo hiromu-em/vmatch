@@ -81,11 +81,11 @@ class AuthController
             $this->response->redirect('/register');
         }
 
-        $canRegisterResult = $registerService->canRegisterByEmail($email);
+        $canRegisterEmailResult = $registerService->canRegisterByEmail($email);
 
-        if (!$canRegisterResult->isSuccess()) {
+        if (!$canRegisterEmailResult->isSuccess()) {
 
-            $this->session->set('errorMessage', $canRegisterResult->error());
+            $this->session->set('errorMessage', $canRegisterEmailResult->error());
             $this->response->redirect('/register');
         }
 
