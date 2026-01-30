@@ -60,3 +60,13 @@ $router->add(
     ['class' => Controller\AuthController::class, 'method' => 'showNewPasswordSetting'],
     [new ViewRenderer('views/UserAuthentication/')]
 );
+
+$router->add(
+    'POST',
+    '/user-rgister',
+    ['class' => Controller\AuthController::class, 'method' => 'handleNewUserRegister'],
+    [
+        new RegisterService(new UserAuthRepository(generatePdo())),
+        new FormValidation()
+    ]
+);
