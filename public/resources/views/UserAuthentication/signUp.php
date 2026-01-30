@@ -24,11 +24,8 @@
             </div>
         <?php endif; ?>
         <form method="post" action="/user-rgister">
-            <div class="form-group" style="text-align: start;">
-                <label for="password">パスワード</label>
-            </div>
-            <input type="password" id="password" name="password" placeholder="英数字記号(@#$%&*_!)含めて8文字以上"
-                autocomplete="off" size="33">
+            <p>※英数字記号(@ # $ % & * _ !)含めて8文字以上※</p>
+            <input type="password" name="password" autocomplete="off" size="33">
             <button type="submit">送信</button>
         </form>
     </div>
