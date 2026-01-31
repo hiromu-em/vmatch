@@ -36,7 +36,10 @@ class AuthController
     {
         $viewRenderer->render(
             'signUp',
-            ['email' => $this->session->get('email')]
+            [
+                'email' => $this->session->get('email'),
+                'errors' => $this->session->getOnceArray('errorMessages')
+            ]
         );
     }
 
