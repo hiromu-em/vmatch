@@ -13,7 +13,6 @@
         <h3>パスワード設定</h3>
     </div>
     <div class="password-setting-container">
-        <h4>メールアドレス：<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?></h4>
         <?php if (!empty($errors)): ?>
             <div class="error-messages-container">
                 <?php foreach ($errors as $error): ?>
@@ -23,6 +22,7 @@
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        <h4>メールアドレス：<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?></h4>
         <form method="post" action="/user-rgister">
             <p>※英数字記号(@ # $ % & * _ !)含めて8文字以上※</p>
             <input type="password" name="password" autocomplete="off" size="33">
