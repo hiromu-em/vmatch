@@ -131,31 +131,38 @@ class FormValidation
     }
 
     /**
-     * パスワードの形式を検証する。 
+     * パスワード形式を検証する。
+     * @param string|null $password
      */
-    public function validatePassword(?string $password): void
+    public function validatePasswordFormat(?string $password): Result
     {
+        $errorMessages = [];
 
         if (empty($password)) {
-            $this->arrayErrorMessage[] = "パスワードを入力してください。";
-            return;
+            return Result::failure(['パスワードを入力してください']);
         }
 
         if (mb_strlen($password) < 8) {
-            $this->arrayErrorMessage[] = "パスワードは8文字以上で入力してください。";
+            $errorMessages[] = "パスワードは8文字以上で入力してください。";
         }
 
         if (!preg_match('/[A-Za-z]/', $password)) {
-            $this->arrayErrorMessage[] = "英字を1文字含めてください。";
+            $errorMessages[] = "英字を1文字含めてください。";
         }
 
         if (!preg_match('/\d/', $password)) {
-            $this->arrayErrorMessage[] = "数字を1文字含めてください。";
+            $errorMessages[] = "数字を1文字含めてください。";
         }
 
         if (!preg_match('/[@#\$%\^&\*]/', $password)) {
-            $this->arrayErrorMessage[] = "記号(@ # $ % ^ & *) を1文字含めてください。";
+            $errorMessages[] = "記号(@ # $ % ^ & *) を1文字含めてください。";
         }
+
+        if (!empty($errorMessages)) {
+            return Result::failure($errorMessages);
+        }
+
+        return Result::success();
     }
 
     /**
