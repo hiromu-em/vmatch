@@ -5,11 +5,25 @@ namespace Service;
 
 use Repository\UserAuthRepository;
 use Vmatch\Result;
+use Vmatch\Exception\DatabaseException;
 
 class RegisterService
 {
     public function __construct(private UserAuthRepository $authRepository)
     {
+    }
+
+    /**
+     * 新規ユーザーとしてDBに登録する
+     * @throws DatabaseException
+     */
+    public function registerNewUser($email, $hashPassword): void
+    {
+        try {
+            $this->authRepository->insertNewUser($email, $hashPassword);
+        } catch (\PDOException $e) {
+            throw new DatabaseException();
+        }
     }
 
     /**
