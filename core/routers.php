@@ -71,3 +71,10 @@ $router->add(
         new ViewRenderer('views/Error/')
     ]
 );
+
+$router->add(
+    'GET',
+    '/init-profile-settng',
+    ['class' => Controller\UserSettingController::class, 'method' => 'showInitProfileSettng'],
+    [new ViewRenderer('views/')]
+);
