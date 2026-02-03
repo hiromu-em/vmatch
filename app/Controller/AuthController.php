@@ -121,7 +121,7 @@ class AuthController
     ): never {
 
         $plainPassword = $this->request->fetchInputStr('password');
-        $email = $this->session->get('email');
+        $email = $this->session->getStr('email');
 
         $passwordFormatResult = $formValidation->validatePasswordFormat($plainPassword);
 
