@@ -111,7 +111,7 @@ class AuthController
         RegisterService $registerService,
         FormValidation $formValidation,
         ViewRenderer $viewRenderer
-    ) {
+    ): never {
 
         $plainPassword = $this->request->fetchInputStr('password');
         $email = $this->session->get('email');
@@ -127,6 +127,7 @@ class AuthController
 
         try {
             $registerService->registerNewUser($email, $hashPassword);
+            $this->response->redirect('/init-profile-settng');
 
         } catch (DatabaseException $e) {
             http_response_code(500);
