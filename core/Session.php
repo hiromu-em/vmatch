@@ -38,6 +38,12 @@ class Session
         return $_SESSION[$key] ?? '';
     }
 
+    public function getArray(string $key): array
+    {
+        $this->start();
+        return $_SESSION[$key] ?? [];
+    }
+
     public function remove(string $key): void
     {
         $this->start();
