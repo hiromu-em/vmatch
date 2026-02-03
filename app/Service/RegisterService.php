@@ -32,7 +32,7 @@ class RegisterService
     public function canRegisterByEmail($email): Result
     {
         if ($this->authRepository->existsByEmail($email)) {
-            Result::failure("登録済みユーザーです。\nログインしてください");
+            return Result::failure("登録済みユーザーです。\nログインしてください");
         }
 
         return Result::success();
