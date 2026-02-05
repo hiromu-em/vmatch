@@ -37,15 +37,18 @@ class AuthController
     {
         $tokenStatus = $this->session->getArray('token_status');
 
-        if ($tokenEnabled['consumed'] === true) {
+        if (\array_key_exists('consumed', $tokenStatus)) {
 
-            $viewRenderer->render(
-                'signUp',
-                [
-                    'email' => $this->session->getStr('email'),
-                    'errors' => $this->session->getOnceArray('errorMessages')
-                ]
-            );
+            if ($tokenStatus['consumed'] === true) {
+
+                $viewRenderer->render(
+                    'signUp',
+                    [
+                        'email' => $this->session->getStr('email'),
+                        'errors' => $this->session->getOnceArray('errorMessages')
+                    ]
+                );
+            }
         }
 
         // トークンを検証していない場合、top画面へリダイレクト
