@@ -109,7 +109,7 @@ class AuthController
         $this->session->setStr('email', $email);
 
         $token = $registerService->generateCertificationToken();
-        $this->session->setArray('handleToken', ['token' => $token, 'consumed' => false]);
+        $this->session->setStr('token', $token);
 
         $this->response->redirect("/token-verification?token=$token");
     }
