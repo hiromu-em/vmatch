@@ -59,12 +59,9 @@ class AuthController
      */
     public function handleTokenVerification(RegisterService $registerService): never
     {
-        $verificationToken = $this->request->fetchInputStr('token');
-        $handleToken = $this->session->getArray('handleToken');
-
         $verificationTokenResult = $registerService->validateCertificationToken(
-            $verificationToken,
-            $handleToken['token'] ?? ''
+            $this->request->fetchInputStr('token'),
+            $this->session->getStr('token')
         );
 
         if (!$verificationTokenResult->isSuccess()) {
