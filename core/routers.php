@@ -7,7 +7,7 @@ use Core\Response;
 use Core\ViewRenderer;
 use Core\Session;
 use Vmatch\FormValidation;
-use Service\RegisterService;
+use Service\UserRegisterService;
 use Repository\UserAuthRepository;
 
 $router = new Router(
@@ -42,7 +42,7 @@ $router->add(
     '/verification-email',
     ['class' => Controller\AuthController::class, 'method' => 'handleRegisterEmailVerification'],
     [
-        new RegisterService(new UserAuthRepository(generatePdo())),
+        new UserRegisterService(new UserAuthRepository(generatePdo())),
         new FormValidation()
     ]
 );
@@ -51,7 +51,7 @@ $router->add(
     'GET',
     '/token-verification',
     ['class' => Controller\AuthController::class, 'method' => 'handleTokenVerification'],
-    [new RegisterService(new UserAuthRepository(generatePdo()))]
+    [new UserRegisterService(new UserAuthRepository(generatePdo()))]
 );
 
 $router->add(
@@ -66,7 +66,7 @@ $router->add(
     '/user-rgister',
     ['class' => Controller\AuthController::class, 'method' => 'handleNewUserRegister'],
     [
-        new RegisterService(new UserAuthRepository(generatePdo())),
+        new UserRegisterService(new UserAuthRepository(generatePdo())),
         new FormValidation(),
         new ViewRenderer('views/Error/')
     ]

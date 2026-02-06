@@ -7,7 +7,7 @@ use Core\Request;
 use Core\Response;
 use Core\ViewRenderer;
 use Core\Session;
-use Service\RegisterService;
+use Service\UserRegisterService;
 use Vmatch\FormValidation;
 use Vmatch\Exception\DatabaseException;
 
@@ -60,7 +60,7 @@ class AuthController
      * 成功→パスワード設定にリダイレクト</br>
      * 失敗→エラーメッセージを表示
      */
-    public function handleTokenVerification(RegisterService $registerService): never
+    public function handleTokenVerification(UserRegisterService $registerService): never
     {
         // SESSIONに存在しない場合はTOP画面にリダイレクト
         if (!$this->session->has('token')) {
@@ -89,7 +89,7 @@ class AuthController
      * 失敗: エラーメッセージを表示
      */
     public function handleRegisterEmailVerification(
-        RegisterService $registerService,
+        UserRegisterService $registerService,
         FormValidation $formValidation
     ): never {
 
@@ -122,7 +122,7 @@ class AuthController
      * 新規ユーザー登録の処理をする
      */
     public function handleNewUserRegister(
-        RegisterService $registerService,
+        UserRegisterService $registerService,
         FormValidation $formValidation,
         ViewRenderer $viewRenderer
     ): never {

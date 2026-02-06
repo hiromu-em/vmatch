@@ -7,7 +7,7 @@ use Repository\UserAuthRepository;
 use Vmatch\Result;
 use Vmatch\Exception\DatabaseException;
 
-class RegisterService
+class UserRegisterService
 {
     public function __construct(private UserAuthRepository $authRepository)
     {
