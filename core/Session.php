@@ -65,7 +65,7 @@ class Session
     public function has(string $key): bool
     {
         $this->start();
-        return $_SESSION[$key] ?? false;
+        return isset($_SESSION[$key]);
     }
 
     public function remove(string $key): void
