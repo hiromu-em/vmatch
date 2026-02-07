@@ -47,12 +47,17 @@ class UserAuthRepository
     }
 
     /**
-     * 新規ユーザーをレコードに挿入する
+     * 新規ユーザーIDを取得する
      */
-    public function insertNewUser($email, $passwordHash): void
+    public function fetchNewUserId($email, $passwordHash): string
     {
-        $stetement = $this->pdo->prepare("INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?)");
+        $stetement = $this->pdo->prepare(
+            "INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?) RETURNING id"
+        );
         $stetement->execute([$email, $passwordHash]);
+
+        $result = $stetement->fetch();
+        return $result['id'];
     }
 
     /**
