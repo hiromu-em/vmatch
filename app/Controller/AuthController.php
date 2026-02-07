@@ -146,5 +146,12 @@ class AuthController
             http_response_code(500);
             $viewRenderer->render('systemError');
         }
+
+        // 登録成功後、不要なSession情報をクリア
+        $this->session->clear();
+
+        $this->session->setStr('user_id', $userId);
+
+        $this->response->redirect('/init-profile-settng');
     }
 }
