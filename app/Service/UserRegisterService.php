@@ -14,10 +14,11 @@ class UserRegisterService
     }
 
     /**
-     * 新規ユーザーとしてDBに登録する
+     * 新規ユーザーをDBに登録する処理を実行する。</br>
+     * 登録が正常に完了した場合、ユーザーIDを返す
      * @throws DatabaseException
      */
-    public function registerNewUser($email, $hashPassword): void
+    public function executeRegisterNewUser($email, $hashPassword): string
     {
         try {
             $this->authRepository->insertNewUser($email, $hashPassword);

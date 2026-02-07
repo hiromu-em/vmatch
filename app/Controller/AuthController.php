@@ -140,8 +140,7 @@ class AuthController
         $hashPassword = $registerService->generatePasswordHash($plainPassword);
 
         try {
-            $registerService->registerNewUser($email, $hashPassword);
-            $this->response->redirect('/init-profile-settng');
+            $userId = $registerService->executeRegisterNewUser($email, $hashPassword);
 
         } catch (DatabaseException $e) {
             http_response_code(500);
