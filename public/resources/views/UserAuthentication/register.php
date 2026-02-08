@@ -37,7 +37,7 @@
                 <button type="submit" class="btn btn-primary submit-btn">送信</button>
             </form>
 
-            <p class="subnote">既にアカウントをお持ちの方は <a href="login.php" class="link">ログイン</a></p>
+            <p class="subnote">既にアカウントをお持ちの方は <a href="/login" class="link">ログイン</a></p>
         </section>
     </main>
 

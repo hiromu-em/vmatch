@@ -45,8 +45,6 @@
         <div class="login-divider">
             <span class="login-divider-text">または</span>
         </div>
-
-        <!-- OAuth ログイン -->
         <form method="get" class="login-oauth-form">
             <button class="login-gsi-material-button" type="submit" name="oauth" value="google">
                 <div class="login-gsi-material-button-state"></div>
@@ -88,7 +86,7 @@
             </button>
         </form>
         <div class="login-auth-link">
-            <p>アカウントをお持ちでない方は<a href="register.php">新規登録</a></p>
+            <p>アカウントをお持ちでない方は<a href="/register">新規登録</a></p>
         </div>
     </main>
 </body>
