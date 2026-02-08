@@ -32,7 +32,7 @@
                 <div class="register-form-group">
                     <label for="email" class="input-label">メールアドレス</label>
                 </div>
-                <input type="email" id="email" name="email" placeholder="sample@example.com" required autocomplete="off"
+                <input type="email" id="email" name="email" placeholder="sample@example.com" autocomplete="off"
                     class="text-input">
                 <button type="submit" class="btn btn-primary submit-btn">送信</button>
             </form>

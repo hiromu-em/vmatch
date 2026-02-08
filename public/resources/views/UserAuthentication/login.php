@@ -31,7 +31,7 @@
         <form method="post" action="/user-login" class="login-credentials-form">
             <div class="login-form-group">
                 <label for="email" class="login-form-label">メールアドレス</label>
-                <input type="email" id="email" name="email" class="login-form-input" autocomplete="off" required
+                <input type="email" id="email" name="email" class="login-form-input" autocomplete="off"
                     placeholder="example@email.com">
             </div>
             <div class="login-form-group">
