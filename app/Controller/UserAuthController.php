@@ -8,6 +8,7 @@ use Core\Response;
 use Core\ViewRenderer;
 use Core\Session;
 use Service\UserRegisterService;
+use Service\UserLoginService;
 use Vmatch\FormValidation;
 use Vmatch\Exception\DatabaseException;
 
@@ -161,8 +162,10 @@ class UserAuthController
     /**
      * ユーザーのログインを処理する
      */
-    public function handleUserLogin(FormValidation $formValidation)
-    {
+    public function handleUserLogin(
+        FormValidation $formValidation,
+        UserLoginService $loginService
+    ): void {
         $email = $this->request->fetchInputStr('email');
         $plainPassword = $this->request->fetchInputStr('password');
 

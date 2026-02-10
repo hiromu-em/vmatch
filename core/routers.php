@@ -8,6 +8,7 @@ use Core\ViewRenderer;
 use Core\Session;
 use Vmatch\FormValidation;
 use Service\UserRegisterService;
+use Service\UserLoginService;
 use Repository\UserAuthRepository;
 
 $router = new Router(
@@ -83,5 +84,5 @@ $router->add(
     'POST',
     '/user-login',
     ['class' => Controller\UserAuthController::class, 'method' => 'handleUserLogin'],
-    [new FormValidation()]
+    [new FormValidation(), new UserLoginService(new UserAuthRepository(generatePdo()))]
 );
