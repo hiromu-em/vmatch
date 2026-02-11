@@ -177,5 +177,17 @@ class UserAuthController
             $this->response->redirect('/login');
         }
 
+        try {
+            $executeUserLogin = $loginService->executeUserLogin($email, $plainPassword);
+
+        } catch (DatabaseException $e) {
+            http_response_code(500);
+            $viewRenderer->render('systemError');
+        }
+
+        if (!$executeUserLogin->isSuccess()) {
+            $this->session->setStr('errorMessage', $executeUserLogin->error());
+            $this->response->redirect('/login');
+        }
     }
 }
