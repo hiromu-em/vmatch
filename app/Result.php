@@ -5,13 +5,13 @@ namespace Vmatch;
 
 final class Result
 {
-    public function __construct(private bool $success, private string|array|null $error = null)
+    public function __construct(private bool $success, private string|array $value)
     {
     }
 
-    public static function success(): Result
+    public static function success(string|array $value = ''): Result
     {
-        return new self(true);
+        return new self(true, $value);
     }
 
     public static function failure(string|array $error): Result
@@ -24,8 +24,13 @@ final class Result
         return $this->success;
     }
 
+    public function value(): string|array
+    {
+        return $this->value;
+    }
+
     public function error(): string|array
     {
-        return $this->error;
+        return $this->value;
     }
 }
