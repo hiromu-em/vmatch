@@ -190,5 +190,7 @@ class UserAuthController
             $this->session->setStr('errorMessage', $executeUserLoginResult->error());
             $this->response->redirect('/login');
         }
+
+        $userId = $executeUserLoginResult->value();
     }
 }

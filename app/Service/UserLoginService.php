@@ -32,6 +32,6 @@ class UserLoginService
             return Result::failure("メールアドレスもしくは\nパスワードが正しくありません。");
         }
 
-        return Result::success();
+        return Result::success($userRecord['id']);
     }
 }
