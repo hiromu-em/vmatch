@@ -192,5 +192,7 @@ class UserAuthController
         }
 
         $userId = $executeUserLoginResult->value();
+        $this->session->setStr('user_id', $userId);
+        
     }
 }
