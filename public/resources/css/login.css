@@ -173,7 +173,7 @@ body {
     font-size: 0.9rem;
 }
 
-.login-oauth-form {
+.oauth-content {
     display: flex;
     justify-content: center;
     width: 100%;
