@@ -7,7 +7,7 @@ use Google\Client;
 
 class GoogleOauth
 {
-    public function __construct(private Client $client)
+    public function __construct(private Client $client, private array $clientConfig)
     {
     }
 
