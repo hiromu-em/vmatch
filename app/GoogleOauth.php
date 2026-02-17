@@ -11,10 +11,7 @@ class GoogleOauth
     {
     }
 
-    /**
-     * Clientの設定
-     */
-    public function setClient(Client $client): Client
+    public function createClient(array $clientConfig): Client
     {
         $this->client->setScopes('email');
 

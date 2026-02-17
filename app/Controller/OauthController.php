@@ -20,5 +20,6 @@ class OauthController
 
     public function handleGoogleOauth(GoogleOauth $googleOauth, array $clientConfig)
     {
+        $client = $googleOauth->createClient($clientConfig);
     }
 }
