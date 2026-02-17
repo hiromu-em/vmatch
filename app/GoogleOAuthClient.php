@@ -1,37 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace Vmatch\Oauth;
+namespace Vmatch;
 
 use Google\Client;
-use Vmatch\ConfigInterface;
 
 class GoogleOAuthClient
 {
-    private const string GOOGLE_CALLBACK = '/app/Oauth/googleCallback.php';
-
-    /**
-     * @param ConfigInterface|null $config
-     * @param Client|null $client 
-     */
-    public function __construct(private ?ConfigInterface $config = null, private ?Client $client = null)
+    public function __construct(private Client $client)
     {
     }
 
     /**
      * Clientの設定
      */
-    public function setClient(): Client
+    public function setClient(Client $client): Client
     {
-        $this->client->setAuthConfig($this->config->getGoogleClientEnvVars());
         $this->client->setScopes('email');
 
         $this->client->setAccessType('offline');
         $this->client->setIncludeGrantedScopes(true);
         $this->client->setPrompt('select_account');
 
-        $redirectUri = $this->config->urlScheme() . $this->config->getHost() . self::GOOGLE_CALLBACK;
-        $this->client->setRedirectUri($redirectUri);
+        $this->client->setRedirectUri('/google-oauth-callback');
 
         return $this->client;
     }
