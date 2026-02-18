@@ -22,7 +22,7 @@ class GoogleOauth
         $this->client->setPrompt('select_account');
         $this->client->setState(bin2hex(random_bytes(128 / 8)));
 
-        $this->client->setRedirectUri('/google-oauth-callback');
+        $this->client->setRedirectUri('http://localhost/google-oauth-callback');
 
         return $this->client;
     }
