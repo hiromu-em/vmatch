@@ -17,13 +17,17 @@ class OauthController
     ) {
 
     }
-
+    /**
+     * 
+     * @param GoogleOauth $googleOauth GoogleOauthに関わる処理をまとめたクラス
+     * @param array $clientConfig クライアントIDとクライアントシークレットを含めた配列
+     */
     public function handleGoogleOauth(GoogleOauth $googleOauth, array $clientConfig)
     {
         $client = $googleOauth->changeClientSetting($clientConfig);
 
         $googleAccessToken = $this->session->getStr('google_access_token');
-        if (!isset($googleAccessToken) && empty($googleAccessToken)) {
+        if (!isset($googleAccessToken) || empty($googleAccessToken)) {
 
             $state = bin2hex(random_bytes(128 / 8));
             $client->setState($state);
@@ -31,5 +35,6 @@ class OauthController
             $this->session->setStr('google_oauth_state', $state);
             $this->session->setStr('google_code_verifier', $client->getOAuth2Service()->generateCodeVerifier());
         }
+
     }
 }
