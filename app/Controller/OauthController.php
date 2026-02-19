@@ -39,4 +39,8 @@ class OauthController
         }
 
     }
+
+    public function handleGoogleOauthCode(GoogleOauth $googleOauth)
+    {
+    }
 }
