@@ -45,5 +45,11 @@ class OauthController
         if ($this->request->isGet('error')) {
             $this->response->redirect('/', 301);
         }
+
+        $code = $this->request->fetchInputStr('code');
+        $state = $this->request->fetchInputStr('state');
+
+        if ($this->request->isGet('code') && !empty($code)) {
+        }
     }
 }
