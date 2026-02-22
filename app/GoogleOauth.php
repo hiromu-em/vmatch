@@ -28,6 +28,11 @@ class GoogleOauth
         return $this->client;
     }
 
+    public function getGoogleClient(): Client
+    {
+        return $this->client;
+    }
+
     public function setAccessToken(array $accessToken): void
     {
         $this->client->setAccessToken($accessToken);

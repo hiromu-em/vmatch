@@ -57,6 +57,7 @@ class OauthController
                 $this->response->redirect('/', 301);
             }
 
+            $client = $googleOauth->getGoogleClient();
             $accessToken = $googleOauth->fetchAccessToken($code, $googleCodeVerifier);
         }
     }
