@@ -34,12 +34,12 @@ class GoogleOauth
     }
 
     /**
-     * 認可サーバーのURLを生成
-     * @return string 認可サーバーのURL
+     * @param string $code 認可コード
+     * @param string $codeVerifier PKCEに使用するコード検証子
      */
-    public function createAuthUrl(): string
+    public function fetchAccessToken(string $code, string $codeVerifier): array
     {
-        return $this->client->createAuthUrl();
+        return $this->client->fetchAccessTokenWithAuthCode($code, $codeVerifier);
     }
 
     public function getRedirectUri(): string
