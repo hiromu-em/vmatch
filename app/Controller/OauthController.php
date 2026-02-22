@@ -40,7 +40,7 @@ class OauthController
 
     }
 
-    public function handleGoogleOauthCode(GoogleOauth $googleOauth)
+    public function handleGoogleOauthCode(GoogleOauth $googleOauth): never
     {
         if ($this->request->isGet('error')) {
             $this->response->redirect('/', 301);
@@ -63,9 +63,12 @@ class OauthController
             $client->setRedirectUri($riedirectUri);
 
             $accessToken = $googleOauth->fetchAccessToken($code, $googleCodeVerifier);
-            $this->session->setArray('google_access_token', $accessToken);
 
             $this->session->clear();
         }
+
+        $this->session->setArray('google_access_token', $accessToken);
+
+        $this->response->redirect('/google-oauth', 301);
     }
 }
