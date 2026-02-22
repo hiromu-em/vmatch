@@ -57,11 +57,15 @@ class OauthController
                 $this->response->redirect('/', 301);
             }
 
-            $client = $googleOauth->getGoogleClient();
             $riedirectUri = $googleOauth->getRedirectUri();
 
+            $client = $googleOauth->getGoogleClient();
             $client->setRedirectUri($riedirectUri);
+
             $accessToken = $googleOauth->fetchAccessToken($code, $googleCodeVerifier);
+            $this->session->setArray('google_access_token', $accessToken);
+
+            $this->session->clear();
         }
     }
 }
