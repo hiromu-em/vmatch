@@ -46,10 +46,9 @@ class OauthController
             $this->response->redirect('/', 301);
         }
 
+        $state = $this->request->fetchInputStr('state');
         $code = $this->request->fetchInputStr('code');
         $googleCodeVerifier = $this->session->getStr('google_code_verifier');
-
-        $state = $this->request->fetchInputStr('state');
 
         if ($this->request->isGet('code')) {
 
@@ -58,6 +57,7 @@ class OauthController
                 $this->response->redirect('/', 301);
             }
 
+            $accessToken = $googleOauth->fetchAccessToken($code, $googleCodeVerifier);
         }
     }
 }
