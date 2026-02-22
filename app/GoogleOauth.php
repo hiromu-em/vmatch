@@ -7,6 +7,8 @@ use Google\Client;
 
 class GoogleOauth
 {
+    private string $redirectUri = 'http://localhost/google-oauth-code';
+
     public function __construct(private Client $client)
     {
     }
@@ -21,14 +23,11 @@ class GoogleOauth
         $this->client->setIncludeGrantedScopes(true);
         $this->client->setPrompt('select_account');
 
-        $this->client->setRedirectUri('http://localhost/google-oauth-code');
+        $this->client->setRedirectUri($this->getRedirectUri());
 
         return $this->client;
     }
 
-    /**
-     * アクセストークンの設定
-     */
     public function setAccessToken(array $accessToken): void
     {
         $this->client->setAccessToken($accessToken);
@@ -43,19 +42,11 @@ class GoogleOauth
         return $this->client->createAuthUrl();
     }
 
-    /**
-     * 認可コードをアクセストークンと交換
-     * @param string $code 認可コード
-     * @param string $codeVerifier コード検証者
-     */
-    public function fetchAccessToken(string $code, string $codeVerifier): void
+    public function getRedirectUri(): string
     {
-        $this->client->fetchAccessTokenWithAuthCode($code, $codeVerifier);
+        return $this->redirectUri;
     }
 
-    /**
-     * アクセストークンの取得
-     */
     public function getAccessToken(): array
     {
         return $this->client->getAccessToken();
