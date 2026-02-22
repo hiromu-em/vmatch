@@ -58,6 +58,9 @@ class OauthController
             }
 
             $client = $googleOauth->getGoogleClient();
+            $riedirectUri = $googleOauth->getRedirectUri();
+
+            $client->setRedirectUri($riedirectUri);
             $accessToken = $googleOauth->fetchAccessToken($code, $googleCodeVerifier);
         }
     }
