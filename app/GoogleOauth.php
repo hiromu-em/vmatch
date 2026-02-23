@@ -33,11 +33,6 @@ class GoogleOauth
         return $this->client;
     }
 
-    public function setAccessToken(array $accessToken): void
-    {
-        $this->client->setAccessToken($accessToken);
-    }
-
     /**
      * @param string $code 認可コード
      * @param string $codeVerifier PKCEに使用するコード検証子
@@ -50,19 +45,6 @@ class GoogleOauth
     public function getRedirectUri(): string
     {
         return $this->redirectUri;
-    }
-
-    public function getAccessToken(): array
-    {
-        return $this->client->getAccessToken();
-    }
-
-    /**
-     * IDトークンの取得
-     */
-    public function getIdToken(): array|false
-    {
-        return $this->client->verifyIdToken();
     }
 }
 
