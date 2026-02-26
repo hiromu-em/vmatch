@@ -11,7 +11,10 @@ class GoogleUserSyncService
     public function __construct(private UserAuthRepository $authRepository)
     {
     }
+
+    public function syncUserData(string $id, string $email)
     {
+
     }
 
 }
