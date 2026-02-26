@@ -106,7 +106,7 @@ $router->add(
         new GoogleOauth(new Client()),
         ['client_id' => $_ENV['CLIENTID'], 'client_secret' => $_ENV['CLIENTSECRET']],
         new ViewRenderer('views/Error/'),
-        new GoogleUserSyncService()
+        new GoogleUserSyncService(new UserAuthRepository(generatePdo()))
     ]
 );
 

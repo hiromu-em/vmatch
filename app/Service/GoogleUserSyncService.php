@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace Service;
 
+use Repository\UserAuthRepository;
+
 class GoogleUserSyncService
 {
-    public function syncUserData(array $tokenData)
+
+    public function __construct(private UserAuthRepository $authRepository)
+    {
+    }
     {
     }
 
