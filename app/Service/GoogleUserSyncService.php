@@ -12,7 +12,7 @@ class GoogleUserSyncService
     {
     }
 
-    public function syncUserData(string $id, string $email)
+    public function synchronizeUserData(string $id, string $email)
     {
 
     }
