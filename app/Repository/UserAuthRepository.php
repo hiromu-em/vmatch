@@ -5,8 +5,6 @@ namespace Repository;
 
 class UserAuthRepository
 {
-    private string $errorMessage = '';
-
     public function __construct(private \PDO $pdo)
     {
     }
@@ -52,24 +50,6 @@ class UserAuthRepository
     }
 
     /**
-     * DBで管理するハッシュとパスワードの照合を行う
-     * @return bool 照合結果
-     */
-    public function verifyPassword(string $email, string $password): bool
-    {
-        $statement = $this->pdo->prepare("SELECT password_hash FROM users_vmatch WHERE email = ?");
-        $statement->execute([$email]);
-        $result = $statement->fetch();
-
-        if (!empty($result['password_hash']) && password_verify($password, $result['password_hash'])) {
-            return true;
-        } else {
-            $this->setErrorMessage("メールアドレスもしくは、パスワードが正しくありません。");
-            return false;
-        }
-    }
-
-    /**
      * プロバイダーIDの存在確認
      * @return bool プロバイダーID存在結果
      */
@@ -90,15 +70,5 @@ class UserAuthRepository
     {
         $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $providerName, $providerId]);
-    }
-
-    public function setErrorMessage(string $errorMessage): void
-    {
-        $this->errorMessage = $errorMessage;
-    }
-
-    public function getErrorMessage(): string
-    {
-        return $this->errorMessage;
     }
 }
