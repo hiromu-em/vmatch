@@ -68,7 +68,7 @@ class UserAuthRepository
      */
     public function linkProviderUserId(string $userId, string $providerId, string $providerName): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(user_id, provider, provider_user_id) VALUES (?, ?, ?)");
+        $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(id, provider_name, provider_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $providerName, $providerId]);
     }
 }
