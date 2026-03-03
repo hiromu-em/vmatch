@@ -18,4 +18,14 @@ final class User
     {
         return $this->isNewUser;
     }
+
+    public function getUserRecord(): array
+    {
+        return [
+            'user_id' => $this->userId,
+            'email' => $this->email,
+            'provider_id' => $this->providerId,
+            'provider_name' => $this->providerName
+        ];
+    }
 }
