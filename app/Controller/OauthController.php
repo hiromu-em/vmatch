@@ -54,10 +54,6 @@ class OauthController
         $this->session->clear();
         $this->session->setArray('user_info', $userAccount->getUserRecord());
 
-        if ($userAccount->isNewUser()) {
-            $this->response->redirect('/init-profile-setting', 301);
-        }
-
         $this->response->redirect('/dashboard', 301);
     }
 
