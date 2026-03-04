@@ -24,7 +24,7 @@ class UserLoginService
             throw new DatabaseException();
         }
 
-        if (empty($userRecord)) {
+        if (empty($userRecord['password_hash'])) {
             return Result::failure("メールアドレスもしくは\nパスワードが正しくありません。");
         }
 
