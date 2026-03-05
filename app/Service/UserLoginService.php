@@ -19,7 +19,7 @@ class UserLoginService
     public function executeUserLogin(string $email, string $password): Result
     {
         try{
-            $userRecord = $this->authRepository->findUserByEmail($email);
+            $userRecord = $this->authRepository->findUserRecordByEmail($email);
         } catch (\PDOException $e){
             throw new DatabaseException();
         }

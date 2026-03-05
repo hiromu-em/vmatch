@@ -12,7 +12,7 @@ class UserAuthRepository
     /**
      * ユーザーレコードを取得する
      */
-    public function findUserByEmail(string $email): array
+    public function findUserRecordByEmail(string $email): array
     {
         $statement = $this->pdo->prepare(
             "SELECT * FROM users_vmatch LEFT JOIN users_vmatch_providers USING(id) WHERE users_vmatch.email = ?"
