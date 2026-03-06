@@ -17,7 +17,7 @@ class GoogleUserSyncService
     {
         if ($this->authRepository->providerIdExists($providerId)) {
 
-            $userRecord = $this->authRepository->findUserRecord($email);
+            $userRecord = $this->authRepository->findUserRecordByProviderId($providerId);
 
             return new User(
                 userId: $userRecord['id'],

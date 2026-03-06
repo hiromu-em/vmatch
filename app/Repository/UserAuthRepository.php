@@ -10,7 +10,7 @@ class UserAuthRepository
     }
 
     /**
-     * ユーザーレコードを取得する
+     * メールアドレスからユーザーレコードを取得する
      */
     public function findUserRecordByEmail(string $email): array
     {
@@ -18,6 +18,20 @@ class UserAuthRepository
             "SELECT * FROM users_vmatch LEFT JOIN users_vmatch_providers USING(id) WHERE users_vmatch.email = ?"
         );
         $statement->execute([$email]);
+        $result = $statement->fetch();
+
+        return $result ?: [];
+    }
+
+    /**
+     * プロパイダ―IDからユーザーレコードを取得する
+     */
+    public function findUserRecordByProviderId($providerId)
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT * FROM users_vmatch LEFT JOIN users_vmatch_providers USING(id) WHERE provider_id = ?"
+        );
+        $statement->execute([$providerId]);
         $result = $statement->fetch();
 
         return $result ?: [];
