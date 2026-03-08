@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace Vmatch;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-use Abraham\TwitterOAuth\TwitterOAuth;
+use Abraham\TwitterOAuth\TwitterOAuth as OAuth;
 
 /**
- * Twitter認可クラス
+ * TwitterOauthを実行する上で必要な処理をまとめたクラス
  */
-class TwitterAuthorization
+class TwitterOauth
 {
     private const string Twitter_CALLBACK__LOCAL_URL = 'http://localhost/app/Oauth/twitterCallback.php';
 
-    public function __construct(private ?TwitterOAuth $twitterOAuth = null)
+    public function __construct(private ?OAuth $twitterOAuth = null)
     {
     }
 
