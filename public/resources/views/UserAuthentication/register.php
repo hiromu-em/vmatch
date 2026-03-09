@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vmatch-新規登録-</title>
+    <title>Vminder-新規登録-</title>
     <link rel="stylesheet" href="/resources/css/index.css">
     <link rel="stylesheet" href="/resources/css/register.css">
 </head>
@@ -13,7 +13,7 @@
     <div class="hero-background"></div>
 
     <header>
-        <div class="logo"><a href="/">Vmatch</a></div>
+        <div class="logo"><a href="/">Vminder</a></div>
     </header>
 
     <main class="container">

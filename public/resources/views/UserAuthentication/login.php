@@ -9,13 +9,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@600&display=swap"
         rel="stylesheet">
-    <title>Vmatch-ログイン-</title>
+    <title>Vminder-ログイン-</title>
 </head>
 
 <body>
     <div class="login-hero-background"></div>
     <header class="login-header">
-        <h2 class="login-logo"><a href="/">Vmatch</a></h2>
+        <h2 class="login-logo"><a href="/">Vminder</a></h2>
     </header>
     <main class="login-container">
         <div class="login-hero-content">
