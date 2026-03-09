@@ -125,7 +125,6 @@ header {
     justify-content: center;
     width: 100%;
     margin-top: 6px;
-    gap: 25px;
 }
 
 .gsi-material-button {
@@ -236,32 +235,6 @@ header {
 .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
     background-color: #303030;
     opacity: 8%;
-}
-
-.x-material-button {
-    background-color: #0f1419;
-    border-color: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-}
-
-.x-material-button .gsi-material-button-icon svg {
-    display: block;
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-}
-
-.x-material-button {
-    background-color: #0f1419;
-    border-color: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-}
-
-.x-material-button .gsi-material-button-icon svg {
-    display: block;
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
 }
 
 @media (max-width: 640px) {
