@@ -1,4 +1,3 @@
-/* 基本設定 */
 :root {
     --login-primary-color: #9b59b6;
     --login-secondary-color: #e91e63;
@@ -150,7 +149,6 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* 区切り線 */
 .login-divider {
     display: flex;
     align-items: center;
@@ -289,19 +287,6 @@ body {
 .login-gsi-material-button:not(:disabled):hover .login-gsi-material-button-state {
     background-color: #303030;
     opacity: 8%;
-}
-
-.login-x-material-button {
-    background-color: #0f1419;
-    border-color: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-}
-
-.login-x-material-button .login-gsi-material-button-icon svg {
-    display: block;
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
 }
 
 .error-messages-container {
