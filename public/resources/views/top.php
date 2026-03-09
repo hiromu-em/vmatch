@@ -9,17 +9,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@600&display=swap"
         rel="stylesheet">
-    <title>Vmatch</title>
+    <title>Vminder</title>
 </head>
 
 <body>
     <div class="hero-background"></div>
     <header>
-        <h2 class="logo"><a href="/">Vmatch</a></h2>
+        <h2 class="logo"><a href="/">Vminder</a></h2>
     </header>
     <main class="container">
         <div class="hero-content">
-            <h1 class="main-title">仲間と一緒にVの世界へ</h1>
+            <h1 class="main-title">すぐ気付ける推しの配信！</h1>
             <div class="auth-buttons">
                 <a href="/register" class="btn btn-primary">新規登録</a>
                 <a href="/login" class="btn btn-secondary">ログイン</a>
@@ -49,21 +49,6 @@
                             </svg>
                         </div>
                         <span class="gsi-material-button-contents">Sign up with Google</span>
-                    </div>
-                </button>
-            </form>
-            <form action="/twitter-oauth" method="get">
-                <button class="gsi-material-button x-material-button" type="submit">
-                    <div class="gsi-material-button-state"></div>
-                    <div class="gsi-material-button-content-wrapper">
-                        <div class="gsi-material-button-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M20.285 7.715a1 1 0 0 0-1.414-1.414L12 13.172 5.129 6.301A1 1 0 1 0 3.715 7.715L10.586 14.586 3.715 21.457a1 1 0 0 0 1.414 1.414L12 15.999l6.871 6.872a1 1 0 0 0 1.414-1.414L13.414 14.586l6.871-6.871z" />
-                            </svg>
-                        </div>
-                        <span class="gsi-material-button-contents">Sign up with X</span>
                     </div>
                 </button>
             </form>
