@@ -15,8 +15,8 @@ class UserAuthRepository
     public function findUserRecordByEmail(string $email): array
     {
         $statement = $this->pdo->prepare(
-            "SELECT * FROM users_vmatch LEFT JOIN users_vmatch_providers USING(id) 
-            WHERE users_vmatch.email = ? AND provider_id IS NULL"
+            "SELECT * FROM users LEFT JOIN users_provider USING(id) 
+            WHERE users.email = ? AND provider_id IS NULL"
         );
         $statement->execute([$email]);
         $result = $statement->fetch();
@@ -30,7 +30,7 @@ class UserAuthRepository
     public function findUserRecordByProviderId($providerId): array
     {
         $statement = $this->pdo->prepare(
-            "SELECT * FROM users_vmatch LEFT JOIN users_vmatch_providers USING(id) WHERE provider_id = ?"
+            "SELECT * FROM users LEFT JOIN users_provider USING(id) WHERE provider_id = ?"
         );
         $statement->execute([$providerId]);
         $result = $statement->fetch();
@@ -43,7 +43,7 @@ class UserAuthRepository
      */
     public function existsByEmail(string $email): bool
     {
-        $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch WHERE email = ?) AS email_exists";
+        $query = "SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) AS email_exists";
         $statement = $this->pdo->prepare($query);
         $statement->execute([$email]);
 
@@ -58,7 +58,7 @@ class UserAuthRepository
     public function fetchNewUserRecord($email, $passwordHash = null): array
     {
         $stetement = $this->pdo->prepare(
-            "INSERT INTO users_vmatch(email, password_hash) VALUES (?, ?) RETURNING *"
+            "INSERT INTO users(email, password_hash) VALUES (?, ?) RETURNING *"
         );
         $stetement->execute([$email, $passwordHash]);
         $userRecord = $stetement->fetch();
@@ -72,7 +72,7 @@ class UserAuthRepository
      */
     public function providerIdExists(string $providerId): bool
     {
-        $query = "SELECT EXISTS(SELECT 1 FROM users_vmatch_providers WHERE provider_id = ?) as status";
+        $query = "SELECT EXISTS(SELECT 1 FROM users_provider WHERE provider_id = ?) as status";
         $statement = $this->pdo->prepare($query);
         $statement->execute([$providerId]);
         $result = $statement->fetch();
@@ -85,7 +85,7 @@ class UserAuthRepository
      */
     public function linkProviderUserId(string $userId, string $providerId, string $providerName): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO users_vmatch_providers(id, provider_name, provider_id) VALUES (?, ?, ?)");
+        $statement = $this->pdo->prepare("INSERT INTO users_provider(id, provider_name, provider_id) VALUES (?, ?, ?)");
         $statement->execute([$userId, $providerName, $providerId]);
     }
 }
