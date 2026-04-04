@@ -19,10 +19,18 @@ class DashboardController
     ) {
     }
 
-    public function showDashboard(ViewRenderer $viewRenderer, DashboardService $dashboardService)
+    /**
+     * ダッシュボード画面を表示する<br>
+     * 画面をリロードする際は、Sessionから取得して画面に表示する
+     */
+    public function showDashboard(ViewRenderer $viewRenderer, DashboardService $dashboardService): never
     {
-        $vtuberChannelList['vtuberChannels'] = $dashboardService->getAllVtuberData();
+        if (!$this->session->has('vtuber_channelList')) {
 
+            $this->session->setArray('vtuber_channelList', $dashboardService->getAllVtuberData());
+        }
+
+        $vtuberChannelList['vtuberChannels'] = $this->session->getArray('vtuber_channelList');
         $viewRenderer->render('dashboard', $vtuberChannelList);
     }
 
